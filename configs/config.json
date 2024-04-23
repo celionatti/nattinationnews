@@ -1,0 +1,12 @@
+{
+    "version": "1.0.0",
+    "debug_mode": true,
+    "bolt_database": {
+        "drivers": "mysql",
+        "host": "127.0.0.1",
+        "username": "root",
+        "password": "",
+        "dbname": "nattination"
+    },
+    "app_name": "Natti Nation News"
+}
