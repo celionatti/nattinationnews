@@ -24,6 +24,8 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
     <link href="<?= get_stylesheet('normalize.css" rel="stylesheet') ?>" type="text/css" />
     <link href="<?= get_stylesheet('slicknav.min.css') ?>" rel="stylesheet" type="text/css" />
 
+    <link type="text/css" rel="stylesheet" href="<?= get_package('toastr/toastr.min.css'); ?>">
+
     <!-- Site CSS -->
 
     <link href="<?= get_stylesheet('main.css?v=2.0') ?>" rel="stylesheet" type="text/css" />
@@ -69,6 +71,7 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
     <!-- JavaScript Libraries -->
     <script src="<?= get_script('jquery-3.7.0.min.js'); ?>"></script>
     <!--  -->
+    <script src="<?= get_package('toastr/toastr.min.js'); ?>"></script>
     <script src="<?= get_script('owl.carousel.min.js'); ?>"></script>
     <script src="<?= get_script('jquery.waypoints.min.js'); ?>"></script>
     <script src="<?= get_script('jquery.slicknav.min.js'); ?>"></script>

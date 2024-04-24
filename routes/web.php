@@ -28,6 +28,7 @@ use PhpStrike\controllers\AdminSettingsController;
 // });
 
 $bolt->router->get("/", [SiteController::class, "welcome"]);
+$bolt->router->get("/articles", [SiteController::class, "articles"]);
 $bolt->router->get("/category", [SiteController::class, "category"]);
 
 

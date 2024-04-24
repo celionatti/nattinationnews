@@ -35,7 +35,16 @@ class SiteController extends Controller
             
         ];
 
-        $this->view->render("welcome", $view);
+        $this->view->render("articles/welcome", $view);
+    }
+
+    public function articles()
+    {
+        $view = [
+            
+        ];
+
+        $this->view->render("articles/articles", $view);
     }
 
     public function category()
@@ -44,6 +53,6 @@ class SiteController extends Controller
             
         ];
 
-        $this->view->render("category", $view);
+        $this->view->render("articles/category", $view);
     }
 }

@@ -43,7 +43,7 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
         </div>
     </div>
 
-    <script src="<?= get_package('jquery/jquery-3.6.3.min.js'); ?>"></script>
+    <script src="<?= get_script('jquery-3.7.0.min.js'); ?>"></script>
     <script src="<?= get_package('toastr/toastr.min.js'); ?>"></script>
     <script src="<?= get_script('admin.js'); ?>"></script>
     <script src="<?= get_bootstrap('js/bootstrap.bundle.min.js'); ?>"></script>

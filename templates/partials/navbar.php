@@ -24,7 +24,7 @@ $currentUser = BoltAuthentication::currentUser();
             <div class="row">
                 <div class="col-12 col-md-12 main_nav_cover" id="nav">
                     <ul id="main-menu">
-                        <li class=""><a href="#">Home</a></li>
+                        <li class=""><a href="<?= URL_ROOT ?>">Home</a></li>
                         <li><a href="<?= URL_ROOT . "news" ?>">News</a></li>
                         <li><a href="<?= URL_ROOT . "region/nigeria" ?>">Nigeria</a></li>
                         <li class="menu-item-has-children"><a href='/entertainment'>Entertainment</a>

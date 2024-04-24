@@ -55,7 +55,7 @@ $currentUser = BoltAuthentication::currentUser();
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-12 header">
-                <h1 class="logo"><a href='/'><span class="text-danger">N</span>ATTI <span class="text-danger">N</span>ATION</a></h1>
+                <h1 class="logo"><a href="<?= URL_ROOT ?>"><span class="text-danger">N</span>ATTI <span class="text-danger">N</span>ATION</a></h1>
                 <p class="tagline">NEWSPAPER / MAGAZINE / PUBLISHER</p>
             </div>
         </div>

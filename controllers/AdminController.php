@@ -22,11 +22,9 @@ class AdminController extends Controller
     {
         $this->view->setLayout("admin");
 
-        $this->currentUser = user();
-
-        if (!hasAccess([], 'all', ['user', 'guest'])) {
-            redirect("/", 401);
-        }
+        // if (!hasAccess([], 'all', ['user', 'guest'])) {
+        //     redirect("/", 401);
+        // }
     }
 
     public function dashboard()
