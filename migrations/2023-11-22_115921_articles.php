@@ -26,10 +26,14 @@ class BM_2023_11_22_115921_articles extends BoltMigration
         $this->createTable("articles")
             ->id()->primaryKey()
             ->varchar("article_id", 255)->nullable()
+            ->varchar("category_id", 255)->nullable()
+            ->varchar("region_id", 255)->nullable()
             ->enum("is_editors_pick", ['true', 'false'])->defaultValue("false")
+            ->enum("featured_article", ['true', 'false'])->defaultValue("false")
             ->int("views")->defaultValue(0)
             ->varchar("title",  2000)
             ->text("content")
+            ->varchar("key_point", 500)
             ->text("tags")
             ->text("thumbnail")->nullable()
             ->varchar("thumbnail_caption")->nullable()
@@ -40,7 +44,7 @@ class BM_2023_11_22_115921_articles extends BoltMigration
             ->varchar("meta_title")->nullable()
             ->varchar("meta_description")->nullable()
             ->varchar("meta_keywords")->nullable()
-            ->enum("status", ['draft', 'publish', 'delete'])->defaultValue("draft")
+            ->enum("status", ['draft', 'publish'])->defaultValue("draft")
             ->timestamps()
             ->build(true);
     }

@@ -205,38 +205,6 @@ function getAdsBanner()
     }
 }
 
-function hashString($string)
-{
-    // Generate a random salt
-    $salt = base64_encode(random_bytes(10));
-
-    // Hash the string with the salt
-    $hashedString = hash('sha256', $string . $salt);
-
-    // Encode the hashed string and salt together
-    $encodedString = base64_encode($hashedString . '|' . $salt);
-
-    // Make the encoded string URL-friendly
-    $urlFriendlyString = str_replace(['+', '/', '='], ['-', '_', ''], $encodedString);
-
-    return $urlFriendlyString;
-}
-
-function verifyHash($string, $hashedString)
-{
-    // Decode the URL-friendly hashed string
-    $decodedString = base64_decode(str_replace(['-', '_'], ['+', '/'], $hashedString));
-
-    // Separate the hashed string and salt
-    list($hashed, $salt) = explode('|', $decodedString);
-
-    // Hash the input string with the decoded salt
-    $inputHash = hash('sha256', $string . $salt);
-
-    // Compare the hashed strings
-    return hash_equals($hashed, $inputHash);
-}
-
 function slugString($text)
 {
     // Replace spaces with underscores

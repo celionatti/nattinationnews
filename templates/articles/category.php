@@ -12,6 +12,8 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
 
 ?>
 
+<?php $this->setTitle($title ?? "Category"); ?>
+
 <?php $this->start('content')?>
 
 <div class="container-fluid">

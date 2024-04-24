@@ -22,7 +22,7 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
     <link type="text/css" rel="stylesheet" href="<?= get_bootstrap('css/bootstrap-icons.min.css'); ?>">
     <link type="text/css" rel="stylesheet" href="<?= get_package('toastr/toastr.min.css'); ?>">
     <link type="text/css" rel="stylesheet" href="<?= get_package('datatables/datatables.min.css'); ?>">
-    <title>NattiQ | Admin Dashboard</title>
+    <title>NattiNation Global | <?= $this->getTitle() ?></title>
     <?php $this->content('header') ?>
 </head>
 

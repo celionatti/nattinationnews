@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * ======================================
  * ===============       ================
- * BM_2024_04_03_011933_contacts Migration 
+ * BM_2024_04_24_014634_category Migration 
  * ===============       ================
  * ======================================
  */
@@ -14,7 +14,7 @@ namespace PhpStrike\migrations;
 
 use celionatti\Bolt\Migration\BoltMigration;
 
-class BM_2024_04_03_011933_contacts extends BoltMigration
+class BM_2024_04_24_014634_category extends BoltMigration
 {
     /**
      * The Up method is to create table.
@@ -23,15 +23,15 @@ class BM_2024_04_03_011933_contacts extends BoltMigration
      */
     public function up()
     {
-        $this->createTable("contacts")
+        $this->createTable("categories")
             ->id()->primaryKey()
-            ->varchar("contact_id")
-            ->varchar("name")
-            ->varchar("email")
-            ->text("message")->nullable()
+            ->varchar("category_id", 255)->nullable()
+            ->varchar("category")
+            ->varchar("category_info")
+            ->varchar("child")->nullable()
+            ->enum("section", ['navbar', 'sidebar', 'footer', 'footer_sidebar', 'none'])->defaultValue("none")
+            ->enum("status", ['active', 'disable'])->defaultValue("disable")
             ->timestamps()
-            ->enum("status", ['read', 'unread'])->defaultValue("unread")
-            ->enum("label", ['archive', 'spam', 'important', 'none'])->defaultValue("none")
             ->build();
     }
 
@@ -42,6 +42,6 @@ class BM_2024_04_03_011933_contacts extends BoltMigration
      */
     public function down()
     {
-        $this->dropTable("contacts");
+        $this->dropTable("categories");
     }
 }

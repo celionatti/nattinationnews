@@ -12,6 +12,8 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
 
 ?>
 
+<?php $this->setTitle($title ?? "Articles"); ?>
+
 <?php $this->start('content')?>
 
 

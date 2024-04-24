@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 /**
  * ======================================
  * ===============       ================
- * BM_2024_01_22_110923_resources Migration 
+ * BM_2024_04_24_014753_courses Migration
  * ===============       ================
  * ======================================
  */
@@ -14,7 +14,7 @@ namespace PhpStrike\migrations;
 
 use celionatti\Bolt\Migration\BoltMigration;
 
-class BM_2024_01_22_110923_resources extends BoltMigration
+class BM_2024_04_24_014753_courses extends BoltMigration
 {
     /**
      * The Up method is to create table.
@@ -23,20 +23,25 @@ class BM_2024_01_22_110923_resources extends BoltMigration
      */
     public function up()
     {
-        $this->createTable("resources")
+        $this->createTable("courses")
             ->id()->primaryKey()
-            ->varchar("resource_id", 255)->nullable()
-            ->varchar("user_id")->nullable()->foreignKey("user_id", "users", "user_id")
-            ->varchar("title",  2000)
+            ->varchar("course_id", 255)->nullable()
+            ->varchar("category_id", 255)->nullable()
+            ->int("views")->defaultValue(0)
+            ->int("downloads")->defaultValue(0)
+            ->varchar("title", 2000)
             ->text("content")
-            ->text("category")
+            ->text("upload")->nullable()
             ->text("thumbnail")->nullable()
             ->varchar("thumbnail_caption")->nullable()
-            ->text("resource")->nullable()
+            ->text("image")->nullable()
+            ->varchar("image_caption")->nullable()
+            ->varchar("user_id")->nullable()->foreignKey("user_id", "users", "user_id")
+            ->varchar("authors")->nullable()
             ->varchar("meta_title")->nullable()
             ->varchar("meta_description")->nullable()
             ->varchar("meta_keywords")->nullable()
-            ->enum("status", ['draft', 'publish', 'delete'])->defaultValue("draft")
+            ->enum("status", ['draft', 'publish'])->defaultValue("draft")
             ->timestamps()
             ->build(true);
     }
@@ -48,6 +53,6 @@ class BM_2024_01_22_110923_resources extends BoltMigration
      */
     public function down()
     {
-        $this->dropTable("resources");
+        $this->dropTable("courses");
     }
 }

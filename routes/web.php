@@ -14,6 +14,7 @@ use PhpStrike\controllers\AdminOthersController;
 use PhpStrike\controllers\AdminArticlesController;
 use PhpStrike\controllers\AdminCommentsController;
 use PhpStrike\controllers\AdminSettingsController;
+use PhpStrike\controllers\AdminCategoriesController;
 
 /** @var Bolt $bolt */
 
@@ -50,3 +51,14 @@ $bolt->router->post("/forgot-password", [AuthController::class, "forgot"]);
  */
 
 $bolt->router->get("/admin", [AdminController::class, "dashboard"]);
+
+/** Categories */
+$bolt->router->get("/admin/manage-categories", [AdminCategoriesController::class, "manage"]);
+$bolt->router->post("/admin/create-categories", [AdminCategoriesController::class, "create"]);
+$bolt->router->post("/admin/view-categories", [AdminCategoriesController::class, "view"]);
+
+/** Articles */
+$bolt->router->get("/admin/manage-articles", [AdminArticlesController::class, "manage"]);
+$bolt->router->post("/admin/view-articles", [AdminArticlesController::class, "view_articles"]);
+$bolt->router->get("/admin/articles/create", [AdminArticlesController::class, "create_article"]);
+$bolt->router->post("/admin/articles/create", [AdminArticlesController::class, "create"]);

@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 /**
  * ======================================
  * ===============       ================
- * BM_2024_04_03_011933_contacts Migration 
+ * BM_2024_04_24_014926_regions Migration
  * ===============       ================
  * ======================================
  */
@@ -14,7 +14,7 @@ namespace PhpStrike\migrations;
 
 use celionatti\Bolt\Migration\BoltMigration;
 
-class BM_2024_04_03_011933_contacts extends BoltMigration
+class BM_2024_04_24_014926_regions extends BoltMigration
 {
     /**
      * The Up method is to create table.
@@ -23,15 +23,13 @@ class BM_2024_04_03_011933_contacts extends BoltMigration
      */
     public function up()
     {
-        $this->createTable("contacts")
+        $this->createTable("regions")
             ->id()->primaryKey()
-            ->varchar("contact_id")
-            ->varchar("name")
-            ->varchar("email")
-            ->text("message")->nullable()
+            ->varchar("region_id", 255)->nullable()
+            ->varchar("region")
+            ->varchar("region_info")
+            ->enum("status", ['active', 'disable'])->defaultValue("disable")
             ->timestamps()
-            ->enum("status", ['read', 'unread'])->defaultValue("unread")
-            ->enum("label", ['archive', 'spam', 'important', 'none'])->defaultValue("none")
             ->build();
     }
 
@@ -42,6 +40,6 @@ class BM_2024_04_03_011933_contacts extends BoltMigration
      */
     public function down()
     {
-        $this->dropTable("contacts");
+        $this->dropTable("regions");
     }
 }

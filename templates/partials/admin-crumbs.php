@@ -14,7 +14,10 @@
 ?>
 
 
-<h1 class="mt-2 h2 text-muted"><?= $title ?></h1>
+<div class="py-1 d-flex justify-content-between align-items-center">
+    <h1 class="h2 text-muted"><?= $title ?></h1>
+    <img class="d-block mx-start" src="/assets/img/natti.png" alt="" height="57">
+</div>
 <nav aria-label="breadcrumb" class="d-flex justify-content-center align-items-center border-bottom border-secondary mb-2">
     <ol class="breadcrumb">
         <?php $count = count($navigations); ?>
@@ -27,7 +30,3 @@
         <?php endforeach; ?>
     </ol>
 </nav>
-
-<div class="py-1 d-flex justify-content-end">
-    <img class="d-block mx-start mb-2" src="/assets/img/natti.png" alt="" height="57">
-</div>
