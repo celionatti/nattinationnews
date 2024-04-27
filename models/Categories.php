@@ -83,6 +83,7 @@ class Categories extends DatabaseModel
     {
         return $this->getQueryBuilder()
             ->select()
+            ->where(['status' => 'active'])
             ->get();
     }
 }

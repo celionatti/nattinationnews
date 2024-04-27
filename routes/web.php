@@ -11,6 +11,7 @@ use PhpStrike\controllers\CommentController;
 use PhpStrike\controllers\ProfileController;
 use PhpStrike\controllers\AdminUsersController;
 use PhpStrike\controllers\AdminOthersController;
+use PhpStrike\controllers\AdminRegionsController;
 use PhpStrike\controllers\AdminArticlesController;
 use PhpStrike\controllers\AdminCommentsController;
 use PhpStrike\controllers\AdminSettingsController;
@@ -54,8 +55,23 @@ $bolt->router->get("/admin", [AdminController::class, "dashboard"]);
 
 /** Categories */
 $bolt->router->get("/admin/manage-categories", [AdminCategoriesController::class, "manage"]);
-$bolt->router->post("/admin/create-categories", [AdminCategoriesController::class, "create"]);
+$bolt->router->get("/admin/categories/create", [AdminCategoriesController::class, "create_category"]);
+$bolt->router->post("/admin/categories/create", [AdminCategoriesController::class, "create"]);
 $bolt->router->post("/admin/view-categories", [AdminCategoriesController::class, "view"]);
+$bolt->router->get("/admin/categories/edit/{id}", [AdminCategoriesController::class, "edit_category"]);
+$bolt->router->post("/admin/categories/edit/{id}", [AdminCategoriesController::class, "edit"]);
+$bolt->router->get("/admin/categories/delete/{id}", [AdminCategoriesController::class, "delete_category"]);
+$bolt->router->post("/admin/categories/delete/{id}", [AdminCategoriesController::class, "delete"]);
+
+/** Regions */
+$bolt->router->get("/admin/manage-regions", [AdminRegionsController::class, "manage"]);
+$bolt->router->get("/admin/regions/create", [AdminRegionsController::class, "create_region"]);
+$bolt->router->post("/admin/regions/create", [AdminRegionsController::class, "create"]);
+$bolt->router->post("/admin/view-regions", [AdminRegionsController::class, "view"]);
+$bolt->router->get("/admin/regions/edit/{id}", [AdminRegionsController::class, "edit_region"]);
+$bolt->router->post("/admin/regions/edit/{id}", [AdminRegionsController::class, "edit"]);
+$bolt->router->get("/admin/regions/delete/{id}", [AdminRegionsController::class, "delete_region"]);
+$bolt->router->post("/admin/regions/delete/{id}", [AdminRegionsController::class, "delete"]);
 
 /** Articles */
 $bolt->router->get("/admin/manage-articles", [AdminArticlesController::class, "manage"]);

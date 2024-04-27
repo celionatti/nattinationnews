@@ -29,6 +29,11 @@
                     Manage Categories
                 </a>
 
+                <a class="nav-link" href="<?= URL_ROOT . "admin/manage-regions" ?>">
+                    <div class="sb-nav-link-icon"><i class="bi bi-globe"></i></div>
+                    Manage Regions
+                </a>
+
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBlog" aria-expanded="false" aria-controls="collapseBlog">
                     <div class="sb-nav-link-icon"><i class="bi bi-postcard"></i></div>
                     Articles
