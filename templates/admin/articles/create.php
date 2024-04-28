@@ -83,12 +83,6 @@ use celionatti\Bolt\Forms\BootstrapForm;
             <?= BootstrapForm::inputField("Article Tags (natti, news)", "tags", old_value("tags", $article["tags"] ?? ''), ['class' => 'form-control'], ['class' => 'col-6'], $errors) ?>
 
             <?= BootstrapForm::inputField("Article Authors(incl Others)", "authors", old_value("authors", $article["authors"] ?? ''), ['class' => 'form-control'], ['class' => 'col-6'], $errors) ?>
-
-            <?= BootstrapForm::inputField("Article Meta Title", "meta_title", old_value("meta_title", $article["meta_title"] ?? ''), ['class' => 'form-control'], ['class' => 'col-sm-12'], $errors) ?>
-
-            <?= BootstrapForm::inputField("Article Meta Description", "meta_description", old_value("meta_description", $article["meta_description"] ?? ''), ['class' => 'form-control'], ['class' => 'col-sm-12'], $errors) ?>
-
-            <?= BootstrapForm::inputField("Article Meta Keywords", "meta_keywords", old_value("meta_keywords", $article["meta_keywords"] ?? ''), ['class' => 'form-control'], ['class' => 'col-sm-12'], $errors) ?>
         </div>
 
         <hr class="my-4">

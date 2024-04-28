@@ -49,6 +49,19 @@ class AdminArticlesController extends Controller
         $this->view->render("admin/articles/manage", $view);
     }
 
+    public function manage_drafts()
+    {
+        $view = [
+            'title' => 'Manage Draft Articles',
+            'navigations' => [
+                ['label' => 'Dashboard', 'url' => 'admin'],
+                ['label' => 'Manage Draft Articles', 'url' => ''],
+            ],
+        ];
+
+        $this->view->render("admin/articles/drafts", $view);
+    }
+
     public function create_article(Request $request)
     {
         $categories = new Categories();
@@ -121,6 +134,9 @@ class AdminArticlesController extends Controller
             validate_csrf_token($data);
             $data['article_id'] = generateUuidV4();
             $data['user_id'] = $this->currentUser->user_id;
+            $data['meta_title'] = generateMetaTitle($data['title']);
+            $data['meta_description'] = generateMetaDescription($data['content']);
+            $data['meta_keywords'] = generateKeywords($data['content']);
             $article->setIsInsertionScenario('create'); // Set insertion scenario flag
             $uploader = new Upload("uploads/articles");
             $uploader->setAllowedFileTypes(ALLOWED_IMAGE_FILE_UPLOAD);
@@ -452,7 +468,59 @@ class AdminArticlesController extends Controller
                 $output = '';
                 $articles = new Articles();
 
-                $data = $articles->findAll();
+                $data = $articles->findAllBy(['status' => 'publish']);
+
+                $output .= '<table class="table table-striped table-sm table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Link</th>
+                        <th>View</th>
+                        <th>Authors</th>
+                        <th>Thumbnail</th>
+                        <th>Image</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+                foreach ($data as $key => $row) {
+                    $output .= '<tr class="text-center text-scondary">
+                    <td>' . ($key + 1) . '</td>
+                    <td class="text-capitalize">' . $row->title . '</td>
+                    <td class="text-capitalize"><a href="' . URL_ROOT . "admin/articles/preview/{$row->article_id}" . '" title="View Article" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a></td>
+                    <td class="text-capitalize fw-bold text-success">' . $row->views . '</td>
+                    <td class="text-capitalize">' . $row->authors . '</td>
+                    <td><img src="' . get_image($row->thumbnail) . '" class="d-block" style="height:50px;width:60px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
+                    <td><img src="' . get_image($row->image) . '" class="d-block" style="height:50px;width:60px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
+                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
+                    <td>
+                    <a href="' . URL_ROOT . "admin/articles/edit/{$row->article_id}?ut=file" . '" title="Edit Article" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
+
+                    <a href="' . URL_ROOT . "admin/articles/editors/{$row->article_id}" . '" title="Editor Pick" class="btn btn-sm btn-outline-warning"><i class="bi bi-patch-check"></i></a>&nbsp;&nbsp;
+
+                    <a href="' . URL_ROOT . "admin/articles/delete/{$row->article_id}" . '" title="Delete Article" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </td></tr>
+                    ';
+                }
+                $output .= '</tbody></table>';
+                $this->json_response($output);
+            } else {
+                return '<h3 class="text-center text-secondary mt-5">:( No article present in the database!</h3>';
+            }
+        }
+    }
+
+    public function view_draft_articles(Request $request)
+    {
+        if ($request->isPost()) {
+            if ($request->post('action') && $request->post('action') === "view-draft-articles") {
+                $output = '';
+                $articles = new Articles();
+
+                $data = $articles->findAllBy(['status' => 'draft']);
 
                 $output .= '<table class="table table-striped table-sm table-bordered">
                 <thead>

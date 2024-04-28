@@ -26,34 +26,27 @@
 
                 <a class="nav-link" href="<?= URL_ROOT . "admin/manage-categories" ?>">
                     <div class="sb-nav-link-icon"><i class="bi bi-archive"></i></div>
-                    Manage Categories
+                    Categories
                 </a>
 
                 <a class="nav-link" href="<?= URL_ROOT . "admin/manage-regions" ?>">
                     <div class="sb-nav-link-icon"><i class="bi bi-globe"></i></div>
-                    Manage Regions
+                    Regions
                 </a>
 
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBlog" aria-expanded="false" aria-controls="collapseBlog">
+                <a class="nav-link" href="<?= URL_ROOT . "admin/manage-articles" ?>">
                     <div class="sb-nav-link-icon"><i class="bi bi-postcard"></i></div>
                     Articles
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse" id="collapseBlog" aria-labelledby="blog" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="<?= URL_ROOT . 'admin/manage-articles' ?>">Manage Articles</a>
-                        <a class="nav-link" href="<?= URL_ROOT . 'admin/articles/create?ut=file' ?>">Create Article</a>
-                    </nav>
-                </div>
 
-                <a class="nav-link" href="<?= URL_ROOT . "admin/adverts" ?>">
+                <a class="nav-link" href="<?= URL_ROOT . "admin/manage-adverts" ?>">
                     <div class="sb-nav-link-icon"><i class="bi bi-tv"></i></div>
-                    Manage Adverts
+                    Adverts
                 </a>
 
                 <hr>
 
-                <a class="nav-link" href="<?= URL_ROOT . "admin/settings" ?>">
+                <a class="nav-link" href="<?= URL_ROOT . "admin/manage-settings" ?>">
                     <div class="sb-nav-link-icon"><i class="bi bi-gear-wide-connected"></i></div>
                     Settings
                 </a>

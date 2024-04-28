@@ -59,15 +59,6 @@ class Articles extends DatabaseModel
                 'image_caption' => [
                     ['rule' => 'required', 'message' => 'Article Image Caption is required.'],
                 ],
-                'meta_title' => [
-                    ['rule' => 'required', 'message' => 'Article Meta Title is required.'],
-                ],
-                'meta_description' => [
-                    ['rule' => 'required', 'message' => 'Article Meta Descriptions is required.'],
-                ],
-                'meta_keywords' => [
-                    ['rule' => 'required', 'message' => 'Article Meta Keywords is required.'],
-                ],
                 'status' => [
                     ['rule' => 'required', 'message' => 'Article Status is required.'],
                 ],
@@ -96,15 +87,6 @@ class Articles extends DatabaseModel
                 ],
                 'image_caption' => [
                     ['rule' => 'required', 'message' => 'Article Image Caption is required.'],
-                ],
-                'meta_title' => [
-                    ['rule' => 'required', 'message' => 'Article Meta Title is required.'],
-                ],
-                'meta_description' => [
-                    ['rule' => 'required', 'message' => 'Article Meta Descriptions is required.'],
-                ],
-                'meta_keywords' => [
-                    ['rule' => 'required', 'message' => 'Article Meta Keywords is required.'],
                 ],
                 'status' => [
                     ['rule' => 'required', 'message' => 'Article Status is required.'],

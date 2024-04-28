@@ -75,7 +75,9 @@ $bolt->router->post("/admin/regions/delete/{id}", [AdminRegionsController::class
 
 /** Articles */
 $bolt->router->get("/admin/manage-articles", [AdminArticlesController::class, "manage"]);
+$bolt->router->get("/admin/articles/drafts", [AdminArticlesController::class, "manage_drafts"]);
 $bolt->router->post("/admin/view-articles", [AdminArticlesController::class, "view_articles"]);
+$bolt->router->post("/admin/view-draft-articles", [AdminArticlesController::class, "view_draft_articles"]);
 $bolt->router->get("/admin/articles/create", [AdminArticlesController::class, "create_article"]);
 $bolt->router->post("/admin/articles/create", [AdminArticlesController::class, "create"]);
 $bolt->router->get("/admin/articles/edit/{id}", [AdminArticlesController::class, "edit_article"]);

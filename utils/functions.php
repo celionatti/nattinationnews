@@ -247,3 +247,98 @@ function generateToken($length = 7)
 
     return $token;
 }
+
+function generateMetaTitle($title)
+{
+    $websiteName = "Natti Nation"; // Replace with your actual website name
+    $metaTitle = $title . ' | ' . $websiteName;
+
+    // Truncate meta title if it exceeds recommended length (50-60 characters)
+    if (mb_strlen($metaTitle) > 60) {
+        $metaTitle = mb_substr($metaTitle, 0, 57) . '...'; // Truncate and add "..." at the end
+    }
+
+    return $metaTitle;
+}
+
+function extractTextFromHTML($content)
+{
+    // Create a DOMDocument object
+    $dom = new DOMDocument();
+    // Load the HTML content into the DOMDocument
+    @$dom->loadHTML($content);
+
+    // Initialize an empty array to store extracted text
+    $extractedText = [];
+
+    // Get all <p> elements within the DOMDocument
+    $paragraphs = $dom->getElementsByTagName('p');
+
+    // Loop through each <p> element
+    foreach ($paragraphs as $paragraph) {
+        // Extract text from each <p> element and remove HTML tags and special characters
+        $text = strip_tags($paragraph->nodeValue);
+        // Add the extracted text to the array
+        $extractedText[] = $text;
+    }
+
+    // Join the extracted text array elements into a single string with line breaks
+    $finalText = implode("\n\n", $extractedText);
+
+    // Return the final extracted text
+    return $finalText;
+}
+
+function generateMetaDescription($content, $maxLength = 160)
+{
+    // Extract text from HTML content using the previously defined function
+    $extractedText = extractTextFromHTML($content);
+
+    // Remove line breaks and extra spaces for better readability
+    $cleanedText = preg_replace('/\s+/', ' ', $extractedText);
+    $cleanedText = trim($cleanedText);
+
+    // If the cleaned text length is less than or equal to the max length, return it directly
+    if (mb_strlen($cleanedText) <= $maxLength) {
+        return $cleanedText;
+    }
+
+    // Find the last space before the max length to ensure a complete word is included
+    $lastSpaceIndex = mb_strrpos($cleanedText, ' ', $maxLength - mb_strlen($cleanedText));
+
+    // Extract the meta description ensuring a complete word before the ellipsis
+    $metaDescription = mb_substr($cleanedText, 0, $lastSpaceIndex);
+
+    // Add ellipsis to indicate continuation
+    $metaDescription .= '...';
+
+    // Return the trimmed text as the meta description
+    return $metaDescription;
+}
+
+function generateKeywords($content)
+{
+    // Remove HTML tags and excess whitespace
+    $cleanContent = preg_replace('/\s+/', ' ', strip_tags($content));
+
+    // Convert content to lowercase and split into words
+    $words = preg_split('/\s+/', strtolower($cleanContent));
+
+    // Remove common and stop words
+    $stopWords = array('a', 'an', 'the', 'and', 'or', 'is', 'are', 'in', 'on', 'at', 'for', 'with', 'to', 'from');
+    $filteredWords = array_diff($words, $stopWords);
+
+    // Calculate word frequency
+    $wordFreq = array_count_values($filteredWords);
+
+    // Sort words by frequency in descending order
+    arsort($wordFreq);
+
+    // Limit keywords to a certain count (e.g., top 5)
+    $keywords = array_keys(array_slice($wordFreq, 0, 5)); // Adjust the number as needed
+
+    // Convert keywords array to comma-separated string
+    $keywordsString = implode(', ', $keywords);
+
+    return $keywordsString;
+}
