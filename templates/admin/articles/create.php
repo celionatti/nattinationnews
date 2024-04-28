@@ -35,9 +35,9 @@ use celionatti\Bolt\Forms\BootstrapForm;
             <div class="card shadow my-2 p-2 w-100">
                 <h5 class="text-start">File Type</h5>
                 <?php if ($upload_type === "file") : ?>
-                    <a href="<?= URL_ROOT ?>admin/articles?ut=link" class="btn btn-outline-secondary my-2">Link Upload</a>
+                    <a href="<?= URL_ROOT ?>admin/articles/create?ut=link" class="btn btn-outline-secondary my-2">Link Upload</a>
                 <?php else : ?>
-                    <a href="<?= URL_ROOT ?>admin/articles?ut=file" class="btn btn-outline-primary my-2">File Upload</a>
+                    <a href="<?= URL_ROOT ?>admin/articles/create?ut=file" class="btn btn-outline-primary my-2">File Upload</a>
                 <?php endif; ?>
             </div>
             <div class="card shadow my-2 p-2">
@@ -71,7 +71,14 @@ use celionatti\Bolt\Forms\BootstrapForm;
         <h4 class="mb-3">Create Article</h4>
         <div class="row g-3">
             <?= BootstrapForm::inputField("Article Title", "title", old_value("title", $article["title"] ?? ''), ['class' => 'form-control'], ['class' => 'col-sm-12'], $errors) ?>
+
+            <?= BootstrapForm::selectField("Article Category", "category_id", old_select("category_id", $article["category_id"] ?? ''), $categoryOpts, ['class' => 'form-control'], ['class' => 'col-6 mb-3'], $errors) ?>
+
+            <?= BootstrapForm::selectField("Article Region", "region_id", old_select("region_id", $article["region_id"] ?? ''), $regionOpts, ['class' => 'form-control'], ['class' => 'col-6 mb-3'], $errors) ?>
+
             <?= BootstrapForm::textareaField("Article Content", "content", old_value("content", $article["content"] ?? ''), ['class' => 'form-control summernote'], ['class' => 'col-sm-12'], $errors) ?>
+
+            <?= BootstrapForm::textareaField("Article Key Points", "key_point", old_value("key_point", $article["key_point"] ?? ''), ['class' => 'form-control summernote_point'], ['class' => 'col-sm-12'], $errors) ?>
 
             <?= BootstrapForm::inputField("Article Tags (natti, news)", "tags", old_value("tags", $article["tags"] ?? ''), ['class' => 'form-control'], ['class' => 'col-6'], $errors) ?>
 
@@ -109,6 +116,12 @@ use celionatti\Bolt\Forms\BootstrapForm;
         placeholder: 'Article Content',
         tabsize: 2,
         height: 300
+    });
+
+    $('.summernote_point').summernote({
+        placeholder: 'Article Key Points',
+        tabsize: 2,
+        height: 100
     });
 </script>
 <?php $this->end() ?>

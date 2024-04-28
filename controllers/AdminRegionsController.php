@@ -61,6 +61,9 @@ class AdminRegionsController extends Controller
             ],
         ];
 
+        // Remove the article data from the session after it has been retrieved
+        Bolt::$bolt->session->unsetArray(['region_data']);
+
         $this->view->render("admin/regions/create", $view);
     }
 
@@ -119,6 +122,9 @@ class AdminRegionsController extends Controller
                 'active' => 'Active',
             ],
         ];
+
+        // Remove the region data from the session after it has been retrieved
+        Bolt::$bolt->session->unsetArray(['region_data']);
 
         $this->view->render("admin/regions/edit", $view);
     }

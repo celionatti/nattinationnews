@@ -77,6 +77,9 @@ class AdminCategoriesController extends Controller
             ],
         ];
 
+        // Remove the category data from the session after it has been retrieved
+        Bolt::$bolt->session->unsetArray(['category_data']);
+
         $this->view->render("admin/categories/create", $view);
     }
 
@@ -152,6 +155,9 @@ class AdminCategoriesController extends Controller
                 'active' => 'Active',
             ],
         ];
+
+        // Remove the article data from the session after it has been retrieved
+        Bolt::$bolt->session->unsetArray(['category_data']);
 
         $this->view->render("admin/categories/edit", $view);
     }

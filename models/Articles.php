@@ -38,6 +38,12 @@ class Articles extends DatabaseModel
                 'title' => [
                     ['rule' => 'required', 'message' => 'Article Title is required.'],
                 ],
+                'category_id' => [
+                    ['rule' => 'required', 'message' => 'Article Category is required.'],
+                ],
+                'region_id' => [
+                    ['rule' => 'required', 'message' => 'Article Region is required.'],
+                ],
                 'content' => [
                     ['rule' => 'required', 'message' => 'Article Content is required.'],
                 ],
@@ -69,6 +75,12 @@ class Articles extends DatabaseModel
             'edit' => [
                 'title' => [
                     ['rule' => 'required', 'message' => 'Article Title is required.'],
+                ],
+                'category_id' => [
+                    ['rule' => 'required', 'message' => 'Article Category is required.'],
+                ],
+                'region_id' => [
+                    ['rule' => 'required', 'message' => 'Article Region is required.'],
                 ],
                 'content' => [
                     ['rule' => 'required', 'message' => 'Article Content is required.'],

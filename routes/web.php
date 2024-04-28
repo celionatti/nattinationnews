@@ -78,3 +78,12 @@ $bolt->router->get("/admin/manage-articles", [AdminArticlesController::class, "m
 $bolt->router->post("/admin/view-articles", [AdminArticlesController::class, "view_articles"]);
 $bolt->router->get("/admin/articles/create", [AdminArticlesController::class, "create_article"]);
 $bolt->router->post("/admin/articles/create", [AdminArticlesController::class, "create"]);
+$bolt->router->get("/admin/articles/edit/{id}", [AdminArticlesController::class, "edit_article"]);
+$bolt->router->post("/admin/articles/edit/{id}", [AdminArticlesController::class, "edit"]);
+$bolt->router->get("/admin/articles/delete/{id}", [AdminArticlesController::class, "delete_article"]);
+$bolt->router->post("/admin/articles/delete/{id}", [AdminArticlesController::class, "delete"]);
+$bolt->router->get("/admin/articles/preview/{id}", [AdminArticlesController::class, "preview"]);
+$bolt->router->get("/admin/articles/editors/{id}", [AdminArticlesController::class, "editors"]);
+$bolt->router->get("/admin/articles/editors-pick", [AdminArticlesController::class, "editors_pick"]);
+$bolt->router->get("/admin/articles/remove-editor-pick/{id}", [AdminArticlesController::class, "remove_editor_pick"]);
+$bolt->router->post("/admin/articles/view-editors-pick", [AdminArticlesController::class, "view_editors_pick"]);
