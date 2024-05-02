@@ -106,11 +106,20 @@ class Articles extends DatabaseModel
 
     public function getEditorsPick()
     {
+        // return $this->getQueryBuilder()
+        //     ->select()
+        //     ->where(['is_editors_pick' => 'true'])
+        //     ->orderBy("created_at", "DESC")
+        //     ->get() ?? null;
+
+        $query = "SELECT * FROM articles
+                  WHERE is_editors_pick = :pick
+                  GROUP BY article_id
+                  ORDER BY views DESC";
+
         return $this->getQueryBuilder()
-            ->select()
-            ->where(['is_editors_pick' => 'true'])
-            ->orderBy("created_at", "DESC")
-            ->get()[0] ?? null;
+            ->rawQuery($query, [':pick' => 'true'])
+            ->get() ?? null;
     }
 
     public function getTrendingArticles()

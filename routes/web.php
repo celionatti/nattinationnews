@@ -31,6 +31,7 @@ use PhpStrike\controllers\AdminCategoriesController;
 
 $bolt->router->get("/", [SiteController::class, "welcome"]);
 $bolt->router->get("/articles", [SiteController::class, "articles"]);
+$bolt->router->get("/article/{id}/{token}", [SiteController::class, "article"]);
 $bolt->router->get("/category", [SiteController::class, "category"]);
 
 
@@ -84,8 +85,22 @@ $bolt->router->get("/admin/articles/edit/{id}", [AdminArticlesController::class,
 $bolt->router->post("/admin/articles/edit/{id}", [AdminArticlesController::class, "edit"]);
 $bolt->router->get("/admin/articles/delete/{id}", [AdminArticlesController::class, "delete_article"]);
 $bolt->router->post("/admin/articles/delete/{id}", [AdminArticlesController::class, "delete"]);
+$bolt->router->post("/editor-upload-image", [AdminArticlesController::class, "upload_image"]);
+$bolt->router->post("/delete-editor-image", [AdminArticlesController::class, "delete_image"]);
+
 $bolt->router->get("/admin/articles/preview/{id}", [AdminArticlesController::class, "preview"]);
+
 $bolt->router->get("/admin/articles/editors/{id}", [AdminArticlesController::class, "editors"]);
 $bolt->router->get("/admin/articles/editors-pick", [AdminArticlesController::class, "editors_pick"]);
 $bolt->router->get("/admin/articles/remove-editor-pick/{id}", [AdminArticlesController::class, "remove_editor_pick"]);
 $bolt->router->post("/admin/articles/view-editors-pick", [AdminArticlesController::class, "view_editors_pick"]);
+
+$bolt->router->get("/admin/articles/featured-articles", [AdminArticlesController::class, "featured_articles"]);
+$bolt->router->get("/admin/articles/featured/{id}", [AdminArticlesController::class, "featured"]);
+$bolt->router->get("/admin/articles/remove-featured/{id}", [AdminArticlesController::class, "remove_featured"]);
+$bolt->router->post("/admin/articles/view-featured-articles", [AdminArticlesController::class, "view_featured_articles"]);
+$bolt->router->get("/admin/articles/ai-article", [AdminArticlesController::class, "ai_article"]);
+$bolt->router->post("/admin/articles/view-ai-article", [AdminArticlesController::class, "view_ai_article"]);
+
+$bolt->router->get("/admin/articles/comments/{id}", [AdminArticlesController::class, "comments"]);
+$bolt->router->post("/admin/articles/comments/{id}", [AdminArticlesController::class, "view_comments"]);

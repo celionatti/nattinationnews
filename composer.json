@@ -16,6 +16,12 @@
     "minimum-stability": "stable",
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "celionatti/bolt": "^1.0"
+        "celionatti/bolt": "^1.0",
+        "openai-php/client": "^0.8.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

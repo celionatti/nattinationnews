@@ -21,11 +21,12 @@
 <div class="row g-5">
     <div class="col-md-12">
 
-        <div class="bg-danger-subtle p-2 shadow d-flex justify-content-evenly align-items-center">
-            <a href="<?= URL_ROOT . "admin/articles/create?ut=file" ?>" class="btn btn-primary btn-sm px-3">Create</a>
-            <a href="<?= URL_ROOT . "admin/articles/drafts" ?>" class="btn btn-info btn-sm px-3">Draft Articles</a>
-            <a href="<?= URL_ROOT . "admin/articles/editors-pick" ?>" class="btn btn-warning btn-sm px-3">Editor's Pick</a>
-            <a href="<?= URL_ROOT . "admin/articles/featured-articles" ?>" class="btn btn-success btn-sm px-3">Featured Articles</a>
+        <div class="bg-danger-subtle p-2 shadow d-flex justify-content-between align-items-center gap-2">
+            <a href="<?= URL_ROOT . "admin/articles/create?ut=file" ?>" class="btn btn-primary btn-sm">Create Article</a>
+            <a href="<?= URL_ROOT . "admin/articles/drafts" ?>" class="btn btn-info btn-sm">Draft Articles</a>
+            <a href="<?= URL_ROOT . "admin/articles/editors-pick" ?>" class="btn btn-warning btn-sm">Editor's Pick</a>
+            <a href="<?= URL_ROOT . "admin/articles/featured-articles" ?>" class="btn btn-success btn-sm">Featured Articles</a>
+            <a href="<?= URL_ROOT . "admin/articles/ai-article" ?>" class="btn btn-dark btn-sm">AI Article</a>
         </div>
 
         <hr>

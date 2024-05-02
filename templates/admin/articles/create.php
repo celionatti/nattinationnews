@@ -109,13 +109,75 @@ use celionatti\Bolt\Forms\BootstrapForm;
     $('.summernote').summernote({
         placeholder: 'Article Content',
         tabsize: 2,
-        height: 300
+        height: 300,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph', 'height']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'help']],
+        ],
+        spellCheck: true,
+        callbacks: {
+            onImageUpload: function(files) {
+                uploadImage(files[0]);
+            }
+        }
     });
+
+    function uploadImage(file) {
+        var formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: "<?= URL_ROOT ?>editor-upload-image",
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                let imageUrl = response;
+                imageUrl = '<?= URL_ROOT ?>' + imageUrl; // Adjust the URL format
+                $('.summernote').summernote('insertImage', imageUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Handle error
+            }
+        });
+    }
+
+    function deleteImage(imageUrl) {
+        alert(imageUrl);
+        $.ajax({
+            url: "<?= URL_ROOT ?>delete-editor-image",
+            method: 'POST',
+            data: {
+                imageUrl: imageUrl
+            },
+            success: function(response) {
+                console.log(response);
+                // Handle success message or update UI
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Handle error
+            }
+        });
+    }
 
     $('.summernote_point').summernote({
         placeholder: 'Article Key Points',
         tabsize: 2,
-        height: 100
+        height: 100,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear', 'fontname', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph', 'height']],
+        ],
+        spellCheck: true,
     });
 </script>
 <?php $this->end() ?>

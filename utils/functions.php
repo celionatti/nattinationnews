@@ -128,11 +128,11 @@ function getArticleUser($user_id)
 
 function displayTags($string)
 {
-    $array = explode(', ', $string);
+    $array = explode(',', $string);
 
     foreach ($array as $value) {
         $tag = slugString(StringUtils::toLowerCase($value));
-        echo "<li class='list-inline-item'><a href='/article-tags/$tag'>$value</a></li>";
+        echo "<a href='/article-tags/$tag'>$value</a>";
     }
 }
 
@@ -342,3 +342,5 @@ function generateKeywords($content)
 
     return $keywordsString;
 }
+
+

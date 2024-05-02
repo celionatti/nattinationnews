@@ -11,13 +11,15 @@
  * can be edited, base on what they are called in the layout view
  */
 
+use celionatti\Bolt\Forms\BootstrapForm;
+
 ?>
 
-<?php $this->setTitle($title ?? "Admin | Manage Articles"); ?>
+<?php $this->setTitle($title ?? "Admin | Editor's Pick"); ?>
 
-<!-- The Main content is Render here. -->
 <?php $this->start('content') ?>
 <?= partials("admin-crumbs", ['title' => $title, 'navigations' => $navigations]) ?>
+
 <div class="row g-5">
     <div class="col-md-12">
 
@@ -31,29 +33,30 @@
 
         <hr>
 
-        <div class="table-responsive" id="showarticles">
+        <div class="table-responsive" id="showfeatured">
             <h3 class="text-center text-muted" style="margin-top: 110px;">Loading...</h3>
         </div>
 
     </div>
 </div>
+
 <?php $this->end() ?>
 
 <?php $this->start("script") ?>
 <script>
     $(document).ready(function() {
-        showAllArticles();
+        showFeaturedArticles();
 
-        // Show All users.
-        function showAllArticles() {
+        // Show All editors.
+        function showFeaturedArticles() {
             $.ajax({
-                url: "<?= URL_ROOT ?>admin/view-articles",
+                url: "<?= URL_ROOT ?>admin/articles/view-featured-articles",
                 type: "POST",
                 data: {
-                    action: "view-articles"
+                    action: "featured-articles"
                 },
                 success: function(response) {
-                    $("#showarticles").html(response);
+                    $("#showfeatured").html(response);
                     $("table").DataTable({
                         order: [0, 'desc']
                     });

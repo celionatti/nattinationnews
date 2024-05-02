@@ -22,7 +22,7 @@ $currentUser = BoltAuthentication::currentUser();
     <div class="container-fluid">
         <div class="container">
             <div class="row">
-                <div class="col-12 col-md-12 main_nav_cover" id="nav">
+                <div class="col-12 col-md-12 main_nav_cover mb-3" id="nav">
                     <ul id="main-menu">
                         <li class=""><a href="<?= URL_ROOT ?>">Home</a></li>
                         <li><a href="<?= URL_ROOT . "news" ?>">News</a></li>
@@ -43,6 +43,13 @@ $currentUser = BoltAuthentication::currentUser();
                             </ul>
                         </li>
                         <li><a href="<?= URL_ROOT . "jobs" ?>">Jobs</a></li>
+                        <li class="menu-item-has-children"><a href='#'>More <i class="fa-solid fa-caret-down"></i></a>
+                            <ul class="sub-menu">
+                                <li><a href="<?= URL_ROOT . "region/asia" ?>">Asia</a></li>
+                                <li><a href="<?= URL_ROOT . "region/usa" ?>">USA</a></li>
+                                <li><a href="<?= URL_ROOT . "region/uk" ?>">UK</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

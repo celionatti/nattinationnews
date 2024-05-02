@@ -24,6 +24,10 @@ if (!defined('TWITTER_SECRET_ID')) {
     define('TWITTER_SECRET_ID', $_ENV["TWITTER_SECRET_ID"] ?? "");
 }
 
+if (!defined('OPEN_API_KEY')) {
+    define('OPEN_API_KEY', $_ENV["OPEN_API_KEY"] ?? "");
+}
+
 const ALLOWED_IMAGE_FILE_UPLOAD = ['image/png', 'image/jpg', 'image/jpeg'];
 
 const ACCESSRULES = [
