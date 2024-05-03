@@ -26,13 +26,13 @@ $currentUser = BoltAuthentication::currentUser();
                     <div class="off-canvas-toggle" id="off-canvas-toggle"><span></span>
                         <p class="sidebar-open">MORE</p>
                     </div>
-                    <i class="fa-regular fa-clock"></i><span>&nbsp;&nbsp;&nbsp;Friday, 5 January 2023</span>
+                    <i class="fa-regular fa-clock"></i><span>&nbsp;&nbsp;&nbsp;<?= date("l, j M Y") ?></span>
                 </div>
                 <div class="col-md-6 col-sm-12 social">
                     <ul>
-                        <li><a href=""><i class="fa-brands fa-facebook"></i></a></li>
-                        <li><a href=""><i class="fa-brands fa-x-twitter"></i></a></li>
-                        <li><a href=""><i class="fa-brands fa-youtube"></i></a></li>
+                        <li><a href="<?= FACEBOOK_LINK ?>"><i class="fa-brands fa-facebook"></i></a></li>
+                        <li><a href="<?= X_LINK ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
+                        <li><a href="<?= YOUTUBE_LINK ?>"><i class="fa-brands fa-youtube"></i></a></li>
                     </ul>
                     <div class="top-search">
                         <i class="fa fa-search"></i><span>SEARCH</span>

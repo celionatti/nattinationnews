@@ -11,10 +11,13 @@
 
 
 use celionatti\Bolt\Authentication\BoltAuthentication;
+use PhpStrike\models\Regions;
 
 
 $currentUser = BoltAuthentication::currentUser();
 
+$regions = new Regions();
+$regionsNav = $regions->getRegions();
 
 ?>
 
@@ -26,28 +29,15 @@ $currentUser = BoltAuthentication::currentUser();
                     <ul id="main-menu">
                         <li class=""><a href="<?= URL_ROOT ?>">Home</a></li>
                         <li><a href="<?= URL_ROOT . "news" ?>">News</a></li>
-                        <li><a href="<?= URL_ROOT . "region/nigeria" ?>">Nigeria</a></li>
-                        <li class="menu-item-has-children"><a href='/entertainment'>Entertainment</a>
-                            <ul class="sub-menu">
-                                <li><a href='/category-big'>Festival</a></li>
-                                <li><a href='/category-list'>Music</a></li>
-                                <li><a href='/category-grid'>Movie</a></li>
-                                <li><a href='/category-list'>Cinema</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-item-has-children"><a href='/course'>Course</a>
-                            <ul class="sub-menu">
-                                <li><a href='/course/web-devs'>Web Development</a></li>
-                                <li><a href='/course/trading'>Trading(Crypto/Forex)</a></li>
-                                <li><a href='/course/marketing'>Marketing</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="<?= URL_ROOT . "jobs" ?>">Jobs</a></li>
+                        <?php categoriesNav() ?>
                         <li class="menu-item-has-children"><a href='#'>More <i class="fa-solid fa-caret-down"></i></a>
                             <ul class="sub-menu">
-                                <li><a href="<?= URL_ROOT . "region/asia" ?>">Asia</a></li>
-                                <li><a href="<?= URL_ROOT . "region/usa" ?>">USA</a></li>
-                                <li><a href="<?= URL_ROOT . "region/uk" ?>">UK</a></li>
+                                <?php if ($regionsNav) : ?>
+                                    <?php foreach ($regionsNav as $regionNav) : ?>
+                                        <?php $region = strtolower($regionNav->region) ?>
+                                        <li><a href="<?= URL_ROOT . "region/{$region}/{$regionNav->region_id}" ?>"><?= $regionNav->region ?></a></li>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </ul>
                         </li>
                     </ul>

@@ -86,4 +86,29 @@ class Categories extends DatabaseModel
             ->where(['status' => 'active'])
             ->get();
     }
+
+    public function getNavbarCategories()
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['status' => 'active', 'section' => 'navbar'])
+            ->orderBy("category", "DESC")
+            ->get();
+    }
+
+    public function getCategoryParent($category_id)
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['category_id' => $category_id, 'status' => 'active', 'section' => 'navbar'])
+            ->get();
+    }
+
+    public function getCategoryChildren($category_id)
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['child' => $category_id, 'status' => 'active', 'section' => 'navbar'])
+            ->get();
+    }
 }

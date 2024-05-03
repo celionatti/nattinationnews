@@ -28,7 +28,6 @@ use celionatti\Bolt\Forms\BootstrapForm;
             <a href="<?= URL_ROOT . "admin/articles/drafts" ?>" class="btn btn-info btn-sm">Draft Articles</a>
             <a href="<?= URL_ROOT . "admin/articles/editors-pick" ?>" class="btn btn-warning btn-sm">Editor's Pick</a>
             <a href="<?= URL_ROOT . "admin/articles/featured-articles" ?>" class="btn btn-success btn-sm">Featured Articles</a>
-            <a href="<?= URL_ROOT . "admin/articles/ai-article" ?>" class="btn btn-dark btn-sm">AI Article</a>
         </div>
 
         <hr>

@@ -148,25 +148,6 @@ use celionatti\Bolt\Forms\BootstrapForm;
         });
     }
 
-    function deleteImage(imageUrl) {
-        alert(imageUrl);
-        $.ajax({
-            url: "<?= URL_ROOT ?>delete-editor-image",
-            method: 'POST',
-            data: {
-                imageUrl: imageUrl
-            },
-            success: function(response) {
-                console.log(response);
-                // Handle success message or update UI
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                // Handle error
-            }
-        });
-    }
-
     $('.summernote_point').summernote({
         placeholder: 'Article Key Points',
         tabsize: 2,

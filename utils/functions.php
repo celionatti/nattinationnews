@@ -5,6 +5,7 @@ declare(strict_types=1);
 use PhpStrike\models\Users;
 use PhpStrike\models\Adverts;
 use PhpStrike\models\Settings;
+use PhpStrike\models\Categories;
 use celionatti\Bolt\Helpers\Utils\StringUtils;
 use celionatti\Bolt\Authentication\BoltAuthentication;
 
@@ -343,4 +344,41 @@ function generateKeywords($content)
     return $keywordsString;
 }
 
+function categoriesNav()
+{
+    $categories = new Categories();
+    $navLists = $categories->getNavbarCategories();
+    $checkNavLists = [];
 
+    // Build an array of menu items
+    $menuItems = [];
+
+    foreach ($navLists as $category) {
+        $parentNavs = $categories->getCategoryParent($category->child);
+
+        if (!empty($parentNavs)) {
+            foreach ($parentNavs as $parentNav) {
+                $menuItems[$parentNav->category_id]['parent'] = $parentNav;
+                $menuItems[$parentNav->category_id]['children'] = $categories->getCategoryChildren($category->child);
+            }
+        } elseif (!in_array($category->category_id, $checkNavLists)) {
+            $menuItems[$category->category_id]['parent'] = $category;
+        }
+    }
+
+    // Output the HTML
+    foreach ($menuItems as $categoryId => $menuItem) {
+        if (isset($menuItem['parent'])) {
+            echo '<li class="' . (!isset($menuItem['children']) ? "" : "menu-item-has-children") . '">';
+            echo '<a href="'. URL_ROOT . "categories/{$categoryId}" .'">' . $menuItem['parent']->category . '</a>';
+            if (isset($menuItem['children'])) {
+                echo '<ul class="sub-menu">';
+                foreach ($menuItem['children'] as $childList) {
+                    echo '<li><a href="'. URL_ROOT . "categories/{$childList->category_id}" .'">' . $childList->category . '</a></li>';
+                }
+                echo '</ul>';
+            }
+            echo '</li>';
+        }
+    }
+}

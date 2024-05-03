@@ -28,6 +28,18 @@ if (!defined('OPEN_API_KEY')) {
     define('OPEN_API_KEY', $_ENV["OPEN_API_KEY"] ?? "");
 }
 
+if (!defined('FACEBOOK_LINK')) {
+    define('FACEBOOK_LINK', $_ENV["FACEBOOK_LINK"] ?? "");
+}
+
+if (!defined('X_LINK')) {
+    define('X_LINK', $_ENV["X_LINK"] ?? "");
+}
+
+if (!defined('YOUTUBE_LINK')) {
+    define('YOUTUBE_LINK', $_ENV["YOUTUBE_LINK"] ?? "");
+}
+
 const ALLOWED_IMAGE_FILE_UPLOAD = ['image/png', 'image/jpg', 'image/jpeg'];
 
 const ACCESSRULES = [
