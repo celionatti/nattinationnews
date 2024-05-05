@@ -137,6 +137,16 @@ function displayTags($string)
     }
 }
 
+function displayArticleTags($string)
+{
+    $array = explode(',', $string);
+
+    foreach ($array as $value) {
+        $tag = slugString(StringUtils::toLowerCase($value));
+        echo "<a href='/article-tags/$tag' rel='tag'>#{$value}</a>";
+    }
+}
+
 function currentTime()
 {
     return time();

@@ -32,6 +32,7 @@ use PhpStrike\controllers\AdminCategoriesController;
 $bolt->router->get("/", [SiteController::class, "welcome"]);
 $bolt->router->get("/articles", [SiteController::class, "articles"]);
 $bolt->router->get("/article/{id}/{token}", [SiteController::class, "article"]);
+$bolt->router->post("/article/{id}/{token}", [SiteController::class, "article_comments"]);
 $bolt->router->get("/category", [SiteController::class, "category"]);
 
 

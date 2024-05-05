@@ -28,7 +28,7 @@ class BM_2024_02_17_120520_comments extends BoltMigration
             ->varchar("comment_id", 255)
             ->varchar("article_id", 255)
             ->varchar("reply_id")->nullable()
-            ->varchar("user_id", 255)->defaultValue("anonymous")
+            ->varchar("name", 255)->defaultValue("anonymous")
             ->text("comment_text")
             ->enum("status", ['active', 'pending', 'failed'])->defaultValue("active")
             ->varchar("failure_reason")->nullable()

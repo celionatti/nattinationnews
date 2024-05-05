@@ -68,11 +68,21 @@ class Comments extends DatabaseModel
     {
     }
 
-    public function findUsersComment($id)
+    public function getComments($id)
     {
         return $this->getQueryBuilder()
-            ->rawQuery("SELECT c.*, u.surname, u.othername, u.avatar FROM comments c
-        LEFT JOIN users u ON c.user_id = u.user_id WHERE c.status = :status AND c.article_id = :id", ['status' => 'active', 'id' => $id])
+            ->select()
+            ->where(['status' => 'active', 'article_id' => $id])
+            ->orderBy("created_at", "DESC")
+            ->get();
+    }
+
+    public function findReplies($id, $comment_id)
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['status' => 'active', 'article_id' => $id, 'reply_id' => $comment_id])
+            ->orderBy("created_at", "DESC")
             ->get();
     }
 }

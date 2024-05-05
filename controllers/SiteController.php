@@ -15,9 +15,11 @@ namespace PhpStrike\controllers;
 use celionatti\Bolt\Bolt;
 use PhpStrike\models\Users;
 use PhpStrike\models\Articles;
+use PhpStrike\models\Comments;
 use PhpStrike\models\Contacts;
 use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
+use celionatti\Bolt\Http\Response;
 use PhpStrike\models\NattiPagination;
 
 class SiteController extends Controller
@@ -96,6 +98,137 @@ class SiteController extends Controller
         ];
 
         $this->view->render("articles/article", $view);
+    }
+
+    public function article_comments(Request $request)
+    {
+        if ($request->isPost()) {
+
+            $comments = new Comments();
+
+            /**Load Comments */
+            if ($request->post("action") && $request->post("action") === "load_comments") {
+                $article_id = $request->post("article_id");
+                $output = "";
+
+                $data = $comments->findAllByWithPagination(['status' => 'active', 'article_id' => $article_id], null, 15, "created_at", "desc");
+
+                $output .= '<div class="comments-title">';
+                $output .= '<p>There are ' . count($data['data']) . ' comments for this article</p>';
+                $output .= '</div>';
+
+
+                if ($data['data']) {
+                    $output .= '<ol class="commentlist">';
+
+                    foreach ($data['data'] as $key => $row) {
+                        if (is_null($row->reply_id)) {
+                            $output .= '<li id="li-comment-' . $row->id . '">';
+                            $output .= '<article class="comment even thread-even depth-1 clr" id="comment-' . $row->id . '">';
+                            $output .= '<div class="comment-author vcard">';
+                            $output .= '<img width="60" height="60" src="' . get_image("", "avatar") . '" alt="">';
+                            $output .= '</div>';
+                            $output .= '<div class="comment-details clr">';
+                            $output .= '<header class="comment-meta">';
+                            $output .= '<strong class="fn me-2">' . $row->name . '</strong>';
+                            $output .= '<span class="comment-date">' . date("F j, Y g:i a", strtotime($row->created_at)) . '</span>';
+                            $output .= '</header>';
+                            $output .= '<div class="comment-content entry clr">';
+                            $output .= '<p>' . htmlspecialchars($row->comment_text) . '</p>'; // Ensure content is properly escaped
+                            $output .= '</div>';
+                            $output .= '<div class="reply comment-reply-link-div">';
+                            $output .= '<a aria-label="Reply to ' . $row->name . '" href="#respond" class="comment-reply-link" id="reply">Reply</a>';
+                            $output .= '</input>';
+                            $output .= '</div>';
+                            $output .= '</article>';
+                        }
+
+                        // Find and include replies for this parent comment
+                        $replies = $comments->findReplies($article_id, $row->comment_id);
+                        if ($replies) {
+                            $output .= '<ul class="children">';
+                            foreach ($replies as $reply) {
+                                $output .= '<li id="li-comment-' . $reply->id . '">';
+                                $output .= '<article class="comment odd alt depth-2 clr" id="comment-' . $reply->id . '">';
+                                $output .= '<div class="comment-author vcard">';
+                                $output .= '<img width="60" height="60" src="' . get_image("", "avatar") . '" alt="">';
+                                $output .= '</div>';
+                                $output .= '<div class="comment-details clr">';
+                                $output .= '<header class="comment-meta">';
+                                $output .= '<strong class="fn me-2">' . $reply->name . '</strong>';
+                                $output .= '<span class="comment-date">' . date("F j, Y g:i a", strtotime($reply->created_at)) . '</span>';
+                                $output .= '</header>';
+                                $output .= '<div class="comment-content entry clr">';
+                                $output .= '<p>' . htmlspecialchars($reply->comment_text) . '</p>'; // Ensure content is properly escaped
+                                $output .= '</div>';
+                                $output .= '</div>';
+                                $output .= '</article>';
+                                $output .= '</li>';
+                            }
+                            $output .= '</ul>';
+                        }
+
+                        $output .= '</li>';
+                    }
+
+                    $output .= '</ol>';
+                    $output .= '<nav role="navigation" class="comment-navigation clr">';
+                    $output .= '<div class="nav-previous span_1_of_2 col col-1"></div>';
+                    $output .= '<div class="nav-next span_1_of_2 col"> <a href="#comments">Newer Comments →</a></div>';
+                    $output .= '</nav>';
+                } else {
+                    $output .= '<h4 class="text-center my-3">No Comment yet!</h4>';
+                }
+                $this->json_response($output);
+            }
+
+            /**Create Comment */
+            if ($request->post("action") && $request->post("action") === "create_comment") {
+                $name = $request->post("name");
+                $comment_text = $request->post("comment_text");
+                $article_id = $request->post("article_id");
+                if (empty($comment_text)) {
+                    $this->json_error_response("Comment Message cannot be empty", Response::FORBIDDEN);
+                    exit;
+                }
+
+                if (!empty($comment_text)) {
+                    if (empty($name)) {
+                        $name = "@anonymous natti";
+                    }
+
+                    $comments->fillable([
+                        'comment_id',
+                        'article_id',
+                        'name',
+                        'comment_text',
+                        'status',
+                        'failure_reason',
+                    ]);
+                    $data = $request->getBody();
+                    $filterText = filterText($data['comment_text'], FILTER_TEXT);
+
+                    $data['comment_id'] = generateUuidV4();
+                    $data['article_id'] = $article_id;
+                    if ($filterText) {
+                        $data['status'] = "pending";
+                        $data['failure_reason'] = "Message Contains Filtered words";
+                    } else {
+                        $data['status'] = "active";
+                    }
+                    $comments->setIsInsertionScenario('create'); // Set insertion scenario flag
+
+                    if ($comments->validate($data)) {
+                        if ($comments->insert($data)) {
+                            $this->json_response("Comment Added Successfully", Response::CREATED);
+                        }
+                    } else {
+                        $this->json_error_response("Error Occur, Try Again Later!", Response::NOT_MODIFIED);
+                        exit;
+                    }
+                }
+            }
+        }
     }
 
     public function category()
