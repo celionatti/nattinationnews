@@ -109,12 +109,22 @@ class SiteController extends Controller
             /**Load Comments */
             if ($request->post("action") && $request->post("action") === "load_comments") {
                 $article_id = $request->post("article_id");
+                $article_url = $request->post("article_url");
                 $output = "";
 
-                $data = $comments->findAllByWithPagination(['status' => 'active', 'article_id' => $article_id], null, 15, "created_at", "desc");
+                $data = $comments->findAllByWithPagination(['status' => 'active', 'article_id' => $article_id], null, 10, "created_at", "desc");
+
+                // Create a CustomPaginator instance
+                $paginator = new NattiPagination($data['total'], $data['perPage'], $data['page']);
+
+                // Get the current URL (you may need to adjust this based on your framework)
+                $currentUrl = $article_url;
+
+                // Generate pagination links
+                $paginationLinks = $paginator->generateCommentLinks($currentUrl);
 
                 $output .= '<div class="comments-title">';
-                $output .= '<p>There are ' . count($data['data']) . ' comments for this article</p>';
+                $output .= '<p>There are ' . $data['total'] . ' comments for this article</p>';
                 $output .= '</div>';
 
 
@@ -122,8 +132,8 @@ class SiteController extends Controller
                     $output .= '<ol class="commentlist">';
 
                     foreach ($data['data'] as $key => $row) {
-                        if (is_null($row->reply_id)) {
-                            $output .= '<li id="li-comment-' . $row->id . '">';
+                        if (!isset($row->reply_id)) {
+                            $output .= '<li id="li-comment">';
                             $output .= '<article class="comment even thread-even depth-1 clr" id="comment-' . $row->id . '">';
                             $output .= '<div class="comment-author vcard">';
                             $output .= '<img width="60" height="60" src="' . get_image("", "avatar") . '" alt="">';
@@ -137,8 +147,7 @@ class SiteController extends Controller
                             $output .= '<p>' . htmlspecialchars($row->comment_text) . '</p>'; // Ensure content is properly escaped
                             $output .= '</div>';
                             $output .= '<div class="reply comment-reply-link-div">';
-                            $output .= '<a aria-label="Reply to ' . $row->name . '" href="#respond" class="comment-reply-link" id="reply">Reply</a>';
-                            $output .= '</input>';
+                            $output .= '<button type="button" value="' . $row->comment_id . '" data-comment-name="' . $row->name . '" class="reply_btn border border-dark border-2 btn btn-sm" id="respond">Reply</button>';
                             $output .= '</div>';
                             $output .= '</article>';
                         }
@@ -172,10 +181,7 @@ class SiteController extends Controller
                     }
 
                     $output .= '</ol>';
-                    $output .= '<nav role="navigation" class="comment-navigation clr">';
-                    $output .= '<div class="nav-previous span_1_of_2 col col-1"></div>';
-                    $output .= '<div class="nav-next span_1_of_2 col"> <a href="#comments">Newer Comments →</a></div>';
-                    $output .= '</nav>';
+                    $output .= $paginationLinks;
                 } else {
                     $output .= '<h4 class="text-center my-3">No Comment yet!</h4>';
                 }
@@ -186,6 +192,7 @@ class SiteController extends Controller
             if ($request->post("action") && $request->post("action") === "create_comment") {
                 $name = $request->post("name");
                 $comment_text = $request->post("comment_text");
+                $reply_id = $request->post("reply_id");
                 $article_id = $request->post("article_id");
                 if (empty($comment_text)) {
                     $this->json_error_response("Comment Message cannot be empty", Response::FORBIDDEN);
@@ -196,10 +203,14 @@ class SiteController extends Controller
                     if (empty($name)) {
                         $name = "@anonymous natti";
                     }
+                    if (empty($reply_id)) {
+                        $reply_id = null;
+                    }
 
                     $comments->fillable([
                         'comment_id',
                         'article_id',
+                        'reply_id',
                         'name',
                         'comment_text',
                         'status',
@@ -210,6 +221,7 @@ class SiteController extends Controller
 
                     $data['comment_id'] = generateUuidV4();
                     $data['article_id'] = $article_id;
+                    $data['reply_id'] = $reply_id;
                     if ($filterText) {
                         $data['status'] = "pending";
                         $data['failure_reason'] = "Message Contains Filtered words";

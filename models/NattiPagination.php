@@ -62,7 +62,6 @@ class NattiPagination
         return ($this->hasNextPage()) ? $this->currentPage + 1 : null;
     }
 
-
     public function generateBootstrapDefLinks($url)
     {
         $links = '';
@@ -92,6 +91,29 @@ class NattiPagination
             }
 
             $links .= '</ul>';
+        }
+
+        return $links;
+    }
+
+    public function generateCommentLinks($url)
+    {
+        $links = '';
+
+        if ($this->getTotalPages() > 1) {
+            $links .= '<nav role="navigation" class="comment-navigation clr">';
+
+            if ($this->hasPreviousPage()) {
+                $prevUrl = $url . ((strpos($url, '?') !== false) ? '&' : '?') . 'page=' . $this->getPreviousPage() . "#showcomments";
+                $links .= '<div class="nav-previous span_1_of_2 col col-1"><a href="' . $prevUrl . '" class="prev">PREV</a></div>';
+            }
+
+            if ($this->hasNextPage()) {
+                $nextUrl = $url . ((strpos($url, '?') !== false) ? '&' : '?') . 'page=' . $this->getNextPage() . "#showcomments";
+                $links .= '<div class="nav-next span_1_of_2 col"><a href="' . $nextUrl . '" class="next">NEXT</a></div>';
+            }
+
+            $links .= '</nav>';
         }
 
         return $links;

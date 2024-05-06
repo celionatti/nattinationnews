@@ -141,6 +141,7 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                                             <h3 class="comment-reply-title" id="reply-title">Leave a Reply <small><a href="#respond" id="cancel-comment-reply-link" rel="nofollow"><i class="fa fa-times"></i></a></small></h3>
                                             <?= BootstrapForm::openForm("", attrs: ['class' => 'comment-form', 'id' => 'commentform']) ?>
                                             <?= BootstrapForm::csrfField() ?>
+                                            <?= BootstrapForm::hidden("reply_id", "", ['id' => 'reply_id']) ?>
 
                                             <p class="comment-notes">
                                             <div class="border border-2 border-success px-2 py-3 bg-success-subtle text-center" id="successMessage" style="display: none;">Your Success Message Here.</div>
@@ -209,6 +210,7 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
     $(document).ready(function() {
         showComments();
 
+        // Add Main Comment
         $("#commentform").submit(function(event) {
             event.preventDefault(); // Prevent the default form submission behavior
 
@@ -221,13 +223,17 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                     action: "create_comment",
                     name: $("#name").val(),
                     comment_text: $("#comment").val(),
+                    reply_id: $("#reply_id").val(),
                     article_id: articleUrl.id
                 },
                 success: function(response) {
                     $("#name").val("");
                     $("#comment").val("");
+                    $("#reply_id").val("");
                     // Display the error message on the page
                     $("#successMessage").text(response).show();
+
+                    $("#reply-to").hide();
 
                     // Set a timer to hide the error message after 3 seconds
                     setTimeout(function() {
@@ -256,13 +262,30 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
             });
         });
 
-        // Reply button click event
-        $(document).on("click", "#reply", function() {
-            // Get the comment ID
-            var commentId = $("#comment_id").val();
-            console.log(commentId)
-        });
+        $(document).on("click", ".reply_btn", function(e) {
+            var formId = $('#respond').attr("id");
+            var commentId = $(this).val(); // Get the comment ID from the clicked button
+            var commentName = $(this).data('comment-name');
 
+            // Display the error message on the page
+            $("#reply-to").show();
+            $("#reply-to").text("Reply to: " + commentName);
+            $('#reply_id').val(commentId);
+
+            var formOffset = $('#' + formId).offset().top;
+            var formHeight = $('#' + formId).outerHeight();
+
+            var windowHeight = $(window).height();
+            var currentScroll = $(window).scrollTop();
+
+            var scrollTo = formOffset + windowHeight + formHeight + 300;
+            
+            //var scrollTo = formOffset + windowHeight - 100; // Adjust the scroll position if needed
+
+            $('html, body').animate({
+                scrollTop: scrollTo
+            }, 1000);
+        });
 
         // Show All comments.
         function showComments() {
@@ -273,6 +296,7 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                 type: "POST",
                 data: {
                     article_id: articleUrl.id,
+                    article_url: articleUrl.url,
                     token: articleUrl.token,
                     action: "load_comments",
                 },
