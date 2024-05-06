@@ -21,6 +21,7 @@ use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
 use celionatti\Bolt\Http\Response;
 use PhpStrike\models\NattiPagination;
+use celionatti\Bolt\Pagination\Pagination;
 
 class SiteController extends Controller
 {
@@ -59,7 +60,23 @@ class SiteController extends Controller
 
     public function articles()
     {
-        $view = [];
+        $articles = new Articles();
+
+        $all_articles = $articles->findAllByWithPagination(['status' => 'publish'], null, 15, "created_at", "desc");
+
+        // Create a CustomPaginator instance
+        $paginator = new NattiPagination($all_articles['total'], $all_articles['perPage'], $all_articles['page']);
+
+        // Get the current URL (you may need to adjust this based on your framework)
+        $currentUrl = URL_ROOT . "articles";
+
+        // Generate pagination links
+        $paginationLinks = $paginator->generateBootstrapDefLinks($currentUrl);
+
+        $view = [
+            'articles' => $all_articles['data'],
+            'pagination' => $paginationLinks,
+        ];
 
         $this->view->render("articles/articles", $view);
     }

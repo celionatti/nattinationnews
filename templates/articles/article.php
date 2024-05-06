@@ -41,6 +41,10 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                                     <div class="alith_post_except animate-box"><?= htmlspecialchars_decode(nl2br($article->key_point)) ?></div>
                                 <?php endif; ?>
 
+                                <div class="my-3 d-flex justify-content-center shadow py-2 p3">
+                                    <img src="<?= get_image($article->image) ?>" class="img-fluid" alt="<?= $article->image_caption ?>" style="width:50%; height:50%;">
+                                </div>
+
                                 <div class="dropcap column-2 animate-box">
                                     <?= htmlspecialchars_decode(nl2br($article->content)) ?>
                                 </div>
@@ -279,7 +283,7 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
             var currentScroll = $(window).scrollTop();
 
             var scrollTo = formOffset + windowHeight + formHeight + 300;
-            
+
             //var scrollTo = formOffset + windowHeight - 100; // Adjust the scroll position if needed
 
             $('html, body').animate({

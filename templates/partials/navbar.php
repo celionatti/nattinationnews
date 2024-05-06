@@ -28,7 +28,7 @@ $regionsNav = $regions->getRegions();
                 <div class="col-12 col-md-12 main_nav_cover mb-3" id="nav">
                     <ul id="main-menu">
                         <li class=""><a href="<?= URL_ROOT ?>">Home</a></li>
-                        <li><a href="<?= URL_ROOT . "news" ?>">News</a></li>
+                        <li><a href="<?= URL_ROOT . "articles" ?>">Articles</a></li>
                         <?php categoriesNav() ?>
                         <li class="menu-item-has-children"><a href='#'>More <i class="fa-solid fa-caret-down"></i></a>
                             <ul class="sub-menu">

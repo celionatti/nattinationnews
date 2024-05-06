@@ -972,7 +972,14 @@ ul.page-numbers li a.prev {
 	font-size: 14px;
 	padding-left: 30px;
 	position: relative;
+	transition-duration: .2s;
 }
+
+ul.page-numbers li a.prev:hover {
+	padding-left: 35px;
+	transition-duration: .2s;
+}
+
 ul.page-numbers li a.next::after {
 	background: rgba(0, 0, 0, 0) url("/assets/img/arrow-right.svg") no-repeat scroll 0 0;
 	content: "";
