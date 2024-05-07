@@ -187,7 +187,7 @@ class Articles extends DatabaseModel
 
         return $this->getQueryBuilder()
             ->rawQuery($query, ['limit' => $limit])
-            ->get()[0] ?? null;
+            ->get() ?? null;
     }
 
 

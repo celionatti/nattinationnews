@@ -260,6 +260,35 @@ class SiteController extends Controller
         }
     }
 
+    public function search(Request $request)
+    {
+        if ($request->isGet()) {
+            $search = $request->get("search");
+
+            $articles = new Articles();
+
+            $articleSearch = $articles->rawQueryPagination(['status' => 'publish'], "SELECT * FROM articles WHERE title LIKE '%$search%' OR tags LIKE '%$search%' OR content LIKE '%$search%' AND status = :status", ['status' => 'publish'], null, 10, "created_at");
+
+            // Create a CustomPaginator instance
+            $paginator = new NattiPagination($articleSearch['total'], $articleSearch['perPage'], $articleSearch['page']);
+
+            // Get the current URL (you may need to adjust this based on your framework)
+            $currentUrl = URL_ROOT . "search?search={$search}";
+
+            // Generate pagination links
+            $paginationLinks = $paginator->generateBootstrapDefLinks($currentUrl);
+        }
+
+        $view = [
+            'articles' => $articleSearch['data'],
+            'total' => count($articleSearch['data']),
+            'search' => $search,
+            'pagination' => $paginationLinks,
+        ];
+
+        $this->view->render("articles/search", $view);
+    }
+
     public function category()
     {
         $view = [];

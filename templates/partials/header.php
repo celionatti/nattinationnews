@@ -38,10 +38,10 @@ $currentUser = BoltAuthentication::currentUser();
                         <i class="fa fa-search"></i><span>SEARCH</span>
                     </div>
                     <div class="top-search-form">
-                        <form action="#" class="search-form" method="get" role="search">
+                        <form action="<?= URL_ROOT . "search" ?>" class="search-form" method="get" role="search">
                             <label>
                                 <span class="screen-reader-text">Search for:</span>
-                                <input type="search" name="s" value="" placeholder="Search …" class="search-field">
+                                <input type="search" name="search" value="" placeholder="Search …" class="search-field">
                             </label>
                             <input type="submit" value="Search" class="search-submit">
                         </form>

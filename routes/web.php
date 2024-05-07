@@ -33,6 +33,7 @@ $bolt->router->get("/", [SiteController::class, "welcome"]);
 $bolt->router->get("/articles", [SiteController::class, "articles"]);
 $bolt->router->get("/article/{id}/{token}", [SiteController::class, "article"]);
 $bolt->router->post("/article/{id}/{token}", [SiteController::class, "article_comments"]);
+$bolt->router->get("/search", [SiteController::class, "search"]);
 $bolt->router->get("/category", [SiteController::class, "category"]);
 
 
