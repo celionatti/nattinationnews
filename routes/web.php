@@ -34,7 +34,8 @@ $bolt->router->get("/articles", [SiteController::class, "articles"]);
 $bolt->router->get("/article/{id}/{token}", [SiteController::class, "article"]);
 $bolt->router->post("/article/{id}/{token}", [SiteController::class, "article_comments"]);
 $bolt->router->get("/search", [SiteController::class, "search"]);
-$bolt->router->get("/category", [SiteController::class, "category"]);
+$bolt->router->get("/categories/{name}/{id}", [SiteController::class, "category"]);
+$bolt->router->get("/region/{name}/{id}", [SiteController::class, "region"]);
 
 
 /** Auth Method */

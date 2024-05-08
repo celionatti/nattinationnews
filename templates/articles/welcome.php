@@ -48,75 +48,33 @@ $token = currentTime();
             <div class="row">
                 <div class="col-md-8">
                     <div class="owl-carousel owl-theme js section_margin line_hoz animate-box" id="slideshow_face">
-                        <div class="item">
-                            <figure class="alith_post_thumb_big">
-                                <span class="post_meta_categories_label">Legal, Blog</span>
-                                <a href='/single'><img src="<?= get_image('assets/img/news-1.jpg') ?>" alt="" style="width:100%;" class="img-fluid" /></a>
-                            </figure>
-                            <h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
-                                <a href='/single'>Lorem ipsum dui sollic itudin praesent ut mollis primis eros torquent fames</a>
-                            </h3>
-                            <div class="alith_post_content_big">
-                                <div class="row">
-                                    <div class="col-md-4 col-sm-12">
-                                        <div class="post_meta_center animate-box">
-                                            <p><a href='/page-author'><img src="<?= get_image('', 'avatar') ?>" alt="author details" style="width:60px;" /></a></p>
-                                            <p><a class='author' href='/page-author'><strong>Steven Job</strong></a></p>
-                                            <span class="post_meta_date">19 Sep, 2023</span>
+                        <?php if ($featuredArticles) : ?>
+                            <?php foreach ($featuredArticles as $featured) : ?>
+                                <div class="item">
+                                    <figure class="alith_post_thumb_big">
+                                        <span class="post_meta_categories_label">Legal, Blog</span>
+                                        <a href="<?= URL_ROOT . "article/{$featured->article_id}/{$token}" ?>"><img src="<?= get_image($featured->thumbnail) ?>" alt="<?= $featured->thumbnail_caption ?>" class="img-fluid w-100 rounded-2" style="height:457px;object-fit:cover;" /></a>
+                                    </figure>
+                                    <h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
+                                        <a href="<?= URL_ROOT . "article/{$featured->article_id}/{$token}" ?>"><?= htmlspecialchars_decode(nl2br($featured->title)) ?></a>
+                                    </h3>
+                                    <div class="alith_post_content_big">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-12">
+                                                <div class="post_meta_center animate-box">
+                                                    <p><a href="<?= URL_ROOT . "author/{$featured->user_id}" ?>"><img src="<?= get_image('', 'avatar') ?>" alt="author details" style="width:60px;" /></a></p>
+                                                    <p><a class='author' href="<?= URL_ROOT . "author/{$featured->user_id}" ?>"><strong>Steven Job</strong></a></p>
+                                                    <span class="post_meta_date"><?= date("d M, Y", strtotime($featured->created_at)) ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-sm-12 animate-box">
+                                                <p class="alith_post_except"><?= StringUtils::excerpt(htmlspecialchars_decode(nl2br($featured->content)), 350) ?></p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-8 col-sm-12 animate-box">
-                                        <p class="alith_post_except">Is very common and rather normal for blogging beginners to be highly perplexed when it comes to selecting a theme for their blog. There are a plethora of free as well as paid options.</p>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <figure class="alith_post_thumb_big">
-                                <span class="post_meta_categories_label">Fashion, Men</span>
-                                <a href="#"><img src="<?= get_image('assets/img/news-2.jpg') ?>" alt="slide" style="width:100%;" class="img-fluid" /></a>
-                            </figure>
-                            <h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
-                                <a href='/single'>Lorem ipsum dui sollic itudin praesent ut mollis primis eros torquent fames</a>
-                            </h3>
-                            <div class="alith_post_content_big">
-                                <div class="row">
-                                    <div class="col-md-4 col-sm-12">
-                                        <div class="post_meta_center animate-box">
-                                            <p><a href='/page-author'><img src="<?= get_image('', 'avatar') ?>" alt="author details" style="width:60px;" /></a></p>
-                                            <p><a class='author' href='/page-author'><strong>Steven Job</strong></a></p>
-                                            <span class="post_meta_date">21 Sep, 2023</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 col-sm-12 animate-box">
-                                        <p class="alith_post_except">Is very common and rather normal for blogging beginners to be highly perplexed when it comes to selecting a theme for their blog. There are a plethora of free as well as paid options.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <figure class="alith_post_thumb_big">
-                                <span class="post_meta_categories_label">Entertainment, Style</span>
-                                <a href="#"><img src="<?= get_image('assets/img/news-3.jpg') ?>" alt="" style="width:100%;" class="img-fluid" /></a>
-                            </figure>
-                            <h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
-                                <a href='/single'>Lorem ipsum dui sollic itudin praesent ut mollis primis eros torquent fames</a>
-                            </h3>
-                            <div class="alith_post_content_big">
-                                <div class="row">
-                                    <div class="col-md-4 col-sm-12">
-                                        <div class="post_meta_center animate-box">
-                                            <p><a href='/page-author'><img src="<?= get_image('', 'avatar') ?>" alt="author details" style="width:60px;" /></a></p>
-                                            <p><a class='author' href='/page-author'><strong>Steven Job</strong></a></p>
-                                            <span class="post_meta_date">23 Sep, 2023</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 col-sm-12 animate-box">
-                                        <p class="alith_post_except">Is very common and rather normal for blogging beginners to be highly perplexed when it comes to selecting a theme for their blog. There are a plethora of free as well as paid options.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
 
                     <div class="post_list post_list_style_1">
@@ -126,7 +84,6 @@ $token = currentTime();
 
                         <?php if ($recentArticles) : ?>
                             <?php foreach ($recentArticles as $recentArticle) : ?>
-                                <?php $token = currentTime() ?>
                                 <article class="row section_margin animate-box">
                                     <div class="col-md-3 animate-box">
                                         <figure class="alith_news_img"><a href='/single'><img src="<?= get_image($recentArticle->thumbnail) ?>" alt="<?= $recentArticle->thumbnail_caption ?>" /></a></figure>

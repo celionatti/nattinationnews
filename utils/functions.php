@@ -133,7 +133,7 @@ function displayTags($string)
 
     foreach ($array as $value) {
         $tag = slugString(StringUtils::toLowerCase($value));
-        echo "<a href='/article-tags/$tag'>$value</a>";
+        echo "<a href='/article-tags/$tag'> #{$value}</a>";
     }
 }
 
@@ -379,12 +379,14 @@ function categoriesNav()
     // Output the HTML
     foreach ($menuItems as $categoryId => $menuItem) {
         if (isset($menuItem['parent'])) {
+            $name = slugString($menuItem['parent']->category);
             echo '<li class="' . (!isset($menuItem['children']) ? "" : "menu-item-has-children") . '">';
-            echo '<a href="'. URL_ROOT . "categories/{$categoryId}" .'">' . $menuItem['parent']->category . '</a>';
+            echo '<a href="'. URL_ROOT . "categories/{$name}/{$categoryId}" .'">' . $menuItem['parent']->category . '</a>';
             if (isset($menuItem['children'])) {
                 echo '<ul class="sub-menu">';
                 foreach ($menuItem['children'] as $childList) {
-                    echo '<li><a href="'. URL_ROOT . "categories/{$childList->category_id}" .'">' . $childList->category . '</a></li>';
+                    $childName = slugString($childList->category);
+                    echo '<li><a href="'. URL_ROOT . "categories/{$childName}/{$childList->category_id}" .'">' . $childList->category . '</a></li>';
                 }
                 echo '</ul>';
             }

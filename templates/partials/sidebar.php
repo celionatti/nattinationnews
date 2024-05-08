@@ -10,6 +10,14 @@
  */
 
 
+use celionatti\Bolt\Helpers\Utils\StringUtils;
+use PhpStrike\models\Articles;
+
+$articles = new Articles();
+
+$trends = $articles->getTrendingArticles();
+
+$token = currentTime();
 
 ?>
 
@@ -51,37 +59,30 @@
                 <h4 class="widget-title"><span>Trending</span></h4>
             </div>
             <div class="latest_style_2">
-                <div class="latest_style_2_item_first">
-                    <figure class="alith_post_thumb_big">
-                        <span class="post_meta_categories_label">Legal, Blog</span>
-                        <a href='/single'><img src="assets/images/thumb-large.jpeg" alt="" /></a>
-                    </figure>
-                    <h3 class="alith_post_title">
-                        <a href='/single'><strong>Nor again is there anyone who loves or pursues or desires to obtain</strong></a>
-                    </h3>
-                </div>
-                <div class="latest_style_2_item">
-                    <figure class="alith_news_img"><a href='/single'><img src="assets/images/thumb-square-1.png" alt="" /></a></figure>
-                    <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam quis </a></h3>
-
-                    <div class="post_meta">
-                        <p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
-                    </div>
-                </div>
-                <div class="latest_style_2_item">
-                    <figure class="alith_news_img"><a href='/single'><img src="assets/images/thumb-square-2.png" alt="" /></a></figure>
-                    <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam</a></h3>
-                    <div class="post_meta">
-                        <span class="meta_date">18 Sep, 2023</span>
-                    </div>
-                </div>
-                <div class="latest_style_2_item">
-                    <figure class="alith_news_img"><a href='/single'><img src="assets/images/thumb-square-3.png" alt="" /></a></figure>
-                    <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam</a></h3>
-                    <div class="post_meta">
-                        <span class="meta_date">18 Sep, 2023</span>
-                    </div>
-                </div>
+                <?php if ($trends) : ?>
+                    <?php if ($trends[0]) : ?>
+                        <div class="latest_style_2_item_first">
+                            <figure class="alith_post_thumb_big">
+                                <span class="post_meta_categories_label">Legal, Blog</span>
+                                <a href="<?= URL_ROOT . "article/{$trends[0]->article_id}/{$token}" ?>"><img src="<?= get_image($trends[0]->thumbnail) ?>" alt="<?= $trends[0]->thumbnail_caption ?>" style="width:100%;" class="img-fluid" /></a>
+                            </figure>
+                            <h3 class="alith_post_title">
+                                <a href="<?= URL_ROOT . "article/{$trends[0]->article_id}/{$token}" ?>"><strong><?= $trends[0]->title ?></strong></a>
+                            </h3>
+                        </div>
+                    <?php endif; ?>
+                    <?php foreach ($trends as $i => $trend) : ?>
+                        <?php if ($i !== 0) : ?>
+                            <div class="latest_style_2_item">
+                                <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$trend->article_id}/{$token}" ?>"><img src="<?= get_image($trend->thumbnail) ?>" alt="<?= $trend->thumbnail_caption ?>" /></a></figure>
+                                <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$trend->article_id}/{$token}" ?>"><?= $trend->title ?></a></h3>
+                                <div class="post_meta">
+                                    <span class="meta_date"><?= date("d M, Y", strtotime($trend->created_at)) ?></span>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div> <!--.sidebar-widget-->
 

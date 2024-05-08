@@ -122,6 +122,19 @@ class Articles extends DatabaseModel
             ->get() ?? null;
     }
 
+    public function getFeaturedArticles()
+    {
+        $query = "SELECT * FROM articles
+                  WHERE featured_article = :feature
+                  GROUP BY article_id
+                  ORDER BY views DESC
+                  LIMIT 5";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, [':feature' => 'true'])
+            ->get() ?? null;
+    }
+
     public function getTrendingArticles()
     {
         return $this->getQueryBuilder()

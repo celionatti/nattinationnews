@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace PhpStrike\controllers;
 
 use celionatti\Bolt\Bolt;
+use PhpStrike\models\Categories;
 use PhpStrike\models\Users;
 use PhpStrike\models\Articles;
 use PhpStrike\models\Comments;
@@ -22,6 +23,7 @@ use celionatti\Bolt\Http\Request;
 use celionatti\Bolt\Http\Response;
 use PhpStrike\models\NattiPagination;
 use celionatti\Bolt\Pagination\Pagination;
+use PhpStrike\models\Regions;
 
 class SiteController extends Controller
 {
@@ -40,6 +42,8 @@ class SiteController extends Controller
 
         $editors_pick = $articles->getEditorsPick();
 
+        $featuredArticles = $articles->getFeaturedArticles();
+
         // Create a CustomPaginator instance
         $paginator = new NattiPagination($recentArticles['total'], $recentArticles['perPage'], $recentArticles['page']);
 
@@ -53,6 +57,7 @@ class SiteController extends Controller
             'recentArticles' => $recentArticles['data'],
             'pagination' => $paginationLinks,
             'editorsPick' => $editors_pick,
+            'featuredArticles' => $featuredArticles,
         ];
 
         $this->view->render("articles/welcome", $view);
@@ -289,10 +294,75 @@ class SiteController extends Controller
         $this->view->render("articles/search", $view);
     }
 
-    public function category()
+    public function category(Request $request)
     {
-        $view = [];
+        $id = $request->getParameter("id");
+        $name = $request->getParameter("name");
+
+        $articles = new Articles();
+
+        $categoryModel = new Categories();
+
+        $categories = $articles->findAllByWithPagination(['category_id' => $id, 'status' => 'publish'], null, 15, "created_at", "desc");
+
+        $categoryDetails = $categoryModel->findOne(['category_id' => $id]);
+
+        if(!$categories) {
+            toast("info", "Category Not Found!.");
+            redirect(URL_ROOT);
+        }
+
+        // Create a CustomPaginator instance
+        $paginator = new NattiPagination($categories['total'], $categories['perPage'], $categories['page']);
+
+        // Get the current URL (you may need to adjust this based on your framework)
+        $currentUrl = URL_ROOT . "categories/{$name}/{$id}";
+
+        // Generate pagination links
+        $paginationLinks = $paginator->generateBootstrapDefLinks($currentUrl);
+
+        $view = [
+            'categories' => $categories['data'],
+            'pagination' => $paginationLinks,
+            'categoryDetails' => $categoryDetails,
+        ];
 
         $this->view->render("articles/category", $view);
+    }
+
+    public function region(Request $request)
+    {
+        $id = $request->getParameter("id");
+        $name = $request->getParameter("name");
+
+        $articles = new Articles();
+
+        $regionModel = new Regions();
+
+        $regions = $articles->findAllByWithPagination(['region_id' => $id, 'status' => 'publish'], null, 15, "created_at", "desc");
+
+        $regionDetails = $regionModel->findOne(['region_id' => $id]);
+
+        if(!$regions) {
+            toast("info", "Region Not Found!.");
+            redirect(URL_ROOT);
+        }
+
+        // Create a CustomPaginator instance
+        $paginator = new NattiPagination($regions['total'], $regions['perPage'], $regions['page']);
+
+        // Get the current URL (you may need to adjust this based on your framework)
+        $currentUrl = URL_ROOT . "region/{$name}/{$id}";
+
+        // Generate pagination links
+        $paginationLinks = $paginator->generateBootstrapDefLinks($currentUrl);
+
+        $view = [
+            'regions' => $regions['data'],
+            'pagination' => $paginationLinks,
+            'regionDetails' => $regionDetails,
+        ];
+
+        $this->view->render("articles/region", $view);
     }
 }
