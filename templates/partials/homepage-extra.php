@@ -9,7 +9,19 @@
  * 
  */
 
+use celionatti\Bolt\Helpers\Utils\StringUtils;
+use PhpStrike\models\Articles;
+use PhpStrike\models\Categories;
 
+$articles = new Articles();
+$categories = new Categories();
+
+$commentArticles = $articles->getMostCommentArticles(4);
+$recents = $articles->getRecentArticles(3);
+
+$categorys = $categories->getFooterCategories();
+
+$token = currentTime();
 
 ?>
 
@@ -24,30 +36,16 @@
                             <h4 class="widget-title"><span>Most comments</span></h4>
                         </div>
                         <div class="latest_style_3">
-                            <div class="latest_style_3_item">
-                                <span class="item-count vertical-align">1.</span>
-                                <div class="alith_post_title_small">
-                                    <a href='/single'><strong>Frtuitous spluttered unlike ouch vivid blinked far inside</strong></a>
-                                </div>
-                            </div>
-                            <div class="latest_style_3_item">
-                                <span class="item-count vertical-align">2.</span>
-                                <div class="alith_post_title_small">
-                                    <a href='/single'><strong>Against and lantern where a and gnashed nefarious</strong></a>
-                                </div>
-                            </div>
-                            <div class="latest_style_3_item">
-                                <span class="item-count vertical-align">3.</span>
-                                <div class="alith_post_title_small">
-                                    <a href='/single'><strong>Ouch oh alas crud unnecessary invaluable some</strong></a>
-                                </div>
-                            </div>
-                            <div class="latest_style_3_item">
-                                <span class="item-count vertical-align">4.</span>
-                                <div class="alith_post_title_small">
-                                    <a href='/single'><strong>And far hey much hello and bashful one save less</strong></a>
-                                </div>
-                            </div>
+                            <?php if ($commentArticles) : ?>
+                                <?php foreach ($commentArticles as $key => $comment) : ?>
+                                    <div class="latest_style_3_item">
+                                        <span class="item-count vertical-align"><?= ($key + 1) ?>.</span>
+                                        <div class="alith_post_title_small">
+                                            <a href="<?= URL_ROOT . "article/{$comment->article_id}/{$token}" ?>"><strong><?= htmlspecialchars_decode(nl2br($comment->title)) ?></strong></a>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -57,18 +55,14 @@
                             <h4 class="widget-title"><span>Latest</span></h4>
                         </div>
                         <div class="latest_style_2">
-                            <div class="latest_style_2_item">
-                                <figure class="alith_news_img"><a href='/single'><img alt="" src="<?= get_image('assets/img/news-1.jpg') ?>" class="hover_grey"></a></figure>
-                                <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam</a></h3>
-                            </div>
-                            <div class="latest_style_2_item">
-                                <figure class="alith_news_img"><a href='/single'><img alt="" src="<?= get_image('assets/img/news-2.jpg') ?>" class="hover_grey"></a></figure>
-                                <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam quis </a></h3>
-                            </div>
-                            <div class="latest_style_2_item">
-                                <figure class="alith_news_img"><a href='/single'><img alt="" src="<?= get_image('assets/img/news-3.jpg') ?>" class="hover_grey"></a></figure>
-                                <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam quis </a></h3>
-                            </div>
+                            <?php if ($recents) : ?>
+                                <?php foreach ($recents as $recent) : ?>
+                                    <div class="latest_style_2_item">
+                                        <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$recent->article_id}/{$token}" ?>"><img alt="" src="<?= get_image($recent->thumbnail) ?>" class="hover_grey"></a></figure>
+                                        <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$recent->article_id}/{$token}" ?>"><?= htmlspecialchars_decode(nl2br($recent->title)) ?></a></h3>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -78,14 +72,11 @@
                             <h4 class="widget-title"><span>Categories</span></h4>
                         </div>
                         <ul class="bottom_menu">
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Business</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Entertainment</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Environment</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Health</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Life style</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Politics</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Technology</a></li>
-                            <li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; World</a></li>
+                            <?php if ($categorys) : ?>
+                                <?php foreach ($categorys as $category) : ?>
+                                    <li><a href="<?= URL_ROOT . "categories/{$category->category}/{$category->category_id}" ?>" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; <?= $category->category ?></a></li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -96,18 +87,18 @@
                         </div>
                         <ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
                             <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/news-1.jpg') ?>">
+                                <a class="" target="_blank" href="<?= URL_ROOT ?>">
+                                    <img class="" title="" alt="" src="<?= get_image('assets/img/natti-bg.jpg') ?>">
+                                </a>
+                            </li>
+                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                <a class="" target="_blank" href="<?= URL_ROOT ?>">
+                                    <img class="" title="" alt="" src="<?= get_image('assets/img/natti-logo.png') ?>">
                                 </a>
                             </li>
                             <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
                                 <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/news-7.jpg') ?>">
-                                </a>
-                            </li>
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/news-6.jpg') ?>">
+                                    <img class="" title="" alt="" src="<?= get_image('assets/img/natti.png') ?>">
                                 </a>
                             </li>
                             <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">

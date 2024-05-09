@@ -96,6 +96,27 @@ class Categories extends DatabaseModel
             ->get();
     }
 
+    public function getFooterCategories()
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['status' => 'active', 'section' => 'footer'])
+            ->orderBy("category", "DESC")
+            ->get();
+    }
+
+    public function getFooterSidebarCategories()
+    {
+        $query = "SELECT * FROM categories 
+                  WHERE section = 'footer'
+                  OR section = 'footer_sidebar'
+                  AND status = 'active'";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query)
+            ->get() ?? null;
+    }
+
     public function getCategoryParent($category_id)
     {
         return $this->getQueryBuilder()

@@ -93,7 +93,7 @@ $token = currentTime();
             <div class="banner-adv">
                 <div class="adv-thumb">
                     <a href="#">
-                        <img class="aligncenter" alt="img1" src="assets/images/ads.jpg">
+                        <img class="aligncenter" alt="img1" src="<?= get_image("assets/img/ads-online.png") ?>">
                     </a>
                 </div>
             </div>

@@ -145,13 +145,13 @@ class Articles extends DatabaseModel
             ->get();
     }
 
-    public function getRecentArticles()
+    public function getRecentArticles($limit)
     {
         return $this->getQueryBuilder()
             ->select()
             ->where(['status' => 'publish'])
             ->orderBy("created_at", "DESC")
-            ->limit(3)
+            ->limit($limit)
             ->get();
     }
 
@@ -197,6 +197,18 @@ class Articles extends DatabaseModel
                   LEFT JOIN comments c ON a.article_id = c.article_id 
                   GROUP BY a.article_id
                   ORDER BY a.views DESC, COUNT(c.comment_id) DESC LIMIT :limit";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['limit' => $limit])
+            ->get() ?? null;
+    }
+
+    public function getMostCommentArticles($limit)
+    {
+        $query = "SELECT a.article_id, a.title FROM articles a 
+                  LEFT JOIN comments c ON a.article_id = c.article_id 
+                  GROUP BY a.article_id
+                  ORDER BY COUNT(c.comment_id) DESC LIMIT :limit";
 
         return $this->getQueryBuilder()
             ->rawQuery($query, ['limit' => $limit])
