@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-12 bottom-logo">
-                <h1 class="logo"><a href="<?= URL_ROOT ?>"><span class="text-danger">N</span>ATTI <span class="text-danger">N</span>ATION</a></h1>
+                <h1 class="logo"><a href="<?= URL_ROOT ?>"><span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION</a></h1>
                 <div class="tagline social">
                     <ul>
                         <li class="facebook"><a href=""><i class="fa-brands fa-facebook"></i></a></li>

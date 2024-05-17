@@ -394,3 +394,44 @@ function categoriesNav()
         }
     }
 }
+
+function sidebarNav()
+{
+    $categories = new Categories();
+    $navLists = $categories->getSidebarCategories();
+    $checkNavLists = [];
+
+    // Build an array of menu items
+    $menuItems = [];
+
+    foreach ($navLists as $category) {
+        $parentNavs = $categories->getCategoryParentSidebar($category->child);
+
+        if (!empty($parentNavs)) {
+            foreach ($parentNavs as $parentNav) {
+                $menuItems[$parentNav->category_id]['parent'] = $parentNav;
+                $menuItems[$parentNav->category_id]['children'] = $categories->getCategoryChildrenSidebar($category->child);
+            }
+        } elseif (!in_array($category->category_id, $checkNavLists)) {
+            $menuItems[$category->category_id]['parent'] = $category;
+        }
+    }
+
+    // Output the HTML
+    foreach ($menuItems as $categoryId => $menuItem) {
+        if (isset($menuItem['parent'])) {
+            $name = slugString($menuItem['parent']->category);
+            echo '<li class="' . (!isset($menuItem['children']) ? "menu-item" : "menu-item menu-item-has-children") . '">';
+            echo '<a href="'. URL_ROOT . "categories/{$name}/{$categoryId}" .'">' . $menuItem['parent']->category . '</a>';
+            if (isset($menuItem['children'])) {
+                echo '<ul class="sub-menu">';
+                foreach ($menuItem['children'] as $childList) {
+                    $childName = slugString($childList->category);
+                    echo '<li class="menu-item"><a href="'. URL_ROOT . "categories/{$childName}/{$childList->category_id}" .'">' . $childList->category . '</a></li>';
+                }
+                echo '</ul>';
+            }
+            echo '</li>';
+        }
+    }
+}

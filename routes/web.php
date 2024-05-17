@@ -36,6 +36,7 @@ $bolt->router->post("/article/{id}/{token}", [SiteController::class, "article_co
 $bolt->router->get("/search", [SiteController::class, "search"]);
 $bolt->router->get("/categories/{name}/{id}", [SiteController::class, "category"]);
 $bolt->router->get("/region/{name}/{id}", [SiteController::class, "region"]);
+$bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"]);
 
 
 /** Auth Method */
@@ -56,6 +57,12 @@ $bolt->router->post("/forgot-password", [AuthController::class, "forgot"]);
  */
 
 $bolt->router->get("/admin", [AdminController::class, "dashboard"]);
+
+/** Users */
+$bolt->router->get("/admin/manage-users", [AdminUsersController::class, "manage"]);
+$bolt->router->post("/admin/view-users", [AdminUsersController::class, "view"]);
+$bolt->router->get("/admin/users/create", [AdminUsersController::class, "create_user"]);
+$bolt->router->post("/admin/users/create", [AdminUsersController::class, "create"]);
 
 /** Categories */
 $bolt->router->get("/admin/manage-categories", [AdminCategoriesController::class, "manage"]);

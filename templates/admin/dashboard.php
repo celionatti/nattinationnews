@@ -25,12 +25,25 @@
                 <p class="text-center">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur error odio eius deserunt explicabo id atque sed dolorem tenetur voluptatibus necessitatibus minima officiis dolores, magnam vitae doloremque dolorum rerum corporis molestiae cum commodi sit veniam debitis. Atque vel mollitia sapiente cupiditate distinctio placeat dolores a, perferendis, velit aspernatur consequatur sunt?
                 </p>
-                <div class="row">
-                    
-                </div>
-
             </div>
         </div>
+
+        <div class="row">
+            <!-- Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary-subtle mb-4">
+                    <div class="card-body">
+                        <h4>Manage Users</h4>
+                        <h2 class="text-center">
+                            <i class="bi bi-people"></i>
+                        </h2>
+                        <a href="<?= URL_ROOT . 'admin/manage-users' ?>" class="btn btn-outline-primary btn-sm w-100">Details</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End Card. -->
+        </div>
+
     </div>
 </div>
 

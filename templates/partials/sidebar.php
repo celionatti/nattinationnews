@@ -29,28 +29,8 @@ $token = currentTime();
                 <h4 class="widget-title"><span>Popular Articles</span></h4>
             </div>
             <ul class="menu" id="sidebar-menu">
-                <li class="menu-item"><a href="#">Trending</a></li>
-                <li class="menu-item menu-item-has-children"><a href="#">Thinking</a>
-                    <ul class="sub-menu">
-                        <li class="menu-item"><a href="#">Home &amp; Living</a></li>
-                        <li class="menu-item menu-item-has-children"><a href="#">Lifestyle</a>
-                            <ul class="sub-menu">
-                                <li class="menu-item"><a href="#">Travel</a></li>
-                                <li class="menu-item"><a href="#">Gardening</a></li>
-                                <li class="menu-item"><a href="#">Inspirations</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-item"><a href="#">Inspirations</a></li>
-                        <li class="menu-item"><a href="#">Gardening</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item menu-item-has-children"><a href="#">Inspirations</a>
-                    <ul class="sub-menu">
-                        <li class="menu-item"><a href="#">House &amp; Living</a></li>
-                        <li class="menu-item"><a href="#">Travel</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item"><a href="#">Contact</a></li>
+                <?= sidebarNav(); ?>
+                <li class="menu-item"><a href="<?= URL_ROOT . "contact" ?>">Contact</a></li>
             </ul>
         </div>
 
@@ -66,9 +46,9 @@ $token = currentTime();
                                 <span class="post_meta_categories_label">Legal, Blog</span>
                                 <a href="<?= URL_ROOT . "article/{$trends[0]->article_id}/{$token}" ?>"><img src="<?= get_image($trends[0]->thumbnail) ?>" alt="<?= $trends[0]->thumbnail_caption ?>" style="width:100%;" class="img-fluid" /></a>
                             </figure>
-                            <h3 class="alith_post_title">
+                            <h4 class="alith_post_title">
                                 <a href="<?= URL_ROOT . "article/{$trends[0]->article_id}/{$token}" ?>"><strong><?= $trends[0]->title ?></strong></a>
-                            </h3>
+                            </h4>
                         </div>
                     <?php endif; ?>
                     <?php foreach ($trends as $i => $trend) : ?>

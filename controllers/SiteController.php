@@ -109,6 +109,8 @@ class SiteController extends Controller
 
             $article = $articles->findOne(['status' => 'publish', 'article_id' => $id]);
 
+            $recentArticles = $articles->getRecentArticles(5);
+
             if (!$article) {
                 toast("error", "Article Not Found!");
                 redirect("/");
@@ -117,6 +119,7 @@ class SiteController extends Controller
 
         $view = [
             'article' => $article,
+            'recents' => $recentArticles,
         ];
 
         $this->view->render("articles/article", $view);

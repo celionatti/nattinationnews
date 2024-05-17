@@ -50,7 +50,7 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
     <?php $this->content('header') ?>
 </head>
 
-<body>
+<body class="bg-body-tertiary">
 
     <div id="wrapper">
         <?= partials("sidebar") ?>

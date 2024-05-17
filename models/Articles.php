@@ -215,6 +215,19 @@ class Articles extends DatabaseModel
             ->get() ?? null;
     }
 
+    public function getRelatedArticles($value)
+    {
+        $query = "SELECT * FROM articles
+                WHERE title LIKE '%$value%' OR tags LIKE '%$value%'
+                AND status = :status
+                ORDER BY created_at DESC
+                LIMIT :limit";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['limit' => '5', 'status' => 'publish'])
+            ->get() ?? null;
+    }
+
 
     public function articleChart()
     {

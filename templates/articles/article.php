@@ -11,6 +11,8 @@
 use celionatti\Bolt\Forms\BootstrapForm;
 use celionatti\Bolt\Helpers\Utils\StringUtils;
 
+$token = currentTime();
+
 ?>
 
 <?php $this->setTitle($title ?? "Read Article"); ?>
@@ -85,30 +87,16 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                                                     <h4 class="widget-title"><span>Related Posts</span></h4>
                                                 </div>
                                                 <div class="latest_style_3">
-                                                    <div class="latest_style_3_item">
-                                                        <span class="item-count vertical-align">1.</span>
-                                                        <div class="alith_post_title_small">
-                                                            <a href='/single'><strong>Frtuitous spluttered unlike ouch vivid blinked far inside</strong></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="latest_style_3_item">
-                                                        <span class="item-count vertical-align">2.</span>
-                                                        <div class="alith_post_title_small">
-                                                            <a href='/single'><strong>Against and lantern where a and gnashed nefarious</strong></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="latest_style_3_item">
-                                                        <span class="item-count vertical-align">3.</span>
-                                                        <div class="alith_post_title_small">
-                                                            <a href='/single'><strong>Ouch oh alas crud unnecessary invaluable some</strong></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="latest_style_3_item">
-                                                        <span class="item-count vertical-align">4.</span>
-                                                        <div class="alith_post_title_small">
-                                                            <a href='/single'><strong>And far hey much hello and bashful one save less</strong></a>
-                                                        </div>
-                                                    </div>
+                                                    <?php if ($recents) : ?>
+                                                        <?php foreach ($recents as $key => $recent) : ?>
+                                                            <div class="latest_style_3_item">
+                                                                <span class="item-count vertical-align"><?= ($key + 1) ?>.</span>
+                                                                <div class="alith_post_title_small">
+                                                                    <a href="<?= URL_ROOT . "article/{$article->article_id}/{$token}" ?>"><strong><?= htmlspecialchars_decode(nl2br($recent->title)) ?></strong></a>
+                                                                </div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div> <!--post-related-->

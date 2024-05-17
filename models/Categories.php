@@ -96,6 +96,15 @@ class Categories extends DatabaseModel
             ->get();
     }
 
+    public function getSidebarCategories()
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['status' => 'active', 'section' => 'sidebar'])
+            ->orderBy("category", "DESC")
+            ->get();
+    }
+
     public function getFooterCategories()
     {
         return $this->getQueryBuilder()
@@ -125,11 +134,27 @@ class Categories extends DatabaseModel
             ->get();
     }
 
+    public function getCategoryParentSidebar($category_id)
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['category_id' => $category_id, 'status' => 'active', 'section' => 'sidebar'])
+            ->get();
+    }
+
     public function getCategoryChildren($category_id)
     {
         return $this->getQueryBuilder()
             ->select()
             ->where(['child' => $category_id, 'status' => 'active', 'section' => 'navbar'])
+            ->get();
+    }
+
+    public function getCategoryChildrenSidebar($category_id)
+    {
+        return $this->getQueryBuilder()
+            ->select()
+            ->where(['child' => $category_id, 'status' => 'active', 'section' => 'sidebar'])
             ->get();
     }
 }

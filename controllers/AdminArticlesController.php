@@ -144,37 +144,37 @@ class AdminArticlesController extends Controller
             $uploader = new Upload("uploads/articles");
             $uploader->setAllowedFileTypes(ALLOWED_IMAGE_FILE_UPLOAD);
             $uploader->setOverwriteExisting(true);
-            // if ($article->validate($data)) {
-            //     if ($uploadType === "file") {
-            //         $thumbnail = $uploader->uploadFile('thumbnail');
-            //         $image = $uploader->uploadFile('image');
+            if ($article->validate($data)) {
+                if ($uploadType === "file") {
+                    $thumbnail = $uploader->uploadFile('thumbnail');
+                    $image = $uploader->uploadFile('image');
 
-            //         if (isset($thumbnail['error']) || !empty($thumbnail['thumbnail'])) {
-            //             FlashMessage::setMessage($thumbnail['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
-            //         }
-            //         if (isset($image['error']) || !empty($image['image'])) {
-            //             FlashMessage::setMessage($image['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
-            //         }
+                    if (isset($thumbnail['error']) || !empty($thumbnail['thumbnail'])) {
+                        FlashMessage::setMessage($thumbnail['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
+                    }
+                    if (isset($image['error']) || !empty($image['image'])) {
+                        FlashMessage::setMessage($image['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
+                    }
 
-            //         if ($thumbnail['success'] && $image['success']) {
-            //             $data['thumbnail'] = $thumbnail['path'];
-            //             $data['image'] = $image['path'];
+                    if ($thumbnail['success'] && $image['success']) {
+                        $data['thumbnail'] = $thumbnail['path'];
+                        $data['image'] = $image['path'];
 
-            //             $image = new Image();
-            //             $image->resize($data['thumbnail']);
-            //             $image->resize($data['image']);
-            //             $image->watermark($data['thumbnail'], "assets/img/natti.png");
-            //             $image->watermark($data['image'], "assets/img/natti.png");
-            //         }
-            //     }
+                        $image = new Image();
+                        $image->resize($data['thumbnail']);
+                        $image->resize($data['image']);
+                        $image->watermark($data['thumbnail'], "assets/img/natti.png");
+                        $image->watermark($data['image'], "assets/img/natti.png");
+                    }
+                }
 
-            //     if ($article->insert($data)) {
-            //         toast("success", "Article Created Successfully");
-            //         redirect(URL_ROOT . "admin/manage-articles");
-            //     }
-            // } else {
-            //     storeSessionData('article_data', $data);
-            // }
+                if ($article->insert($data)) {
+                    toast("success", "Article Created Successfully");
+                    redirect(URL_ROOT . "admin/manage-articles");
+                }
+            } else {
+                storeSessionData('article_data', $data);
+            }
         }
         toast("error", "Article Creation Failed!");
         Bolt::$bolt->session->setFormMessage($article->getErrors());
