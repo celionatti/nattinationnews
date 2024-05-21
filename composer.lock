@@ -77,16 +77,16 @@
         },
         {
             "name": "celionatti/bolt",
-            "version": "v1.0.3",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/celionatti/bolt.git",
-                "reference": "c10894ae800dc8097627600b91917e611e0fc5bd"
+                "reference": "8008c173996987dd257828fcb6b3111b3be6e74d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/celionatti/bolt/zipball/c10894ae800dc8097627600b91917e611e0fc5bd",
-                "reference": "c10894ae800dc8097627600b91917e611e0fc5bd",
+                "url": "https://api.github.com/repos/celionatti/bolt/zipball/8008c173996987dd257828fcb6b3111b3be6e74d",
+                "reference": "8008c173996987dd257828fcb6b3111b3be6e74d",
                 "shasum": ""
             },
             "require": {
@@ -116,9 +116,9 @@
             "description": "Bolt is a popular open-source content management system (CMS) and application framework that is designed to be easy to use and flexible. It's known for its simplicity and speed, making it a good choice for developers looking to create websites and web applications quickly.",
             "support": {
                 "issues": "https://github.com/celionatti/bolt/issues",
-                "source": "https://github.com/celionatti/bolt/tree/v1.0.3"
+                "source": "https://github.com/celionatti/bolt/tree/v1.0.5"
             },
-            "time": "2024-02-11T14:27:32+00:00"
+            "time": "2024-05-19T18:02:59+00:00"
         },
         {
             "name": "doctrine/inflector",

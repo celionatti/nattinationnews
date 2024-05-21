@@ -59,11 +59,6 @@ function statusVerification($status)
         'deleted' => ['color' => 'orange', 'weight' => 700],
         0 => ['color' => 'tomato', 'weight' => 700, 'label' => 'Not Verified'],
         'false' => ['color' => 'tomato', 'weight' => 700, 'label' => 'False'],
-        'pending' => ['color' => 'orange', 'weight' => 700],
-        'completed' => ['color' => 'green', 'weight' => 700],
-        'low' => ['color' => 'blue', 'weight' => 700],
-        'medium' => ['color' => 'orange', 'weight' => 700],
-        'high' => ['color' => 'tomato', 'weight' => 700],
         'active' => ['color' => 'green', 'weight' => 700],
         'disabled' => ['color' => 'tomato', 'weight' => 700],
         'disable' => ['color' => 'tomato', 'weight' => 700],
@@ -80,6 +75,38 @@ function statusVerification($status)
         'spam' => ['color' => 'lime', 'weight' => 700],
         'important' => ['color' => 'crimson', 'weight' => 700],
         'banner' => ['color' => 'crimson', 'weight' => 700],
+    ];
+
+    if (array_key_exists($status, $statusStyles)) {
+        $style = $statusStyles[$status];
+        $label = $style['label'] ?? $status;
+        return "<span style=\"color: {$style['color']}; font-weight: {$style['weight']}; text-transform: capitalize;\">{$label}</span>";
+    } else {
+        return '<span style="color: crimson; font-weight: 700; text-transform: capitalize;">Unknown Status</span>';
+    }
+}
+
+function userVerification($status)
+{
+    $statusStyles = [
+        1 => ['color' => 'green', 'weight' => 700, 'label' => 'Verified'],
+        0 => ['color' => 'tomato', 'weight' => 700, 'label' => 'Not Verified'],
+    ];
+
+    if (array_key_exists($status, $statusStyles)) {
+        $style = $statusStyles[$status];
+        $label = $style['label'] ?? $status;
+        return "<span style=\"color: {$style['color']}; font-weight: {$style['weight']}; text-transform: capitalize;\">{$label}</span>";
+    } else {
+        return '<span style="color: crimson; font-weight: 700; text-transform: capitalize;">Unknown Status</span>';
+    }
+}
+
+function userBlocked($status)
+{
+    $statusStyles = [
+        1 => ['color' => 'green', 'weight' => 700, 'label' => 'Blocked'],
+        0 => ['color' => 'tomato', 'weight' => 700, 'label' => 'Not Blocked'],
     ];
 
     if (array_key_exists($status, $statusStyles)) {
@@ -247,18 +274,6 @@ function reverseSlug($slug)
     return $text;
 }
 
-function generateToken($length = 7)
-{
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $token = '';
-
-    for ($i = 0; $i < $length; $i++) {
-        $token .= $characters[rand(0, strlen($characters) - 1)];
-    }
-
-    return $token;
-}
-
 function generateMetaTitle($title)
 {
     $websiteName = "Natti Nation"; // Replace with your actual website name
@@ -381,12 +396,12 @@ function categoriesNav()
         if (isset($menuItem['parent'])) {
             $name = slugString($menuItem['parent']->category);
             echo '<li class="' . (!isset($menuItem['children']) ? "" : "menu-item-has-children") . '">';
-            echo '<a href="'. URL_ROOT . "categories/{$name}/{$categoryId}" .'">' . $menuItem['parent']->category . '</a>';
+            echo '<a href="' . URL_ROOT . "categories/{$name}/{$categoryId}" . '">' . $menuItem['parent']->category . '</a>';
             if (isset($menuItem['children'])) {
                 echo '<ul class="sub-menu">';
                 foreach ($menuItem['children'] as $childList) {
                     $childName = slugString($childList->category);
-                    echo '<li><a href="'. URL_ROOT . "categories/{$childName}/{$childList->category_id}" .'">' . $childList->category . '</a></li>';
+                    echo '<li><a href="' . URL_ROOT . "categories/{$childName}/{$childList->category_id}" . '">' . $childList->category . '</a></li>';
                 }
                 echo '</ul>';
             }
@@ -422,16 +437,45 @@ function sidebarNav()
         if (isset($menuItem['parent'])) {
             $name = slugString($menuItem['parent']->category);
             echo '<li class="' . (!isset($menuItem['children']) ? "menu-item" : "menu-item menu-item-has-children") . '">';
-            echo '<a href="'. URL_ROOT . "categories/{$name}/{$categoryId}" .'">' . $menuItem['parent']->category . '</a>';
+            echo '<a href="' . URL_ROOT . "categories/{$name}/{$categoryId}" . '">' . $menuItem['parent']->category . '</a>';
             if (isset($menuItem['children'])) {
                 echo '<ul class="sub-menu">';
                 foreach ($menuItem['children'] as $childList) {
                     $childName = slugString($childList->category);
-                    echo '<li class="menu-item"><a href="'. URL_ROOT . "categories/{$childName}/{$childList->category_id}" .'">' . $childList->category . '</a></li>';
+                    echo '<li class="menu-item"><a href="' . URL_ROOT . "categories/{$childName}/{$childList->category_id}" . '">' . $childList->category . '</a></li>';
                 }
                 echo '</ul>';
             }
             echo '</li>';
         }
     }
+}
+
+function generateRandomID($existingIDs, $minID = 100000, $maxID = 999999)
+{
+    // Helper function to generate a random number within the specified range
+    function getRandomNumber($min, $max)
+    {
+        return mt_rand($min, $max);
+    }
+
+    do {
+        $newID = getRandomNumber($minID, $maxID);
+    } while (in_array($newID, $existingIDs));
+
+    return $newID;
+}
+
+function generateToken($length = 64)
+{
+    // Define the characters to be used in the token
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $token = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $token .= $characters[random_int(0, $charactersLength - 1)];
+    }
+
+    return $token;
 }

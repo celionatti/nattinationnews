@@ -17,7 +17,7 @@ use celionatti\Bolt\Database\DatabaseModel;
 
 class Users extends DatabaseModel
 {
-    private $scenario = 'signup'; // Default scenario is 'signup'
+    private $scenario = 'create'; // Default scenario is 'signup'
 
     public static function tableName(): string
     {
@@ -34,55 +34,13 @@ class Users extends DatabaseModel
     {
         // Define validation rules for different scenarios
         $rules = [
-            'signup' => [
+            'create' => [
                 'surname' => [
                     ['rule' => 'required', 'message' => 'Surname is required.'],
                     ['rule' => 'maxLength', 'params' => [15], 'message' => 'Surname is a minimum of 20 characters.'],
                     ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
                 ],
-                'othername' => [
-                    ['rule' => 'required', 'message' => 'Othername is required.'],
-                    ['rule' => 'maxLength', 'params' => [15], 'message' => 'Othername is a minimum of 20 characters.'],
-                    ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
-                ],
-                'email' => [
-                    ['rule' => 'required', 'message' => 'Email is required.'],
-                    ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
-                ],
-                'phone' => [
-                    ['rule' => 'required', 'message' => 'Phone Number is Required.'],
-                    ['rule' => 'numeric', 'message' => 'Only Numbers are allowed.'],
-                ],
-                'gender' => [
-                    ['rule' => 'required', 'message' => 'Gender is Required.'],
-                ],
-                'terms' => [
-                    ['rule' => 'required', 'message' => 'Terms and conditions are required'],
-                ],
-                'password' => [
-                    ['rule' => 'required', 'message' => 'Password is Required.'],
-                    ['rule' => 'securePassword', 'message' => 'Password is not strong enough.'],
-                ],
-                'confirm_password' => [
-                    ['rule' => 'required', 'message' => 'Confirm Password is Required.'],
-                ],
-            ],
-            'login' => [
-                'email' => [
-                    ['rule' => 'required', 'message' => 'Email is required.'],
-                    ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
-                ],
-                'password' => [
-                    ['rule' => 'required', 'message' => 'Password is Required.'],
-                ],
-            ],
-            'admin' => [
-                'surname' => [
-                    ['rule' => 'required', 'message' => 'Surname is required.'],
-                    ['rule' => 'maxLength', 'params' => [15], 'message' => 'Surname is a minimum of 20 characters.'],
-                    ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
-                ],
-                'othername' => [
+                'name' => [
                     ['rule' => 'required', 'message' => 'Othername is required.'],
                     ['rule' => 'maxLength', 'params' => [15], 'message' => 'Othername is a minimum of 20 characters.'],
                     ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
@@ -99,10 +57,20 @@ class Users extends DatabaseModel
                     ['rule' => 'required', 'message' => 'Gender is Required.'],
                 ],
                 'role' => [
-                    ['rule' => 'required', 'message' => 'Role is Required.'],
+                    ['rule' => 'required', 'message' => 'Role are required'],
                 ],
-                'terms' => [
-                    ['rule' => 'required', 'message' => 'Terms and conditions are required'],
+                'password' => [
+                    ['rule' => 'required', 'message' => 'Password is Required.'],
+                    ['rule' => 'securePassword', 'message' => 'Password is not strong enough.'],
+                ],
+            ],
+            'login' => [
+                'email' => [
+                    ['rule' => 'required', 'message' => 'Email is required.'],
+                    ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
+                ],
+                'password' => [
+                    ['rule' => 'required', 'message' => 'Password is Required.'],
                 ],
             ],
             'change-password' => [

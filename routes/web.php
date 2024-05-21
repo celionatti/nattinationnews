@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use celionatti\Bolt\Bolt;
-use PhpStrike\controllers\AuthController;
 use PhpStrike\controllers\SiteController;
 use PhpStrike\controllers\AdminController;
 use PhpStrike\controllers\OthersController;
 use PhpStrike\controllers\CommentController;
 use PhpStrike\controllers\ProfileController;
+use PhpStrike\controllers\AdminAuthController;
 use PhpStrike\controllers\AdminUsersController;
 use PhpStrike\controllers\AdminOthersController;
 use PhpStrike\controllers\AdminRegionsController;
@@ -39,24 +39,15 @@ $bolt->router->get("/region/{name}/{id}", [SiteController::class, "region"]);
 $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"]);
 
 
-/** Auth Method */
-
-$bolt->router->get("/login", [AuthController::class, "login_view"]);
-$bolt->router->post("/login", [AuthController::class, "login"]);
-$bolt->router->get("/signup", [AuthController::class, "signup_view"]);
-$bolt->router->post("/signup", [AuthController::class, "signup"]);
-$bolt->router->get("/logout", [AuthController::class, "logout"]);
-$bolt->router->get("/forgot-password", [AuthController::class, "forgot_view"]);
-$bolt->router->post("/forgot-password", [AuthController::class, "forgot"]);
-
-
-
 /**
  * Admin Section
  * 
  */
 
 $bolt->router->get("/admin", [AdminController::class, "dashboard"]);
+
+$bolt->router->get("/dashboard/login", [AdminAuthController::class, "login_view"]);
+$bolt->router->post("/dashboard/login", [AdminAuthController::class, "login"]);
 
 /** Users */
 $bolt->router->get("/admin/manage-users", [AdminUsersController::class, "manage"]);

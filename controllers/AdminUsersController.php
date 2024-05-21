@@ -16,7 +16,6 @@ use OpenAI;
 
 use celionatti\Bolt\Bolt;
 use PhpStrike\models\Users;
-use PhpStrike\models\Articles;
 use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
 use celionatti\Bolt\Helpers\Image;
@@ -31,9 +30,11 @@ class AdminUsersController extends Controller
     {
         $this->view->setLayout("admin");
 
-        // if (!hasAccess([], 'all', ['user', 'guest'])) {
-        //     redirect("/", 401);
-        // }
+        $this->currentUser = user();
+
+        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+            redirect(URL_ROOT . "dashboard/login", 401);
+        }
     }
 
     public function manage()
@@ -67,7 +68,8 @@ class AdminUsersController extends Controller
                         <th>Email</th>
                         <th>Gender</th>
                         <th>Role</th>
-                        <th>Status</th>
+                        <th>Verified</th>
+                        <th>Blocked</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -78,10 +80,11 @@ class AdminUsersController extends Controller
                     <td>' . ($key + 1) . '</td>
                     <td><img src="' . get_image($row->avatar) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
                     <td class="text-capitalize">' . $row->surname . ' ' . $row->name . '</td>
-                    <td class="text-capitalize">' . $row->email .'</td>
-                    <td class="text-capitalize">' . $row->gender .'</td>
-                    <td class="text-capitalize">' . $row->role .'</td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
+                    <td class="text-dark">' . $row->email . '</td>
+                    <td class="text-capitalize">' . $row->gender . '</td>
+                    <td class="text-capitalize">' . userRoleType($row->role) . '</td>
+                    <td class="text-capitalize">' . userVerification($row->is_verified) . '</td>
+                    <td class="text-capitalize">' . userBlocked($row->is_blocked) . '</td>
                     <td>
                     <a href="' . URL_ROOT . "admin/users/edit/{$row->user_id}?ut=file" . '" title="Edit User" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
 
@@ -126,5 +129,49 @@ class AdminUsersController extends Controller
         Bolt::$bolt->session->unsetArray(['user_data']);
 
         $this->view->render("admin/users/create", $view);
+    }
+
+    public function create(Request $request)
+    {
+        $users = new Users();
+
+        if ($request->isPost()) {
+            $users->fillable([
+                'user_id',
+                'id_number',
+                'surname',
+                'name',
+                'email',
+                'phone',
+                'password',
+                'gender',
+                'role',
+                'token',
+                'is_verified',
+                'is_blocked',
+            ]);
+            $data = $request->getBody();
+            validate_csrf_token($data);
+            $data['user_id'] = generateUuidV4();
+            $data['id_number'] = generateRandomID(['123456', '999999', '000000']);
+            $data['password'] = '@' . strtolower($data['surname']) . 'Password1';
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $data['password'] = $hashedPassword;
+            $data['token'] = generateToken();
+
+            $users->setIsInsertionScenario('create'); // Set insertion scenario flag
+
+            if ($users->validate($data)) {
+                if ($users->insert($data)) {
+                    toast("success", "User Created Successfully");
+                    redirect(URL_ROOT . "admin/manage-users");
+                }
+            } else {
+                storeSessionData('user_data', $data);
+            }
+        }
+        toast("error", "User Creation Failed!");
+        Bolt::$bolt->session->setFormMessage($users->getErrors());
+        redirect(URL_ROOT . "admin/users/create");
     }
 }

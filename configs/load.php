@@ -12,9 +12,6 @@ declare(strict_types=1);
  */
 
 
-date_default_timezone_set("Africa/Lagos");
-
-
 if (!file_exists(__DIR__ . '/constants.php')) {
     die("Constants File Not Found!");
 }
@@ -22,7 +19,7 @@ if (!file_exists(__DIR__ . '/constants.php')) {
 require __DIR__ . '/constants.php';
 
 
-$key = "5406fa86ef82044d6cc211f0b2f61cd5cbe88244c828fbcedd2250d3108b4867";
+$key = "66370d85ec6645fe49d0f362f529090c4a632d97ae822fdda27f66c429ebdee7";
 
 
 if (!defined('APP_KEY')) {

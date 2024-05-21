@@ -19,80 +19,21 @@ use celionatti\Bolt\Http\Request;
 use celionatti\Bolt\Authentication\BoltAuthentication;
 use celionatti\Bolt\Helpers\FlashMessages\FlashMessage;
 
-class AuthController extends Controller
+class AdminAuthController extends Controller
 {
     public function onConstruct(): void
     {
         $this->view->setLayout("auth");
-    }
 
-    public function signup_view(Request $request)
-    {
-        if ($this->currentUser = BoltAuthentication::currentUser()) {
-            redirect("/");
+        if (hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+            redirect(URL_ROOT . "admin", 401);
         }
-
-        $view = [
-            'errors' => Bolt::$bolt->session->getFormMessage(),
-            'user' => retrieveSessionData('user_data'),
-            'genderOpts' => [
-                'male' => 'Male',
-                'female' => 'Female',
-                'others' => 'Others'
-            ]
-        ];
-
-        // Remove the user data from the session after it has been retrieved
-        Bolt::$bolt->session->unsetArray(['user_data']);
-
-        $this->view->render("auth/signup", $view);
-    }
-
-    public function signup(Request $request)
-    {
-        if ($this->currentUser = BoltAuthentication::currentUser()) {
-            redirect("/");
-        }
-
-        $user = new Users();
-
-        if ($request->isPost()) {
-            $user->fillable([
-                'user_id',
-                'surname',
-                'othername',
-                'phone',
-                'email',
-                'gender',
-                'role',
-                'password'
-            ]);
-            $data = $request->getBody();
-            validate_csrf_token($data);
-            $data['user_id'] = generateUuidV4();
-            $user->setIsInsertionScenario('signup'); // Set insertion scenario flag
-            $user->passwordsMatchValidation($data['password'], $data['confirm_password']);
-            if ($user->validate($data)) {
-                // other method before saving.
-                $options = ['cost' => 12];
-                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT, $options);
-                if ($user->insert($data)) {
-                    toast("success", "User Created Successfully");
-                    redirect("/");
-                }
-            } else {
-                storeSessionData('user_data', $data);
-            }
-        }
-        toast("error", "Registration Falied!");
-        Bolt::$bolt->session->setFormMessage($user->getErrors());
-        redirect("/signup");
     }
 
     public function login_view()
     {
         if ($this->currentUser = BoltAuthentication::currentUser()) {
-            redirect("/");
+            redirect(URL_ROOT . "admin");
         }
 
         $view = [
@@ -103,13 +44,13 @@ class AuthController extends Controller
         // Remove the user data from the session after it has been retrieved
         Bolt::$bolt->session->unsetArray(['user_data']);
 
-        $this->view->render("auth/login", $view);
+        $this->view->render("admin/auth/login", $view);
     }
 
     public function login(Request $request)
     {
         if ($this->currentUser = BoltAuthentication::currentUser()) {
-            redirect("/");
+            redirect(URL_ROOT . "admin");
         }
 
         $user = new Users();
@@ -127,7 +68,7 @@ class AuthController extends Controller
         }
         toast("error", "Authentication Failure!");
         Bolt::$bolt->session->setFormMessage($user->getErrors());
-        redirect("/login");
+        redirect(URL_ROOT . "dashboard/login");
     }
 
     public function forgot_view()

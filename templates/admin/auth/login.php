@@ -91,14 +91,6 @@ use celionatti\Bolt\Forms\BootstrapForm;
                 <?= BootstrapForm::submitButton("Login", "btn btn-dark btn-sm mx-1 mb-2 fs-6 w-100") ?>
 
                 <?= BootstrapForm::closeForm() ?>
-
-                <div class="input-group mb-2">
-                    <button class="btn btn-sm btn-light w-100 fs-6"><img src="<?= get_image("assets/img/google.png") ?>" alt="" style="width: 20px;" class="me-2"><small>Sign In with Google</small></button>
-                </div>
-
-                <div class="row text-center">
-                    <small>Don't have account? <a href="/signup">Sign Up</a></small>
-                </div>
             </div>
         </div>
     </div>

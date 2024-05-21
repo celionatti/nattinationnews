@@ -26,9 +26,9 @@ class AdminCategoriesController extends Controller
     {
         $this->view->setLayout("admin");
 
-        // if (!hasAccess([], 'all', ['user', 'guest'])) {
-        //     redirect("/", 401);
-        // }
+        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+            redirect(URL_ROOT . "dashboard/login", 401);
+        }
     }
 
     public function manage()
