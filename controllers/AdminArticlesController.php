@@ -245,82 +245,88 @@ class AdminArticlesController extends Controller
             'article_id' => $id,
         ]);
 
-        if (!$a) {
-            toast("info", "Article Not Found!");
-            redirect("/admin/manage-articles");
-        }
+        $roles = ["admin", "manager"];
 
-        if ($request->isPost()) {
-            $article->updatable([
-                "user_id",
-                "title",
-                "category_id",
-                "region_id",
-                "content",
-                "key_point",
-                "tags",
-                "thumbnail",
-                "thumbnail_caption",
-                "image",
-                "image_caption",
-                "authors",
-                "status",
-                "meta_title",
-                "meta_description",
-                "meta_keywords",
-            ]);
-            $data = $request->getBody();
-            validate_csrf_token($data);
-            $data['thumbnail'] = $a->thumbnail;
-            $data['image'] = $a->image;
-            $data['user_id'] = $a->user_id;
-            $data['meta_title'] = generateMetaTitle($data['title']);
-            $data['meta_description'] = generateMetaDescription($data['content']);
-            $data['meta_keywords'] = generateKeywords($data['content']);
-            $article->setIsInsertionScenario('edit'); // Set insertion scenario flag
-            $uploader = new Upload("uploads/articles");
-            $uploader->setAllowedFileTypes(ALLOWED_IMAGE_FILE_UPLOAD);
-            $uploader->setOverwriteExisting(true);
-            if ($article->validate($data)) {
-                if ($uploadType === "file") {
-                    if (!empty($_FILES['thumbnail']['name']) || !empty($_FILES['image']['name'])) {
-                        $thumbnail = $uploader->uploadFile('thumbnail');
-                        $image = $uploader->uploadFile('image');
+        if (hasRole($this->currentUser, $roles) || isCurrentUser($this->currentUser, $a->user_id)) {
+            if (!$a) {
+                toast("info", "Article Not Found!");
+                redirect("/admin/manage-articles");
+            }
 
-                        if (isset($thumbnail['error']) || !empty($thumbnail['thumbnail'])) {
-                            FlashMessage::setMessage($thumbnail['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
-                        }
-                        if (isset($image['error']) || !empty($image['image'])) {
-                            FlashMessage::setMessage($image['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
-                        }
+            if ($request->isPost()) {
+                $article->updatable([
+                    "user_id",
+                    "title",
+                    "category_id",
+                    "region_id",
+                    "content",
+                    "key_point",
+                    "tags",
+                    "thumbnail",
+                    "thumbnail_caption",
+                    "image",
+                    "image_caption",
+                    "authors",
+                    "status",
+                    "meta_title",
+                    "meta_description",
+                    "meta_keywords",
+                ]);
+                $data = $request->getBody();
+                validate_csrf_token($data);
+                $data['thumbnail'] = $a->thumbnail;
+                $data['image'] = $a->image;
+                $data['user_id'] = $a->user_id;
+                $data['meta_title'] = generateMetaTitle($data['title']);
+                $data['meta_description'] = generateMetaDescription($data['content']);
+                $data['meta_keywords'] = generateKeywords($data['content']);
+                $article->setIsInsertionScenario('edit'); // Set insertion scenario flag
+                $uploader = new Upload("uploads/articles");
+                $uploader->setAllowedFileTypes(ALLOWED_IMAGE_FILE_UPLOAD);
+                $uploader->setOverwriteExisting(true);
+                if ($article->validate($data)) {
+                    if ($uploadType === "file") {
+                        if (!empty($_FILES['thumbnail']['name']) || !empty($_FILES['image']['name'])) {
+                            $thumbnail = $uploader->uploadFile('thumbnail');
+                            $image = $uploader->uploadFile('image');
 
-                        if ($thumbnail['success'] && $image['success']) {
-                            if ($a->thumbnail !== null || $a->image !== null) {
-                                $uploader->deleteFile($a->thumbnail);
-                                $uploader->deleteFile($a->image);
+                            if (isset($thumbnail['error']) || !empty($thumbnail['thumbnail'])) {
+                                FlashMessage::setMessage($thumbnail['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
                             }
-                            $data['thumbnail'] = $thumbnail['path'];
-                            $data['image'] = $image['path'];
+                            if (isset($image['error']) || !empty($image['image'])) {
+                                FlashMessage::setMessage($image['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
+                            }
 
-                            $image = new Image();
-                            $image->resize($data['thumbnail']);
-                            $image->resize($data['image']);
-                            $image->watermark($data['thumbnail'], "assets/img/natti.png");
-                            $image->watermark($data['image'], "assets/img/natti.png");
+                            if ($thumbnail['success'] && $image['success']) {
+                                if ($a->thumbnail !== null || $a->image !== null) {
+                                    $uploader->deleteFile($a->thumbnail);
+                                    $uploader->deleteFile($a->image);
+                                }
+                                $data['thumbnail'] = $thumbnail['path'];
+                                $data['image'] = $image['path'];
+
+                                $image = new Image();
+                                $image->resize($data['thumbnail']);
+                                $image->resize($data['image']);
+                                $image->watermark($data['thumbnail'], "assets/img/natti.png");
+                                $image->watermark($data['image'], "assets/img/natti.png");
+                            }
                         }
                     }
-                }
 
-                if ($article->updateBy($data, ['article_id' => $id])) {
-                    toast("success", "Article Updated Successfully");
-                    redirect(URL_ROOT . "admin/manage-articles");
+                    if ($article->updateBy($data, ['article_id' => $id])) {
+                        toast("success", "Article Updated Successfully");
+                        redirect(URL_ROOT . "admin/manage-articles");
+                    }
+                } else {
+                    storeSessionData('article_data', $data);
                 }
-            } else {
-                storeSessionData('article_data', $data);
             }
+            toast("info", "Nothing to Update - No changes made!");
+            Bolt::$bolt->session->setFormMessage($article->getErrors());
+            redirect("/admin/articles/edit/{$id}?ut={$uploadType}");
         }
-        toast("info", "Nothing to Update - No changes made!");
-        Bolt::$bolt->session->setFormMessage($article->getErrors());
+        toast("info", "You dont have access to Update!");
         redirect("/admin/articles/edit/{$id}?ut={$uploadType}");
     }
 
@@ -358,21 +364,27 @@ class AdminArticlesController extends Controller
 
             $a = $article->findOne(['article_id' => $id]);
 
-            if (!$a) {
-                toast('info', "Article Not Found!");
-                redirect('/admin/manage-articles');
-            }
+            $roles = ["admin", "manager"];
 
-            if ($a) {
-                unlink($a->thumbnail);
-                unlink($a->image);
-
-                if ($article->deleteBy(['article_id' => $id])) {
-                    toast("success", "Article Deleted Successfully!");
-                    redirect(URL_ROOT . "admin/manage-articles");
+            if (hasRole($this->currentUser, $roles) || isCurrentUser($this->currentUser, $a->user_id)) {
+                if (!$a) {
+                    toast('info', "Article Not Found!");
+                    redirect('/admin/manage-articles');
                 }
+
+                if ($a) {
+                    unlink($a->thumbnail);
+                    unlink($a->image);
+
+                    if ($article->deleteBy(['article_id' => $id])) {
+                        toast("success", "Article Deleted Successfully!");
+                        redirect(URL_ROOT . "admin/manage-articles");
+                    }
+                }
+                toast("info", "Failure on Deleting process!");
+                redirect(URL_ROOT . "admin/manage-articles");
             }
-            toast("info", "Failure on Deleting process!");
+            toast("info", "You dont have access to Update!");
             redirect(URL_ROOT . "admin/manage-articles");
         }
     }

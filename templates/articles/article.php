@@ -11,7 +11,7 @@
 use celionatti\Bolt\Forms\BootstrapForm;
 use celionatti\Bolt\Helpers\Utils\StringUtils;
 
-$token = currentTime();
+$token = generateToken();
 
 ?>
 
@@ -25,7 +25,7 @@ $token = currentTime();
             <div class="row mt-4">
                 <div class="col-md-8">
                     <article class="section_margin">
-                        <figure class="alith_news_img animate-box"><a><img src="<?= get_image($article->thumbnail) ?>" alt="" class="w-100" /></a></figure>
+                        <figure class="alith_news_img animate-box"><a><img src="<?= get_image($article->thumbnail) ?>" alt="" class="w-100" style="height:600px; object-fit:contain;" /></a></figure>
                         <div class="post-content">
                             <div class="single-header">
                                 <h3 class="alith_post_title"><?= htmlspecialchars_decode(nl2br($article->title)) ?></h3>

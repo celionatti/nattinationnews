@@ -10,7 +10,7 @@
 
  use celionatti\Bolt\Helpers\Utils\StringUtils;
 
- $token = currentTime();
+ $token = generateToken();
 
 ?>
 

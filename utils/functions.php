@@ -479,3 +479,13 @@ function generateToken($length = 64)
 
     return $token;
 }
+
+// Define a function to check the user role
+function hasRole($user, $roles) {
+    return in_array($user->role, $roles);
+}
+
+// Define a function to check the user ID
+function isCurrentUser($currentUser, $userId) {
+    return !is_null($userId) && $currentUser->user_id === $userId;
+}

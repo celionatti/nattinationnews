@@ -19,7 +19,7 @@ $trends = $articles->getTrendingArticles();
 $tags = $articles->getArticleTags();
 $uniqueWords = extractUniqueWords($tags);
 
-$token = currentTime();
+$token = generateToken();
 
 ?>
 

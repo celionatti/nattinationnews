@@ -58,7 +58,7 @@ $token = currentTime();
                             <?php if ($recents) : ?>
                                 <?php foreach ($recents as $recent) : ?>
                                     <div class="latest_style_2_item">
-                                        <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$recent->article_id}/{$token}" ?>"><img alt="" src="<?= get_image($recent->thumbnail) ?>" class="hover_grey"></a></figure>
+                                        <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$recent->article_id}/{$token}" ?>"><img alt="" src="<?= get_image($recent->thumbnail) ?>" class="hover_grey" style="object-fit:cover;"></a></figure>
                                         <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$recent->article_id}/{$token}" ?>"><?= htmlspecialchars_decode(nl2br($recent->title)) ?></a></h3>
                                     </div>
                                 <?php endforeach; ?>

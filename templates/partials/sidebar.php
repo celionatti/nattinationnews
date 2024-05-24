@@ -17,7 +17,7 @@ $articles = new Articles();
 
 $trends = $articles->getTrendingArticles();
 
-$token = currentTime();
+$token = generateToken();
 
 ?>
 

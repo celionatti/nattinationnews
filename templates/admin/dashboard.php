@@ -13,6 +13,8 @@
 
 ?>
 
+<?php $this->setTitle($title ?? "Admin | Admin Dashboard"); ?>
+
 
 <!-- The Main content is Render here. -->
 <?php $this->start('content') ?>

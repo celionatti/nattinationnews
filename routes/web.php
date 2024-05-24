@@ -45,6 +45,7 @@ $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"
  */
 
 $bolt->router->get("/admin", [AdminController::class, "dashboard"]);
+$bolt->router->get("/admin/profile", [AdminController::class, "profile"]);
 
 $bolt->router->get("/dashboard/login", [AdminAuthController::class, "login_view"]);
 $bolt->router->post("/dashboard/login", [AdminAuthController::class, "login"]);

@@ -38,4 +38,17 @@ class AdminController extends Controller
 
         $this->view->render("admin/dashboard", $view);
     }
+
+    public function profile()
+    {
+        $view = [
+            'title' => 'Profile',
+            'navigations' => [
+                ['label' => 'Dashboard', 'url' => 'admin'],
+                ['label' => 'Profile', 'url' => ''],
+            ],
+        ];
+
+        $this->view->render("admin/profile", $view);
+    }
 }

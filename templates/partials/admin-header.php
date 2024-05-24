@@ -30,7 +30,7 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="<?= URL_ROOT . 'profile' ?>"><i class="bi bi-person-bounding-box"></i> Profile</a></li>
+                <li><a class="dropdown-item" href="<?= URL_ROOT . 'admin/profile' ?>"><i class="bi bi-person-bounding-box"></i> Profile</a></li>
                 <li><a class="dropdown-item" href="<?= URL_ROOT . 'admin/settings' ?>"><i class="bi bi-sliders"></i> Settings</a></li>
                 <li>
                     <hr class="dropdown-divider" />
