@@ -39,6 +39,10 @@ $bolt->router->get("/region/{name}/{id}", [SiteController::class, "region"]);
 $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"]);
 
 
+
+$bolt->router->get("/logout", [AdminController::class, "logout"]);
+
+
 /**
  * Admin Section
  * 
@@ -46,6 +50,11 @@ $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"
 
 $bolt->router->get("/admin", [AdminController::class, "dashboard"]);
 $bolt->router->get("/admin/profile", [AdminController::class, "profile"]);
+$bolt->router->post("/admin/profile", [AdminController::class, "update_profile"]);
+$bolt->router->get("/admin/change-password", [AdminController::class, "password"]);
+$bolt->router->post("/admin/change-password", [AdminController::class, "change_password"]);
+$bolt->router->get("/admin/delete-profile", [AdminController::class, "delete_profile"]);
+$bolt->router->post("/admin/delete-profile", [AdminController::class, "delete"]);
 
 $bolt->router->get("/dashboard/login", [AdminAuthController::class, "login_view"]);
 $bolt->router->post("/dashboard/login", [AdminAuthController::class, "login"]);
@@ -55,6 +64,8 @@ $bolt->router->get("/admin/manage-users", [AdminUsersController::class, "manage"
 $bolt->router->post("/admin/view-users", [AdminUsersController::class, "view"]);
 $bolt->router->get("/admin/users/create", [AdminUsersController::class, "create_user"]);
 $bolt->router->post("/admin/users/create", [AdminUsersController::class, "create"]);
+$bolt->router->get("/admin/users/edit/{id}", [AdminUsersController::class, "edit_user"]);
+$bolt->router->post("/admin/users/edit/{id}", [AdminUsersController::class, "edit"]);
 
 /** Categories */
 $bolt->router->get("/admin/manage-categories", [AdminCategoriesController::class, "manage"]);

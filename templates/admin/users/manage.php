@@ -22,7 +22,7 @@
     <div class="col-md-12">
 
         <div class="bg-body-subtle p-2 shadow d-flex justify-content-between align-items-center gap-2">
-            <a href="<?= URL_ROOT . "admin/users/create?ut=file" ?>" class="btn btn-primary btn-sm">Create User</a>
+            <a href="<?= URL_ROOT . "admin/users/create" ?>" class="btn btn-primary btn-sm">Create User</a>
         </div>
 
         <hr>

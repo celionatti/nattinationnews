@@ -11,9 +11,13 @@
  * can be edited, base on what they are called in the layout view
  */
 
+
+use celionatti\Bolt\Forms\BootstrapForm;
+
+
 ?>
 
-<?php $this->setTitle($title ?? "Admin | Admin Profile"); ?>
+<?php $this->setTitle($title ?? "Admin | Change Password - Profile"); ?>
 
 <?php $this->start('header') ?>
 <style>
@@ -109,78 +113,37 @@
     <div class="container pt-3 pt-xl-5">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-lg-4 col-xl-3">
-                <div class="card border p-3 w-100 mb-3">
-                    <!-- Card header -->
-                    <div class="card-header text-center border-bottom">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xl position-relative mb-2">
-                            <img class="avatar-img rounded-circle border border-2 border-white" src="<?= get_image("", "avatar") ?>" alt="">
-                        </div>
-                        <h6 class="mb-0">Jacqueline Miller</h6>
-                        <a href="#" class="text-reset text-primary-hover small">miller@gmail.com</a>
-                    </div>
-
-                    <!-- Card body START -->
-                    <div class="card-body p-0 mt-4">
-                        <!-- Sidebar menu item START -->
-                        <ul class="nav nav-pills-primary-border-start flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="account-projects.html"><i class="bi bi-briefcase fa-fw me-2"></i>My projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="account-delete.html"><i class="bi bi-trash fa-fw me-2"></i>Delete profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-danger" href="#"><i class="fas fa-sign-out-alt fa-fw me-2"></i>Sign Out</a>
-                            </li>
-                        </ul>
-                        <!-- Sidebar menu item END -->
-                    </div>
-                    <!-- Card body END -->
-                </div>
-            </div>
+            <?= partials("profile-sidebar") ?>
 
             <!-- Main content -->
             <div class="col-lg-8 col-xl-9 ps-lg-4 ps-xl-6">
                 <!-- Update password -->
-                <form>
-                    <div class="card bg-transparent p-0">
-                        <!-- Card header -->
-                        <div class="card-header bg-transparent border-bottom px-0">
-                            <h6 class="mb-0">Update password</h6>
-                        </div>
+                <?= BootstrapForm::openForm("", 'POST', 'multipart/form-data') ?>
+                <?= BootstrapForm::csrfField() ?>
+                <div class="card bg-transparent p-0 px-3 py-1">
+                    <!-- Card header -->
+                    <div class="card-header bg-transparent border-bottom px-0">
+                        <h6 class="mb-0">Update password</h6>
+                    </div>
 
-                        <!-- Card body -->
-                        <div class="card-body px-0">
-                            <!-- Current password -->
-                            <div class="mb-3">
-                                <label class="form-label">Current password</label>
-                                <input class="form-control" type="password" placeholder="Enter current password">
-                            </div>
-                            <!-- New password -->
-                            <div class="mb-3">
-                                <label class="form-label">Enter new password</label>
+                    <!-- Card body -->
+                    <div class="card-body px-0">
+                        <!-- Current password -->
+                        <?= BootstrapForm::inputField("Current Password", "old_password", old_value("old_password", ''), ['class' => 'form-control'], ['class' => 'col-md-12 mb-3'], $errors) ?>
 
-                                <div class="position-relative">
-                                    <input type="password" class="form-control fakepassword pe-6" id="psw-input" placeholder="Enter your password">
-                                    <span class="position-absolute top-50 end-0 translate-middle-y p-0 me-2">
-                                        <i class="fakepasswordicon fas fa-eye-slash cursor-pointer p-2"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- Confirm password -->
-                            <div>
-                                <label class="form-label">Confirm new password</label>
-                                <input class="form-control" type="password" placeholder="Enter new password">
-                            </div>
-                            <!-- Button -->
-                            <div class="d-flex justify-content-end mt-4">
-                                <button type="button" class="btn btn-primary mb-0">Change password</button>
-                            </div>
+                        <!-- New password -->
+                        <?= BootstrapForm::inputField("Enter New Password", "password", old_value("password", ''), ['class' => 'form-control'], ['class' => 'col-md-12 mb-3'], $errors) ?>
+
+                        <!-- Confirm password -->
+                        <?= BootstrapForm::inputField("Confirm Password", "confirm_password", old_value("confirm_password", ''), ['class' => 'form-control'], ['class' => 'col-md-12 mb-3'], $errors) ?>
+
+                        <!-- Button -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary mb-0">Change password</button>
                         </div>
                     </div>
-                </form>
+                </div>
+                <?= BootstrapForm::closeForm() ?>
 
             </div>
         </div>

@@ -86,7 +86,7 @@ class AdminUsersController extends Controller
                     <td class="text-capitalize">' . userVerification($row->is_verified) . '</td>
                     <td class="text-capitalize">' . userBlocked($row->is_blocked) . '</td>
                     <td>
-                    <a href="' . URL_ROOT . "admin/users/edit/{$row->user_id}?ut=file" . '" title="Edit User" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
+                    <a href="' . URL_ROOT . "admin/users/edit/{$row->user_id}" . '" title="Edit User" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
 
                     <a href="' . URL_ROOT . "admin/users/delete/{$row->user_id}" . '" title="Delete User" class="btn btn-sm btn-outline-danger px-3 py-1 my-1"><i class="bi bi-trash"></i></a>
                     </td></tr>
@@ -122,7 +122,6 @@ class AdminUsersController extends Controller
                 'journalist' => 'Journalist',
                 'admin' => 'Admin',
             ],
-            'upload_type' => $request->get('ut'),
         ];
 
         // Remove the article data from the session after it has been retrieved
@@ -149,6 +148,7 @@ class AdminUsersController extends Controller
                 'token',
                 'is_verified',
                 'is_blocked',
+                'file',
             ]);
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -161,7 +161,21 @@ class AdminUsersController extends Controller
 
             $users->setIsInsertionScenario('create'); // Set insertion scenario flag
 
+            $uploader = new Upload("uploads/files");
+            $uploader->setAllowedFileTypes(ALLOWED_DOC_FILE_UPLOAD);
+            $uploader->setOverwriteExisting(true);
+
             if ($users->validate($data)) {
+                $file = $uploader->uploadFile('file');
+
+                if (isset($file['error']) || !empty($file['file'])) {
+                    FlashMessage::setMessage($file['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
+                }
+
+                if ($file['success']) {
+                    $data['file'] = $file['path'];
+                }
+
                 if ($users->insert($data)) {
                     toast("success", "User Created Successfully");
                     redirect(URL_ROOT . "admin/manage-users");
@@ -173,5 +187,107 @@ class AdminUsersController extends Controller
         toast("error", "User Creation Failed!");
         Bolt::$bolt->session->setFormMessage($users->getErrors());
         redirect(URL_ROOT . "admin/users/create");
+    }
+
+    public function edit_user(Request $request)
+    {
+        $id = $request->getParameter("id");
+
+        $users = new Users();
+
+        $user = $users->findOne(['user_id' => $id]);
+
+        if (!$user) {
+            toast("info", "User Not Found!");
+            redirect(URL_ROOT . "admin/manage-users");
+        }
+
+        $view = [
+            'errors' => Bolt::$bolt->session->getFormMessage(),
+            'user' => $user,
+            'title' => 'Edit User',
+            'navigations' => [
+                ['label' => 'Dashboard', 'url' => 'admin'],
+                ['label' => 'Manage Users', 'url' => 'admin/manage-users'],
+                ['label' => 'Edit User', 'url' => ''],
+            ],
+            'genderOpts' => [
+                'male' => 'Male',
+                'female' => 'Female',
+                'others' => 'Others',
+            ],
+            'roleOpts' => [
+                'editor' => 'Editor',
+                'manager' => 'Manager',
+                'journalist' => 'Journalist',
+                'admin' => 'Admin',
+            ],
+        ];
+
+        // Remove the article data from the session after it has been retrieved
+        Bolt::$bolt->session->unsetArray(['user_data']);
+
+        $this->view->render("admin/users/edit", $view);
+    }
+
+    public function edit(Request $request)
+    {
+        if ($request->isPost()) {
+            $id = $request->getParameter("id");
+
+            $users = new Users();
+
+            $user = $users->findOne(['user_id' => $id]);
+
+            if (!$user) {
+                toast("info", "User Not Found!");
+                redirect(URL_ROOT . "admin/manage-users");
+            }
+
+            $users->updatable([
+                'surname',
+                'name',
+                'email',
+                'phone',
+                'gender',
+                'role',
+                'file',
+            ]);
+            $data = $request->getBody();
+            validate_csrf_token($data);
+
+            $data['file'] = $user->file;
+            $users->setIsInsertionScenario('user-edit'); // Set insertion scenario flag
+            $uploader = new Upload("uploads/files");
+            $uploader->setAllowedFileTypes(ALLOWED_DOC_FILE_UPLOAD);
+            $uploader->setOverwriteExisting(true);
+
+            if ($users->validate($data)) {
+                if (!empty($_FILES['file']['name'])) {
+                    $file = $uploader->uploadFile('file');
+
+                    if (isset($avatar['error']) || !empty($file['file'])) {
+                        FlashMessage::setMessage($file['error'], FlashMessage::WARNING, ['role' => 'alert', 'style' => 'z-index: 9999;']);
+                    }
+
+                    if ($file['success']) {
+                        if ($user->file !== null) {
+                            $uploader->deleteFile($user->file);
+                        }
+                        $data['file'] = $file['path'];
+                    }
+                }
+
+                if ($users->updateBy($data, ['user_id' => $id])) {
+                    toast("success", "User Updated Successfully");
+                    redirect(URL_ROOT . "admin/manage-users");
+                }
+            } else {
+                storeSessionData('user_data', $data);
+            }
+        }
+        toast("info", "Nothing to Update - No changes made!");
+        Bolt::$bolt->session->setFormMessage($users->getErrors());
+        redirect(URL_ROOT . "admin/manage-users");
     }
 }

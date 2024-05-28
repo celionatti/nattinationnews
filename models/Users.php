@@ -64,6 +64,44 @@ class Users extends DatabaseModel
                     ['rule' => 'securePassword', 'message' => 'Password is not strong enough.'],
                 ],
             ],
+            'edit' => [
+                'surname' => [
+                    ['rule' => 'required', 'message' => 'Surname is required.'],
+                    ['rule' => 'maxLength', 'params' => [15], 'message' => 'Surname is a minimum of 20 characters.'],
+                    ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
+                ],
+                'name' => [
+                    ['rule' => 'required', 'message' => 'Othername is required.'],
+                    ['rule' => 'maxLength', 'params' => [15], 'message' => 'Othername is a minimum of 20 characters.'],
+                    ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
+                ],
+                'email' => [
+                    ['rule' => 'required', 'message' => 'Email is required.'],
+                    ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
+                ],
+                'phone' => [
+                    ['rule' => 'required', 'message' => 'Phone Number is Required.'],
+                    ['rule' => 'numeric', 'message' => 'Only Numbers are allowed.'],
+                ],
+                'gender' => [
+                    ['rule' => 'required', 'message' => 'Gender is Required.'],
+                ],
+                'birth_date' => [
+                    ['rule' => 'required', 'message' => 'Date Of Birth is Required.'],
+                ],
+                'bio' => [
+                    ['rule' => 'required', 'message' => 'Bio is Required.'],
+                ],
+                'facebook' => [
+                    ['rule' => 'required', 'message' => 'Facebook URL is Required.'],
+                ],
+                'twitter' => [
+                    ['rule' => 'required', 'message' => 'Twitter URL is Required.'],
+                ],
+                'instagram' => [
+                    ['rule' => 'required', 'message' => 'Instagram URL is Required.'],
+                ],
+            ],
             'login' => [
                 'email' => [
                     ['rule' => 'required', 'message' => 'Email is required.'],
@@ -85,17 +123,30 @@ class Users extends DatabaseModel
                     ['rule' => 'required', 'message' => 'Confirm Password is Required.'],
                 ],
             ],
-            'token-verification' => [
-                'token' => [
-                    ['rule' => 'required', 'message' => 'Token is required']
+            'user-edit' => [
+                'surname' => [
+                    ['rule' => 'required', 'message' => 'Surname is required.'],
+                    ['rule' => 'maxLength', 'params' => [15], 'message' => 'Surname is a minimum of 20 characters.'],
+                    ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
                 ],
-                'token_expiration' => [
-                    ['rule' => 'required', 'message' => 'Token Expiration is required']
+                'name' => [
+                    ['rule' => 'required', 'message' => 'Othername is required.'],
+                    ['rule' => 'maxLength', 'params' => [15], 'message' => 'Othername is a minimum of 20 characters.'],
+                    ['rule' => 'alpha', 'message' => 'Only Alphabet characters are allowed.'],
                 ],
-            ],
-            'is-verified' => [
-                'is_verified' => [
-                    ['rule' => 'required', 'message' => 'Is Verified is required']
+                'email' => [
+                    ['rule' => 'required', 'message' => 'Email is required.'],
+                    ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
+                ],
+                'phone' => [
+                    ['rule' => 'required', 'message' => 'Phone Number is Required.'],
+                    ['rule' => 'numeric', 'message' => 'Only Numbers are allowed.'],
+                ],
+                'gender' => [
+                    ['rule' => 'required', 'message' => 'Gender is Required.'],
+                ],
+                'role' => [
+                    ['rule' => 'required', 'message' => 'Role is Required.'],
                 ],
             ],
         ];

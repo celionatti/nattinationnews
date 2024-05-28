@@ -126,6 +126,7 @@ function userRoleType($type)
         'guest' => ['color' => 'lightblue', 'weight' => 700, 'label' => 'Guest'],
         'editor' => ['color' => 'green', 'weight' => 700, 'label' => 'Editor'],
         'manager' => ['color' => 'orange', 'weight' => 700, 'label' => 'Manager'],
+        'journalist' => ['color' => 'crimson', 'weight' => 700, 'label' => 'Journalist'],
     ];
 
     if (array_key_exists($type, $typeStyles)) {
@@ -481,11 +482,24 @@ function generateToken($length = 64)
 }
 
 // Define a function to check the user role
-function hasRole($user, $roles) {
+function hasRole($user, $roles)
+{
     return in_array($user->role, $roles);
 }
 
 // Define a function to check the user ID
-function isCurrentUser($currentUser, $userId) {
+function isCurrentUser($currentUser, $userId)
+{
     return !is_null($userId) && $currentUser->user_id === $userId;
+}
+
+function compressToZip($source, $destination)
+{
+    $zip = new ZipArchive();
+    if ($zip->open($destination, ZipArchive::CREATE) !== TRUE) {
+        return false;
+    }
+    $zip->addFile($source, basename($source));
+    $zip->close();
+    return $destination;
 }
