@@ -368,4 +368,35 @@ class SiteController extends Controller
 
         $this->view->render("articles/region", $view);
     }
+
+    public function article_tags(Request $request)
+    {
+        $tag = $request->getParameter("tag");
+
+        $articles = new Articles();
+
+        $article = $articles->rawQueryPagination(['status' => 'publish'], "SELECT * FROM articles WHERE tags LIKE '%$tag%' AND status = :status", ['status' => 'publish'], null, 10, "created_at");
+
+        if(!$article) {
+            toast("info", "Article Not Found!.");
+            redirect(URL_ROOT);
+        }
+
+        // Create a CustomPaginator instance
+        $paginator = new NattiPagination($article['total'], $article['perPage'], $article['page']);
+
+        // Get the current URL (you may need to adjust this based on your framework)
+        $currentUrl = URL_ROOT . "article-tags/{$tag}";
+
+        // Generate pagination links
+        $paginationLinks = $paginator->generateBootstrapDefLinks($currentUrl);
+
+        $view = [
+            'articles' => $article['data'],
+            'pagination' => $paginationLinks,
+            'tag' => $tag,
+        ];
+
+        $this->view->render("articles/tags", $view);
+    }
 }

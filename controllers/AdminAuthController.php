@@ -76,7 +76,7 @@ class AdminAuthController extends Controller
         if ($this->currentUser = BoltAuthentication::currentUser()) {
             redirect("/");
         }
-        
+
         $view = [
             'errors' => Bolt::$bolt->session->getFormMessage(),
             'user' => retrieveSessionData('user_data'),
@@ -97,9 +97,9 @@ class AdminAuthController extends Controller
                 // Display a message indicating that the account is blocked.
                 FlashMessage::setMessage("Logout Successfully.!", FlashMessage::SUCCESS, ['role' => 'alert', 'style' => 'z-index: 9999;']);
 
-                redirect("/");
+                redirect(URL_ROOT . "dashboard/login");
             }
-            redirect("/");
+            redirect(URL_ROOT . "dashboard/login");
         }
     }
 }

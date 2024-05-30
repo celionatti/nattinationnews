@@ -54,7 +54,7 @@ $token = generateToken();
                     <?php foreach ($trends as $i => $trend) : ?>
                         <?php if ($i !== 0) : ?>
                             <div class="latest_style_2_item">
-                                <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$trend->article_id}/{$token}" ?>"><img src="<?= get_image($trend->thumbnail) ?>" alt="<?= $trend->thumbnail_caption ?>" /></a></figure>
+                                <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$trend->article_id}/{$token}" ?>"><img src="<?= get_image($trend->thumbnail) ?>" alt="<?= $trend->thumbnail_caption ?>" class="img-fluid card-img-size" /></a></figure>
                                 <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$trend->article_id}/{$token}" ?>"><?= $trend->title ?></a></h3>
                                 <div class="post_meta">
                                     <span class="meta_date"><?= date("d M, Y", strtotime($trend->created_at)) ?></span>

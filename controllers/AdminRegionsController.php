@@ -27,7 +27,7 @@ class AdminRegionsController extends Controller
     {
         $this->view->setLayout("admin");
 
-        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+        if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
         }
     }
@@ -47,6 +47,7 @@ class AdminRegionsController extends Controller
 
     public function create_region(Request $request)
     {
+        $this->access();
         $view = [
             'errors' => Bolt::$bolt->session->getFormMessage(),
             'region' => retrieveSessionData('region_data'),
@@ -69,6 +70,7 @@ class AdminRegionsController extends Controller
 
     public function create(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $regions = new Regions();
 
@@ -100,6 +102,7 @@ class AdminRegionsController extends Controller
 
     public function edit_region(Request $request)
     {
+        $this->access();
         $id = $request->getParameter("id");
 
         $regions = new Regions();
@@ -131,6 +134,7 @@ class AdminRegionsController extends Controller
 
     public function edit(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $id = $request->getParameter("id");
 
@@ -171,6 +175,7 @@ class AdminRegionsController extends Controller
 
     public function delete_region(Request $request)
     {
+        $this->access();
         $id = $request->getParameter("id");
 
         $regions = new Regions();
@@ -194,6 +199,7 @@ class AdminRegionsController extends Controller
 
     public function delete(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -261,6 +267,14 @@ class AdminRegionsController extends Controller
             } else {
                 return '<h3 class="text-center text-secondary mt-5">:( No region present in the database!</h3>';
             }
+        }
+    }
+
+    private function access()
+    {
+        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+            toast("info", "PERMISSION NOT GRANTED!");
+            redirect(URL_ROOT . "admin", 401);
         }
     }
 }

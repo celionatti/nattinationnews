@@ -40,9 +40,6 @@ $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"
 
 
 
-$bolt->router->get("/logout", [AdminController::class, "logout"]);
-
-
 /**
  * Admin Section
  * 
@@ -59,6 +56,8 @@ $bolt->router->post("/admin/delete-profile", [AdminController::class, "delete"])
 $bolt->router->get("/dashboard/login", [AdminAuthController::class, "login_view"]);
 $bolt->router->post("/dashboard/login", [AdminAuthController::class, "login"]);
 
+$bolt->router->get("/logout", [AdminAuthController::class, "logout"]);
+
 /** Users */
 $bolt->router->get("/admin/manage-users", [AdminUsersController::class, "manage"]);
 $bolt->router->post("/admin/view-users", [AdminUsersController::class, "view"]);
@@ -66,6 +65,13 @@ $bolt->router->get("/admin/users/create", [AdminUsersController::class, "create_
 $bolt->router->post("/admin/users/create", [AdminUsersController::class, "create"]);
 $bolt->router->get("/admin/users/edit/{id}", [AdminUsersController::class, "edit_user"]);
 $bolt->router->post("/admin/users/edit/{id}", [AdminUsersController::class, "edit"]);
+$bolt->router->get("/admin/users/delete/{id}", [AdminUsersController::class, "delete_user"]);
+$bolt->router->post("/admin/users/delete/{id}", [AdminUsersController::class, "delete"]);
+
+$bolt->router->get("/verify-user/{id}", [AdminUsersController::class, "verify_user"]);
+$bolt->router->get("/unverify-user/{id}", [AdminUsersController::class, "unverify_user"]);
+$bolt->router->get("/block-user/{id}", [AdminUsersController::class, "block_user"]);
+$bolt->router->get("/unblock-user/{id}", [AdminUsersController::class, "unblock_user"]);
 
 /** Categories */
 $bolt->router->get("/admin/manage-categories", [AdminCategoriesController::class, "manage"]);

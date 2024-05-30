@@ -18,7 +18,6 @@ use celionatti\Bolt\Bolt;
 use PhpStrike\models\Users;
 use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
-use celionatti\Bolt\Helpers\Image;
 use celionatti\Bolt\Helpers\Upload;
 use celionatti\Bolt\Helpers\FlashMessages\FlashMessage;
 
@@ -32,7 +31,7 @@ class AdminUsersController extends Controller
 
         $this->currentUser = user();
 
-        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+        if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
         }
     }
@@ -102,6 +101,7 @@ class AdminUsersController extends Controller
 
     public function create_user(Request $request)
     {
+        $this->access();
         $view = [
             'errors' => Bolt::$bolt->session->getFormMessage(),
             'user' => retrieveSessionData('user_data'),
@@ -132,6 +132,7 @@ class AdminUsersController extends Controller
 
     public function create(Request $request)
     {
+        $this->access();
         $users = new Users();
 
         if ($request->isPost()) {
@@ -191,6 +192,7 @@ class AdminUsersController extends Controller
 
     public function edit_user(Request $request)
     {
+        $this->access();
         $id = $request->getParameter("id");
 
         $users = new Users();
@@ -232,6 +234,7 @@ class AdminUsersController extends Controller
 
     public function edit(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $id = $request->getParameter("id");
 
@@ -289,5 +292,205 @@ class AdminUsersController extends Controller
         toast("info", "Nothing to Update - No changes made!");
         Bolt::$bolt->session->setFormMessage($users->getErrors());
         redirect(URL_ROOT . "admin/manage-users");
+    }
+
+    public function delete_user(Request $request)
+    {
+        $this->access();
+
+        $id = $request->getParameter("id");
+
+        $users = new Users();
+
+        $user = $users->findOne([
+            'user_id' => $id,
+        ]);
+
+        $view = [
+            'errors' => Bolt::$bolt->session->getFormMessage(),
+            'user' => $user,
+            'title' => 'Delete User',
+            'navigations' => [
+                ['label' => 'Dashboard', 'url' => 'admin'],
+                ['label' => 'Manage Users', 'url' => 'admin/manage-users'],
+                ['label' => 'Delete User', 'url' => ''],
+            ],
+        ];
+
+        // Remove the article data from the session after it has been retrieved
+        Bolt::$bolt->session->unsetArray(['user_data']);
+
+        $this->view->render("admin/users/delete", $view);
+    }
+
+    public function delete(Request $request)
+    {
+        $this->access();
+
+        if ($request->isPost()) {
+            $id = $request->getParameter("id");
+            if ($this->currentUser->user_id !== $id) {
+
+                $users = new Users();
+
+                $user = $users->findOne(['user_id' => $id]);
+
+                if (!$user) {
+                    toast("info", "User Not Found!");
+                    redirect(URL_ROOT . "admin/manage-users");
+                }
+
+                $data = $request->getBody();
+                validate_csrf_token($data);
+
+                if ($users->deleteBy(['user_id' => $id])) {
+                    toast("success", "Account Deleted Successfully!");
+                    redirect(URL_ROOT . "admin/manage-users");
+                }
+                toast("error", "Delete Process Failed!");
+                redirect(URL_ROOT . "admin/manage-users");
+            }
+            toast("info", "You can't delete your own account!");
+            redirect(URL_ROOT . "admin/manage-users");
+        }
+    }
+
+    public function verify_user(Request $request)
+    {
+        $this->access();
+
+        $id = $request->getParameter("id");
+
+        $users = new Users();
+
+        $user = $users->findOne(['user_id' => $id]);
+
+        if (!$user) {
+            toast('info', "User Not Found!");
+            redirect(URL_ROOT . 'admin/manage-users');
+        }
+
+        if (!is_null($user->token)) {
+            $users->updatable([
+                'is_verified',
+                'token',
+            ]);
+
+            $data = [
+                'is_verified' => 1,
+                'token' => null,
+            ];
+
+            if ($users->updateBy($data, ['user_id' => $id])) {
+                toast("success", "User Verified Successfully!");
+                redirect(URL_ROOT . "admin/manage-users");
+            }
+        }
+        toast("error", "Failure on Verification process!");
+        redirect(URL_ROOT . "admin/manage-users");
+    }
+
+    public function unverify_user(Request $request)
+    {
+        $this->access();
+        $id = $request->getParameter("id");
+
+        $users = new Users();
+
+        $user = $users->findOne(['user_id' => $id]);
+
+        if (!$user) {
+            toast('info', "User Not Found!");
+            redirect(URL_ROOT . 'admin/manage-users');
+        }
+
+        if (is_null($user->token)) {
+            $users->updatable([
+                'is_verified',
+                'token',
+            ]);
+
+            $data = [
+                'is_verified' => 0,
+                'token' => generateToken(),
+            ];
+
+            if ($users->updateBy($data, ['user_id' => $id])) {
+                toast("success", "User Unverified Successfully!");
+                redirect(URL_ROOT . "admin/manage-users");
+            }
+        }
+        toast("error", "Failure on Verification process!");
+        redirect(URL_ROOT . "admin/manage-users");
+    }
+
+    public function block_user(Request $request)
+    {
+        $this->access();
+        $id = $request->getParameter("id");
+
+        $users = new Users();
+
+        $user = $users->findOne(['user_id' => $id]);
+
+        if (!$user) {
+            toast('info', "User Not Found!");
+            redirect(URL_ROOT . 'admin/manage-users');
+        }
+
+        $users->updatable([
+            'is_blocked',
+        ]);
+
+        $data = [
+            'is_blocked' => 1,
+        ];
+
+        if ($users->updateBy($data, ['user_id' => $id])) {
+            toast("success", "User Blocked Successfully!");
+            redirect(URL_ROOT . "admin/manage-users");
+        }
+
+        toast("error", "Failure on Blocking process!");
+        redirect(URL_ROOT . "admin/manage-users");
+    }
+
+    public function unblock_user(Request $request)
+    {
+        $this->access();
+        $id = $request->getParameter("id");
+
+        $users = new Users();
+
+        $user = $users->findOne(['user_id' => $id]);
+
+        if (!$user) {
+            toast('info', "User Not Found!");
+            redirect(URL_ROOT . 'admin/manage-users');
+        }
+
+        $users->updatable([
+            'is_blocked',
+        ]);
+
+        $data = [
+            'is_blocked' => 0,
+        ];
+
+        if ($users->updateBy($data, ['user_id' => $id])) {
+            toast("success", "User Unblocked Successfully!");
+            redirect(URL_ROOT . "admin/manage-users");
+        }
+
+        toast("error", "Failure on Blocking process!");
+        redirect(URL_ROOT . "admin/manage-users");
+    }
+
+    private function access()
+    {
+        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+            toast("info", "PERMISSION NOT GRANTED!");
+            redirect(URL_ROOT . "admin", 401);
+        }
     }
 }

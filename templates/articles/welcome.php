@@ -16,6 +16,15 @@ $token = generateToken();
 
 <?php $this->setTitle($title ?? "Home"); ?>
 
+<?php $this->start('header') ?>
+<style>
+    :root {
+        --bs-body-bg: transparent;
+        /* Default background color */
+    }
+</style>
+<?php $this->end() ?>
+
 <?php $this->start('content') ?>
 
 <?php if ($editorsPick) : ?>
@@ -27,7 +36,7 @@ $token = generateToken();
                         <div class="item px-2">
                             <div class="alith_latest_trading_img_position_relative">
                                 <figure class="alith_post_thumb">
-                                    <a href="#"><img src="<?= get_image($pick->thumbnail) ?>" alt="<?= $pick->thumbnail_caption ?>" class="img-fluid" /></a>
+                                    <a href="#"><img src="<?= get_image($pick->thumbnail) ?>" alt="<?= $pick->thumbnail_caption ?>" class="img-fluid small-img-size" /></a>
                                 </figure>
                                 <div class="alith_post_title_small">
                                     <a href="<?= URL_ROOT . "article/{$pick->article_id}/{$token}" ?>"><strong><?= htmlspecialchars_decode(nl2br($pick->title)) ?></strong></a>
@@ -63,7 +72,7 @@ $token = generateToken();
                                             <div class="col-md-4 col-sm-12">
                                                 <div class="post_meta_center animate-box">
                                                     <p><a href="<?= URL_ROOT . "author/{$featured->user_id}" ?>"><img src="<?= get_image('', 'avatar') ?>" alt="author details" style="width:60px;" /></a></p>
-                                                    <p><a class='author' href="<?= URL_ROOT . "author/{$featured->user_id}" ?>"><strong>Steven Job</strong></a></p>
+                                                    <p><a class='author' href="<?= URL_ROOT . "author/{$featured->user_id}" ?>"><strong class="text-capitalize"><?= getCombinedData(getArticleUser($featured->user_id), "surname", "name") ?></strong></a></p>
                                                     <span class="post_meta_date"><?= date("d M, Y", strtotime($featured->created_at)) ?></span>
                                                 </div>
                                             </div>
@@ -86,13 +95,13 @@ $token = generateToken();
                             <?php foreach ($recentArticles as $recentArticle) : ?>
                                 <article class="row section_margin animate-box">
                                     <div class="col-md-3 animate-box">
-                                        <figure class="alith_news_img"><a href='/single'><img src="<?= get_image($recentArticle->thumbnail) ?>" alt="<?= $recentArticle->thumbnail_caption ?>" /></a></figure>
+                                        <figure class="alith_news_img"><a href='/single'><img src="<?= get_image($recentArticle->thumbnail) ?>" alt="<?= $recentArticle->thumbnail_caption ?>" class="img-fluid img-size" /></a></figure>
                                     </div>
                                     <div class="col-md-9 animate-box">
                                         <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$recentArticle->article_id}/{$token}" ?>"><?= $recentArticle->title ?></a></h3>
                                         <div class="post_meta">
                                             <a class='meta_author_avatar' href="<?= URL_ROOT . "author/{$recentArticle->user_id}" ?>"><img src="<?= get_image('', 'avatar') ?>" alt="<?= getCombinedData(getArticleUser($recentArticle->user_id), "surname", "name") ?>" /></a>
-                                            <span class="meta_author_name"><a class='author' href="<?= URL_ROOT . "author/{$recentArticle->user_id}" ?>"><?= getCombinedData(getArticleUser($recentArticle->user_id), "surname", "name") ?></a></span>
+                                            <span class="meta_author_name text-capitalize"><a class='author' href="<?= URL_ROOT . "author/{$recentArticle->user_id}" ?>"><?= getCombinedData(getArticleUser($recentArticle->user_id), "surname", "name") ?></a></span>
                                             <span class="meta_categories"><?= displayTags($recentArticle->tags) ?></span>
                                             <span class="meta_date"><?= date("d M, Y", strtotime($recentArticle->created_at)) ?></span>
                                         </div>

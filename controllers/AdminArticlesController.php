@@ -35,7 +35,7 @@ class AdminArticlesController extends Controller
 
         $this->currentUser = user();
 
-        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+        if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
         }
     }
@@ -860,6 +860,14 @@ class AdminArticlesController extends Controller
             } else {
                 echo 'Image not found or could not be deleted.';
             }
+        }
+    }
+
+    private function access()
+    {
+        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+            toast("info", "PERMISSION NOT GRANTED!");
+            redirect(URL_ROOT . "admin", 401);
         }
     }
 }

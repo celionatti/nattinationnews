@@ -18,7 +18,6 @@ use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
 use celionatti\Bolt\Helpers\Image;
 use celionatti\Bolt\Helpers\Upload;
-use celionatti\Bolt\Authentication\BoltAuthentication;
 use celionatti\Bolt\Helpers\FlashMessages\FlashMessage;
 
 class AdminController extends Controller
@@ -31,7 +30,7 @@ class AdminController extends Controller
 
         $this->currentUser = user();
 
-        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+        if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
         }
     }
@@ -211,20 +210,5 @@ class AdminController extends Controller
         toast("error", "Change of Password Falied!");
         Bolt::$bolt->session->setFormMessage($users->getErrors());
         redirect(URL_ROOT . "admin/change-password");
-    }
-
-    public function logout(Request $request)
-    {
-        if ($request->isGet()) {
-            $auth = new BoltAuthentication();
-
-            if ($auth->logout()) {
-                // Display a message indicating that the account is blocked.
-                FlashMessage::setMessage("Logout Successfully.!", FlashMessage::SUCCESS, ['role' => 'alert', 'style' => 'z-index: 9999;']);
-
-                redirect("/");
-            }
-            redirect("/");
-        }
     }
 }

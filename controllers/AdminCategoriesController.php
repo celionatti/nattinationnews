@@ -26,7 +26,7 @@ class AdminCategoriesController extends Controller
     {
         $this->view->setLayout("admin");
 
-        if (!hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
+        if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
         }
     }
@@ -85,6 +85,7 @@ class AdminCategoriesController extends Controller
 
     public function create(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $categories = new Categories();
 
@@ -118,6 +119,7 @@ class AdminCategoriesController extends Controller
 
     public function edit_category(Request $request)
     {
+        $this->access();
         $id = $request->getParameter("id");
 
         $categories = new Categories();
@@ -164,6 +166,7 @@ class AdminCategoriesController extends Controller
 
     public function edit(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $id = $request->getParameter("id");
 
@@ -206,6 +209,7 @@ class AdminCategoriesController extends Controller
 
     public function delete_category(Request $request)
     {
+        $this->access();
         $id = $request->getParameter("id");
 
         $categories = new Categories();
@@ -229,6 +233,7 @@ class AdminCategoriesController extends Controller
 
     public function delete(Request $request)
     {
+        $this->access();
         if ($request->isPost()) {
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -298,6 +303,14 @@ class AdminCategoriesController extends Controller
             } else {
                 return '<h3 class="text-center text-secondary mt-5">:( No setting present in the database!</h3>';
             }
+        }
+    }
+
+    private function access()
+    {
+        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+            toast("info", "PERMISSION NOT GRANTED!");
+            redirect(URL_ROOT . "admin", 401);
         }
     }
 }

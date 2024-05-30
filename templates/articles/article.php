@@ -17,6 +17,15 @@ $token = generateToken();
 
 <?php $this->setTitle($title ?? "Read Article"); ?>
 
+<?php $this->start('header') ?>
+<style>
+    :root {
+        --bs-body-bg: transparent;
+        /* Default background color */
+    }
+</style>
+<?php $this->end() ?>
+
 <?php $this->start('content') ?>
 
 <div class="container-fluid">
@@ -31,7 +40,7 @@ $token = generateToken();
                                 <h3 class="alith_post_title"><?= htmlspecialchars_decode(nl2br($article->title)) ?></h3>
                                 <div class="post_meta">
                                     <a class='meta_author_avatar' href='/page-author'><img src="<?= get_image("", "avatar") ?>" alt="author details" /></a>
-                                    <span class="meta_author_name"><a class='author' href='/page-author'>Steven Job</a></span>
+                                    <span class="meta_author_name text-capitalize"><a class='author' href='/page-author'><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></span>
                                     <span class="meta_categories"><?= displayTags($article->tags) ?></span>
                                     <span class="meta_date"><?= date("d M, Y", strtotime($article->created_at)) ?></span>
                                 </div>
@@ -69,12 +78,13 @@ $token = generateToken();
                                 <div class="post-author section_margin_40">
                                     <figure class="mx-2 my-4"><a href='/page-author'><img src="<?= get_image("", "avatar") ?>" style="width:95px; height:95px;" class="rounded-circle p-1"></a></figure>
                                     <div class="post-author-info mb-3">
-                                        <h3><a href='/page-author'>Steven Jobs</a></h3>
-                                        <p>Ouch oh alas crud unnecessary invaluable some goodness opposite hello since audacious far barring and absurdly much boa</p>
+                                        <h3 class="text-capitalize"><a href='/page-author'><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></h3>
+                                        <div>
+                                        <?= htmlspecialchars_decode(nl2br(getCombinedData(getArticleUser($article->user_id), "bio"))) ?>
+                                        </div>
                                         <ul>
-                                            <li><a href=""><i class="fa-brands fa-facebook"></i></a></li>
-                                            <li><a href=""><i class="fa-brands fa-x-twitter"></i></a></li>
-                                            <li><a href=""><i class="fa-brands fa-youtube"></i></a></li>
+                                            <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "facebook") ?>"><i class="fa-brands fa-facebook"></i></a></li>
+                                            <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "twitter") ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>

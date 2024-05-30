@@ -105,7 +105,7 @@ function userVerification($status)
 function userBlocked($status)
 {
     $statusStyles = [
-        1 => ['color' => 'green', 'weight' => 700, 'label' => 'Blocked'],
+        1 => ['color' => 'crimson', 'weight' => 700, 'label' => 'Blocked'],
         0 => ['color' => 'tomato', 'weight' => 700, 'label' => 'Not Blocked'],
     ];
 

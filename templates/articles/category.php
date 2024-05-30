@@ -59,7 +59,7 @@ $token = generateToken();
                                         <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$category->article_id}/{$token}" ?>"><?= $category->title ?></a></h3>
                                         <div class="post_meta">
                                             <a class='meta_author_avatar' href="<?= URL_ROOT . "author/{$category->user_id}" ?>"><img src="<?= get_image("", "avatar") ?>" alt="author details" /></a>
-                                            <span class="meta_author_name"><a class='author' href="<?= URL_ROOT . "author/{$category->user_id}" ?>">Steven Job</a></span>
+                                            <span class="meta_author_name text-capitalize"><a class='author' href="<?= URL_ROOT . "author/{$category->user_id}" ?>"><?= getCombinedData(getArticleUser($category->user_id), "surname", "name") ?></a></span>
                                             <span class="meta_date"><?= date("d M, Y", strtotime($category->created_at)) ?></span>
                                         </div>
                                         <p class="alith_post_except"><?= StringUtils::excerpt(htmlspecialchars_decode(nl2br($category->content)), 350) ?></p>

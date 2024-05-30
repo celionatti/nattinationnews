@@ -42,14 +42,38 @@ use celionatti\Bolt\Forms\BootstrapForm;
         <div>
             <h5 class="text-center border-bottom border-info py-2">File Info.</h5>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officia aliquam voluptate enim adipisci neque fuga eligendi incidunt, harum, vitae voluptas obcaecati cumque et deleniti ab ducimus, fugiat explicabo possimus a alias veniam id earum. Assumenda laboriosam accusamus enim ad reiciendis nam natus tempora quam. Nemo natus distinctio veniam optio sapiente.</p>
-            <?php if (!is_null($user->file) && is_null($user->token) && $user->is_verified === 0) : ?>
-                <div class="text-end">
-                    <a href="#" class="btn btn-primary">Verify User</a>
-                </div>
-            <?php endif; ?>
+            <div class="d-flex justify-content-end gap-2">
+                <!-- Verified User -->
+                <?php if (!is_null($user->file) && !is_null($user->token) && $user->is_verified === 0) : ?>
+                    <div class="text-end">
+                        <a href="<?= URL_ROOT . "verify-user/{$user->user_id}" ?>" class="btn btn-primary">Verify User</a>
+                    </div>
+                <?php else : ?>
+                    <div class="text-end">
+                        <a href="<?= URL_ROOT . "unverify-user/{$user->user_id}" ?>" class="btn btn-warning">Unverify User</a>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Blocked User -->
+                <?php if ($user->is_blocked === 0) : ?>
+                    <div class="text-end">
+                        <a href="<?= URL_ROOT . "block-user/{$user->user_id}" ?>" class="btn btn-dark">Block User</a>
+                    </div>
+                <?php else : ?>
+                    <div class="text-end">
+                        <a href="<?= URL_ROOT . "unblock-user/{$user->user_id}" ?>" class="btn btn-secondary">Unblock User</a>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
         <div class="shadow rounded-4">
-            <iframe src="<?= $user->file ?>" style="height:200px;width:235px;object-fit:cover;border-radius: 10px;cursor: pointer;"></iframe>
+            <?php if ($user->file) : ?>
+                <div style="height:200px;width:235px;object-fit:cover;border-radius: 10px;cursor: pointer;" class="d-flex justify-content-center align-items-center text-center">
+                    <h4 class="text-center">File <br> Approved</h4>
+                </div>
+            <?php else : ?>
+                <img src="<?= get_image(); ?>" alt="" class="d-block file-preview" style="height:200px;width:235px;object-fit:cover;border-radius: 10px;cursor: pointer;">
+            <?php endif; ?>
         </div>
     </div>
 

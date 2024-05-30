@@ -59,7 +59,7 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
-            <span class="text-capitalize"><?= getCombinedData(isLoggedIn(), "surname", "othername") ?></span>
+            <span class="text-capitalize"><?= getCombinedData(isLoggedIn(), "surname", "name") ?></span>
         </div>
     </nav>
 </div>
