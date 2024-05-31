@@ -2045,6 +2045,28 @@ form p {
 }
 
 /* ============== */
+.post-img {
+  width: 100%;
+  /* Full width */
+  max-width: 100vw;
+  /* Specific max width */
+  max-height: 800px;
+  /* Specific max height */
+  object-fit: cover;
+  /* Maintain aspect ratio and cover the area */
+}
+
+.post-img-small {
+  width: 100%;
+  /* Full width */
+  max-width: 100vw;
+  /* Specific max width */
+  max-height: 400px;
+  /* Specific max height */
+  object-fit: cover;
+  /* Maintain aspect ratio and cover the area */
+}
+
 .img-size {
   width: 100%;
   /* Full width */
@@ -2087,4 +2109,10 @@ form p {
   /* Specific max height */
   object-fit: cover;
   /* Maintain aspect ratio and cover the area */
+}
+
+.logo-script {
+  font-family: "Tinos", serif !important;
+  font-weight: 400;
+  font-style: italic;
 }

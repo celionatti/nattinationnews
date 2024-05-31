@@ -16,6 +16,15 @@ $token = generateToken();
 
 <?php $this->setTitle($title ?? "Article Tag"); ?>
 
+<?php $this->start('header') ?>
+<style>
+    :root {
+        --bs-body-bg: transparent;
+        /* Default background color */
+    }
+</style>
+<?php $this->end() ?>
+
 <?php $this->start('content') ?>
 
 <div class="container-fluid">
@@ -49,7 +58,7 @@ $token = generateToken();
                                     <article class="col-md-6 animate-box section_margin">
                                         <div class="wrap">
                                             <figure class="alith_news_img">
-                                                <span class="post_meta_categories_label">Politics</span>
+                                                <span class="post_meta_categories_label"><?= stringTags($article->tags) ?></span>
                                                 <a href="<?= URL_ROOT . "article/{$article->article_id}/{$token}" ?>"><img src="<?= get_image($article->thumbnail) ?>" alt="<?= $article->thumbnail_caption ?>" class="img-fluid w-100 rounded-2" style="height:357px;object-fit:cover;" /></a>
                                             </figure>
                                         </div>

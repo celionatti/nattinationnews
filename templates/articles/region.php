@@ -16,6 +16,15 @@ $token = generateToken();
 
 <?php $this->setTitle($title ?? "Region"); ?>
 
+<?php $this->start('header') ?>
+<style>
+    :root {
+        --bs-body-bg: transparent;
+        /* Default background color */
+    }
+</style>
+<?php $this->end() ?>
+
 <?php $this->start('content') ?>
 
 <div class="container-fluid">
@@ -52,8 +61,8 @@ $token = generateToken();
                                     <article class="col-md-6 animate-box section_margin">
                                         <div class="wrap">
                                             <figure class="alith_news_img">
-                                                <span class="post_meta_categories_label">Politics</span>
-                                                <a href="<?= URL_ROOT . "article/{$region->article_id}/{$token}" ?>"><img src="<?= get_image($region->thumbnail) ?>" alt="<?= $region->thumbnail_caption ?>" class="img-fluid w-100 rounded-2" style="height:357px;object-fit:cover;" /></a>
+                                                <span class="post_meta_categories_label"><?= stringTags($region->tags) ?></span>
+                                                <a href="<?= URL_ROOT . "article/{$region->article_id}/{$token}" ?>"><img src="<?= get_image($region->thumbnail) ?>" alt="<?= $region->thumbnail_caption ?>" class="img-fluid post-img-small" /></a>
                                             </figure>
                                         </div>
                                         <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$region->article_id}/{$token}" ?>"><?= $region->title ?></a></h3>

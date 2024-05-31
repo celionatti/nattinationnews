@@ -34,13 +34,13 @@ $token = generateToken();
             <div class="row mt-4">
                 <div class="col-md-8">
                     <article class="section_margin">
-                        <figure class="alith_news_img animate-box"><a><img src="<?= get_image($article->thumbnail) ?>" alt="" class="w-100" style="height:600px; object-fit:contain;" /></a></figure>
+                        <figure class="alith_news_img animate-box"><a><img src="<?= get_image($article->thumbnail) ?>" alt="" class="img-fluid post-img" /></a></figure>
                         <div class="post-content">
                             <div class="single-header">
                                 <h3 class="alith_post_title"><?= htmlspecialchars_decode(nl2br($article->title)) ?></h3>
                                 <div class="post_meta">
-                                    <a class='meta_author_avatar' href='/page-author'><img src="<?= get_image("", "avatar") ?>" alt="author details" /></a>
-                                    <span class="meta_author_name text-capitalize"><a class='author' href='/page-author'><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></span>
+                                    <a class='meta_author_avatar' href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><img src="<?= get_image("", "avatar") ?>" alt="author details" /></a>
+                                    <span class="meta_author_name text-capitalize"><a class='author' href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></span>
                                     <span class="meta_categories"><?= displayTags($article->tags) ?></span>
                                     <span class="meta_date"><?= date("d M, Y", strtotime($article->created_at)) ?></span>
                                 </div>
@@ -76,9 +76,9 @@ $token = generateToken();
                                 </div>
 
                                 <div class="post-author section_margin_40">
-                                    <figure class="mx-2 my-4"><a href='/page-author'><img src="<?= get_image("", "avatar") ?>" style="width:95px; height:95px;" class="rounded-circle p-1"></a></figure>
+                                    <figure class="mx-2 my-4"><a href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><img src="<?= get_image("", "avatar") ?>" style="width:95px; height:95px;" class="rounded-circle p-1"></a></figure>
                                     <div class="post-author-info mb-3">
-                                        <h3 class="text-capitalize"><a href='/page-author'><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></h3>
+                                        <h3 class="text-capitalize"><a href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></h3>
                                         <div>
                                         <?= htmlspecialchars_decode(nl2br(getCombinedData(getArticleUser($article->user_id), "bio"))) ?>
                                         </div>

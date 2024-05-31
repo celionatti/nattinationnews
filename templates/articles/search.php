@@ -16,6 +16,15 @@ $token = generateToken();
 
 <?php $this->setTitle($title ?? "Category"); ?>
 
+<?php $this->start('header') ?>
+<style>
+    :root {
+        --bs-body-bg: transparent;
+        /* Default background color */
+    }
+</style>
+<?php $this->end() ?>
+
 <?php $this->start('content') ?>
 
 <div class="container-fluid">
@@ -46,7 +55,7 @@ $token = generateToken();
                                         <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$article->article_id}/{$token}" ?>"><?= $article->title ?></a></h3>
                                         <div class="post_meta">
                                             <a class='meta_author_avatar' href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><img src="<?= get_image("", "avatar") ?>" alt="author details" /></a>
-                                            <span class="meta_author_name text-capitalize"><a class='author' href='/page-author'><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></span>
+                                            <span class="meta_author_name text-capitalize"><a class='author' href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></span>
                                             <span class="meta_categories"><?= displayTags($article->tags) ?></span>
                                             <span class="meta_date"><?= date("d M, Y", strtotime($article->created_at)) ?></span>
                                         </div>

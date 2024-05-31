@@ -165,6 +165,13 @@ function displayTags($string)
     }
 }
 
+function stringTags($string)
+{
+    $array = explode(',', $string);
+    echo implode(', ', $array);
+}
+
+
 function displayArticleTags($string)
 {
     $array = explode(',', $string);

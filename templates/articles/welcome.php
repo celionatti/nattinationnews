@@ -61,7 +61,7 @@ $token = generateToken();
                             <?php foreach ($featuredArticles as $featured) : ?>
                                 <div class="item">
                                     <figure class="alith_post_thumb_big">
-                                        <span class="post_meta_categories_label">Legal, Blog</span>
+                                        <span class="post_meta_categories_label"><?= stringTags($featured->tags) ?></span>
                                         <a href="<?= URL_ROOT . "article/{$featured->article_id}/{$token}" ?>"><img src="<?= get_image($featured->thumbnail) ?>" alt="<?= $featured->thumbnail_caption ?>" class="img-fluid w-100 rounded-2" style="height:457px;object-fit:cover;" /></a>
                                     </figure>
                                     <h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">

@@ -15,6 +15,10 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
 
     <title>NattiNation Global | <?= $this->getTitle() ?></title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
     <!-- Bootstrap, Font Awesome, Aminate, Owl Carausel, Normalize CSS -->
     <link href="<?= get_stylesheet('bootstrap.min.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?= get_stylesheet('all.min.css') ?>" rel="stylesheet" type="text/css" />

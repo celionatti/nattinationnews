@@ -66,7 +66,7 @@ $token = generateToken();
                     <?php if ($trends[0]) : ?>
                         <div class="latest_style_2_item_first">
                             <figure class="alith_post_thumb_big">
-                                <span class="post_meta_categories_label">Legal, Blog</span>
+                                <span class="post_meta_categories_label"><?= stringTags($trends[0]->tags) ?></span>
                                 <a href="<?= URL_ROOT . "article/{$trends[0]->article_id}/{$token}" ?>"><img src="<?= get_image($trends[0]->thumbnail) ?>" alt="<?= $trends[0]->thumbnail_caption ?>" style="width:100%;" class="img-fluid" /></a>
                             </figure>
                             <h3 class="alith_post_title">

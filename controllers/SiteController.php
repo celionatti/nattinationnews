@@ -399,4 +399,13 @@ class SiteController extends Controller
 
         $this->view->render("articles/tags", $view);
     }
+
+    public function author(Request $request)
+    {
+        $view = [
+            
+        ];
+
+        $this->view->render("articles/author", $view);
+    }
 }
