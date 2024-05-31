@@ -38,6 +38,7 @@ $bolt->router->get("/categories/{name}/{id}", [SiteController::class, "category"
 $bolt->router->get("/region/{name}/{id}", [SiteController::class, "region"]);
 $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"]);
 $bolt->router->get("/author/{id}", [SiteController::class, "author"]);
+$bolt->router->get("/contact", [SiteController::class, "contact"]);
 
 
 

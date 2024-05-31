@@ -402,10 +402,49 @@ class SiteController extends Controller
 
     public function author(Request $request)
     {
+        $author_id = $request->getParameter("id");
+
+        $articles = new Articles();
+        $users = new Users();
+
+        $article = $articles->rawQueryPagination(['status' => 'publish'], "SELECT a.*, u.surname FROM articles a LEFT JOIN users u ON a.user_id = u.user_id WHERE a.status = :status AND a.user_id = :user_id", ['status' => 'publish', 'user_id' => $author_id], null, 10, "created_at");
+
+        $user = $users->findOne(['user_id' => $author_id]);
+
+        if(!$user) {
+            toast("info", "User Not Found!.");
+            redirect(URL_ROOT);
+        }
+
+        if(!$article) {
+            toast("info", "Article Not Found!.");
+            redirect(URL_ROOT);
+        }
+
+        // Create a CustomPaginator instance
+        $paginator = new NattiPagination($article['total'], $article['perPage'], $article['page']);
+
+        // Get the current URL (you may need to adjust this based on your framework)
+        $currentUrl = URL_ROOT . "author/{$author_id}";
+
+        // Generate pagination links
+        $paginationLinks = $paginator->generateBootstrapDefLinks($currentUrl);
+
+        $view = [
+            'user' => $user,
+            'articles' => $article['data'],
+            'pagination' => $paginationLinks,
+        ];
+
+        $this->view->render("articles/author", $view);
+    }
+
+    public function contact(Request $request)
+    {
         $view = [
             
         ];
 
-        $this->view->render("articles/author", $view);
+        $this->view->render("articles/contact", $view);
     }
 }

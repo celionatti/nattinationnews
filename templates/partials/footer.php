@@ -20,10 +20,10 @@
                 <h1 class="logo"><a href="<?= URL_ROOT ?>"><span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION</a></h1>
                 <div class="tagline social">
                     <ul>
-                        <li class="facebook"><a href=""><i class="fa-brands fa-facebook"></i></a></li>
-                        <li class="twitter"><a href=""><i class="fa-brands fa-x-twitter"></i></a></li>
-                        <li class="google-plus"><a href=""><i class="fa-brands fa-youtube"></i></a></li>
-                        <li class="instagram"><a href=""><i class="fa-brands fa-instagram"></i></a></li>
+                        <li class="facebook"><a href="<?= FACEBOOK_LINK ?>"><i class="fa-brands fa-facebook"></i></a></li>
+                        <li class="twitter"><a href="<?= X_LINK ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
+                        <li class="google-plus"><a href="<?= YOUTUBE_LINK ?>"><i class="fa-brands fa-youtube"></i></a></li>
+                        <li class="instagram"><a href="<?= INSTAGRAM_LINK ?>"><i class="fa-brands fa-instagram"></i></a></li>
                     </ul>
                 </div>
             </div>
