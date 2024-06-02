@@ -60,9 +60,6 @@ class Contacts extends DatabaseModel
                     ['rule' => 'required', 'message' => 'Value is Required.'],
                     ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
                 ],
-                'subject' => [
-                    ['rule' => 'required', 'message' => 'Value is Required.']
-                ],
                 'message' => [
                     ['rule' => 'required', 'message' => 'Value is Required.']
                 ],
@@ -75,9 +72,6 @@ class Contacts extends DatabaseModel
                 'email' => [
                     ['rule' => 'required', 'message' => 'Value is Required.'],
                     ['rule' => 'email', 'message' => 'Email must be a valid email address.'],
-                ],
-                'subject' => [
-                    ['rule' => 'required', 'message' => 'Value is Required.']
                 ],
                 'message' => [
                     ['rule' => 'required', 'message' => 'Value is Required.']

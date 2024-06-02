@@ -310,7 +310,7 @@ class SiteController extends Controller
 
         $categoryDetails = $categoryModel->findOne(['category_id' => $id]);
 
-        if(!$categories) {
+        if (!$categories) {
             toast("info", "Category Not Found!.");
             redirect(URL_ROOT);
         }
@@ -346,7 +346,7 @@ class SiteController extends Controller
 
         $regionDetails = $regionModel->findOne(['region_id' => $id]);
 
-        if(!$regions) {
+        if (!$regions) {
             toast("info", "Region Not Found!.");
             redirect(URL_ROOT);
         }
@@ -377,7 +377,7 @@ class SiteController extends Controller
 
         $article = $articles->rawQueryPagination(['status' => 'publish'], "SELECT * FROM articles WHERE tags LIKE '%$tag%' AND status = :status", ['status' => 'publish'], null, 10, "created_at");
 
-        if(!$article) {
+        if (!$article) {
             toast("info", "Article Not Found!.");
             redirect(URL_ROOT);
         }
@@ -411,12 +411,12 @@ class SiteController extends Controller
 
         $user = $users->findOne(['user_id' => $author_id]);
 
-        if(!$user) {
+        if (!$user) {
             toast("info", "User Not Found!.");
             redirect(URL_ROOT);
         }
 
-        if(!$article) {
+        if (!$article) {
             toast("info", "Article Not Found!.");
             redirect(URL_ROOT);
         }
@@ -441,10 +441,52 @@ class SiteController extends Controller
 
     public function contact(Request $request)
     {
-        $view = [
-            
-        ];
+        $view = [];
 
         $this->view->render("articles/contact", $view);
+    }
+
+    public function send_message(Request $request)
+    {
+        if ($request->isPost()) {
+            if ($request->post('action') && $request->post('action') === "send-message") {
+                $name = $request->post("name");
+                $email = $request->post("email");
+                $message = $request->post("message");
+                if (empty($name) || empty($email) || empty($message)) {
+                    http_response_code(400); // Bad Request
+                    echo json_encode(['error' => 'All field are Required!']);
+                    exit;
+                }
+
+                $data = [];
+
+                $contacts = new Contacts();
+
+                $contacts->fillable([
+                    'contact_id',
+                    'name',
+                    'email',
+                    'message',
+                ]);
+
+                $data['contact_id'] = generateUuidV4();
+                $data['name'] = $name;
+                $data['email'] = $email;
+                $data['message'] = $message;
+
+                $contacts->setIsInsertionScenario("create");
+
+                if ($contacts->validate($data)) {
+                    if ($contacts->insert($data)) {
+                        $this->json_response(['message' => 'Message Sent Successfully!', 'success' => true]);
+                    }
+                } else {
+                    storeSessionData('contact_data', $data);
+                }
+            }
+        }
+        http_response_code(400); // Bad Request
+        echo json_encode(['error' => 'Something went wrong!']);
     }
 }

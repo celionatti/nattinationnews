@@ -57,15 +57,20 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                                         </div>
                                         <div class="col-md-6">
                                             <h2>Get in touch</h2>
-                                            <form action="" method="post" id="commentform" class="comment-form" novalidate="">
-                                                <div class="row">
-                                                    <div class="comment-form-author col-sm-12 col-md-6"> <label for="author">Name (*)</label> <input type="text" id="author" name="author" placeholder="Your name *" value="" size="30"></div>
-                                                    <div class="comment-form-email col-sm-12 col-md-6"> <label for="email">Email (*)</label> <input type="email" id="email" name="email" placeholder="Email *" value="" size="30"></div>
-                                                </div>
-                                                <p class="comment-form-comment"><label for="comment">Message</label><textarea id="comment" name="comment" cols="45" rows="8" placeholder="Your message" aria-required="true"></textarea></p>
+                                            <div id="errorMessage" class="bg-danger text-white fw-bold px-3 py-1 text-center" style="display: none;"></div>
+                                            <div id="successMessage" class="bg-success text-white fw-bold px-3 py-1 text-center" style="display: none;"></div>
+                                            <?= BootstrapForm::openForm("", attrs: ['id' => 'commentform', 'class' => 'comment-form']) ?>
+                                            <?= BootstrapForm::csrfField() ?>
+                                            <div class="row">
+                                                <div class="comment-form-author col-sm-12 col-md-6"> <label for="author">Name (*)</label> <input type="text" id="name" name="name" placeholder="Your name *" value="" size="30"></div>
+                                                <div class="comment-form-email col-sm-12 col-md-6"> <label for="email">Email (*)</label> <input type="email" id="email" name="email" placeholder="Email *" value="" size="30"></div>
+                                            </div>
+                                            <p class="comment-form-comment"><label for="comment">Message</label><textarea id="message" name="message" cols="45" rows="8" placeholder="Your message" aria-required="true"></textarea></p>
 
-                                                <p class="form-submit"><input type="submit" name="submit" id="submit" class="submit" value="Send Message"> <input type="hidden" name="comment_post_ID" value="80" id="comment_post_ID"> <input type="hidden" name="comment_parent" id="comment_parent" value="0"></p>
-                                            </form>
+                                            <p class="form-submit">
+                                                <input type="submit" name="submit" id="submit" class="submit" value="Send Message">
+                                            </p>
+                                            <?= BootstrapForm::closeForm() ?>
                                         </div>
                                     </div>
                                 </div>
@@ -82,16 +87,73 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
 
 <?php $this->start("script") ?>
 <script>
-    function initMap() {
-        var mapDiv = document.getElementById('map');
-        var map = new google.maps.Map(mapDiv, {
-            center: {
-                lat: 44.540,
-                lng: -78.546
-            },
-            zoom: 8
+    $(document).ready(function() {
+        $("#commentform").submit(function(e) {
+            e.preventDefault();
+
+            var name = $('#name').val().trim();
+            var email = $('#email').val().trim();
+            var message = $('#message').val().trim();
+            var errorMessage = '';
+
+            if (name === "" || email === "" || message === "") {
+                errorMessage = "All fields are required!";
+            } else if (!validateEmail(email)) {
+                errorMessage = "Invalid email format!";
+            }
+
+            if (errorMessage) {
+                $("#errorMessage").text(errorMessage).show();
+                setTimeout(function() {
+                    $("#errorMessage").fadeOut(); // Ensure this line is being called
+                }, 4000); // 4 seconds (4000 milliseconds)
+                return;
+            }
+
+            $.ajax({
+                url: "<?= URL_ROOT ?>contact",
+                type: "POST",
+                data: {
+                    action: "send-message",
+                    name: name,
+                    email: email,
+                    message: message,
+                },
+                success: function(response) {
+                    if (response.success === true) {
+                        $("#commentform")[0].reset();
+                        // Display the error message on the page
+                        $("#successMessage").text("Message Sent!").show();
+                    }
+                    // Set a timer to hide the error message after 3 seconds
+                    setTimeout(function() {
+                        $("#successMessage").fadeOut(); // Fade out the success message
+                    }, 4000); // 3 seconds (3000 milliseconds)
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage;
+
+                    try {
+                        errorMessage = JSON.parse(xhr.responseText).error; // Try parsing the response as JSON
+                    } catch (e) {
+                        errorMessage = xhr.responseText; // If parsing fails, use the response text as-is
+                    }
+
+                    // Display the error message on the page
+                    $("#errorMessage").text(errorMessage).show();
+
+                    // Set a timer to hide the error message after 3 seconds
+                    setTimeout(function() {
+                        $("#errorMessage").fadeOut(); // Fade out the error message
+                    }, 4000); // 3 seconds (3000 milliseconds)
+                }
+            });
         });
+    });
+
+    function validateEmail(email) {
+        var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return re.test(email);
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
 <?php $this->end() ?>
