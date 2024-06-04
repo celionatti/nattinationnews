@@ -42,7 +42,7 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                                 <div class="column-1 animate-box">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div id="map" class="section_margin_40"></div> <!--Google map-->
+                                            <img src="<?= get_image("assets/img/contact-bg.png") ?>" alt="Contact Us" class="img-fluid img-thumbnail">
                                         </div>
                                     </div>
                                     <div class="row">

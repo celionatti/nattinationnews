@@ -121,6 +121,9 @@ class AdminUsersController extends Controller
                 'manager' => 'Manager',
                 'journalist' => 'Journalist',
                 'admin' => 'Admin',
+                'graphic_designer' => 'Graphic Designer',
+                'community_manager' => 'Community Manager',
+                'content_officer' => 'Content Officer',
             ],
         ];
 

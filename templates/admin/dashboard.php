@@ -35,11 +35,24 @@
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary-subtle mb-4">
                     <div class="card-body">
-                        <h4>Manage Users</h4>
+                        <h4 class="text-center">Manage Users</h4>
                         <h2 class="text-center">
                             <i class="bi bi-people"></i>
                         </h2>
                         <a href="<?= URL_ROOT . 'admin/manage-users' ?>" class="btn btn-outline-primary btn-sm w-100">Details</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End Card. -->
+            <!-- Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-danger-subtle mb-4">
+                    <div class="card-body">
+                        <h4 class="text-center">Manage Messages</h4>
+                        <h2 class="text-center">
+                            <i class="bi bi-envelope"></i>
+                        </h2>
+                        <a href="<?= URL_ROOT . 'admin/manage-messages' ?>" class="btn btn-outline-danger btn-sm w-100">Details</a>
                     </div>
                 </div>
             </div>

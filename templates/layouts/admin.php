@@ -18,6 +18,7 @@ use celionatti\Bolt\Helpers\FlashMessages\BootstrapFlashMessage;
 
     <link type="text/css" rel="stylesheet" href="<?= get_stylesheet('admin.css'); ?>">
     <!-- Bootstrap library -->
+    <link href="<?= get_stylesheet('all.min.css') ?>" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="<?= get_bootstrap('css/bootstrap.min.css'); ?>">
     <link type="text/css" rel="stylesheet" href="<?= get_bootstrap('css/bootstrap-icons.min.css'); ?>">
     <link type="text/css" rel="stylesheet" href="<?= get_package('toastr/toastr.min.css'); ?>">

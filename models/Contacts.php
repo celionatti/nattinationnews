@@ -95,6 +95,18 @@ class Contacts extends DatabaseModel
         return $this->findAll();
     }
 
+    public function autoDelete()
+    {
+        $thresholdDate = date('Y-m-d H:i:s', strtotime('-30 days'));
+
+        $query = "DELETE FROM contacts
+                WHERE created_at < :thresholdDate";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['thresholdDate' => $thresholdDate])
+            ->get() ?? null;
+    }
+
     public function beforeSave(): void
     {
     }

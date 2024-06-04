@@ -14,6 +14,7 @@ use PhpStrike\controllers\AdminOthersController;
 use PhpStrike\controllers\AdminRegionsController;
 use PhpStrike\controllers\AdminArticlesController;
 use PhpStrike\controllers\AdminCommentsController;
+use PhpStrike\controllers\AdminMessagesController;
 use PhpStrike\controllers\AdminSettingsController;
 use PhpStrike\controllers\AdminCategoriesController;
 
@@ -126,3 +127,12 @@ $bolt->router->post("/admin/articles/view-ai-article", [AdminArticlesController:
 
 $bolt->router->get("/admin/articles/comments/{id}", [AdminArticlesController::class, "comments"]);
 $bolt->router->post("/admin/articles/comments/{id}", [AdminArticlesController::class, "view_comments"]);
+
+/** Messages */
+$bolt->router->get("/admin/manage-messages", [AdminMessagesController::class, "manage"]);
+$bolt->router->post("/admin/view-messages", [AdminMessagesController::class, "view_messages"]);
+$bolt->router->get("/admin/messages/open/{id}", [AdminMessagesController::class, "open_message"]);
+$bolt->router->post("/admin/messages/open/{id}", [AdminMessagesController::class, "open_message"]);
+$bolt->router->get("/admin/messages/open/important/{id}", [AdminMessagesController::class, "important_message"]);
+$bolt->router->get("/admin/messages/delete/{id}", [AdminMessagesController::class, "delete_message"]);
+$bolt->router->get("/admin/messages/auto-delete", [AdminMessagesController::class, "auto_delete_messages"]);

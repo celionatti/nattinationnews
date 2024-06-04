@@ -18,6 +18,26 @@ $currentUser = BoltAuthentication::currentUser();
 
 ?>
 
+<?php if (!is_null($currentUser)) : ?>
+    <div class="container-fluid bg-dark text-white mb-1">
+        <div class="container">
+            <div class="top_bar margin-15">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 time">
+                        <i class="fa-regular fa-user mx-1"></i><span>Hi,&nbsp;<?= $currentUser->surname ?></span>
+                    </div>
+                    <div class="col-md-6 col-sm-12 social">
+                        <ul>
+                            <li><a href="<?= URL_ROOT . "admin" ?>" class="text-white"><i class="fa-solid fa-gauge text-white"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+
 <div class="container-fluid">
     <div class="container">
         <div class="top_bar margin-15">
@@ -51,6 +71,7 @@ $currentUser = BoltAuthentication::currentUser();
         </div>
     </div>
 </div>
+
 <div class="container-fluid">
     <div class="container">
         <div class="row">

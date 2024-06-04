@@ -34,7 +34,7 @@ class BM_2023_10_30_010619_users extends BoltMigration
             ->varchar("avatar", 300)->nullable()
             ->varchar("password")
             ->enum("gender", ['male', 'female', 'others'])->defaultValue("others")
-            ->enum("role", ['admin', 'editor', 'journalist', 'manager', 'graphic', 'writer', 'none'])->defaultValue("none")
+            ->enum("role", ['admin', 'editor', 'journalist', 'manager', 'graphic_designer', 'community_manager', 'content_officer', 'none'])->defaultValue("none")
             ->varchar("facebook", 300)->nullable()
             ->varchar("twitter", 300)->nullable()
             ->varchar("instagram", 300)->nullable()
