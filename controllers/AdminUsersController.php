@@ -101,7 +101,7 @@ class AdminUsersController extends Controller
 
     public function create_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         $view = [
             'errors' => Bolt::$bolt->session->getFormMessage(),
             'user' => retrieveSessionData('user_data'),
@@ -135,7 +135,7 @@ class AdminUsersController extends Controller
 
     public function create(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         $users = new Users();
 
         if ($request->isPost()) {
@@ -195,7 +195,7 @@ class AdminUsersController extends Controller
 
     public function edit_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         $id = $request->getParameter("id");
 
         $users = new Users();
@@ -237,7 +237,7 @@ class AdminUsersController extends Controller
 
     public function edit(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         if ($request->isPost()) {
             $id = $request->getParameter("id");
 
@@ -299,7 +299,7 @@ class AdminUsersController extends Controller
 
     public function delete_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
 
         $id = $request->getParameter("id");
 
@@ -328,7 +328,7 @@ class AdminUsersController extends Controller
 
     public function delete(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
 
         if ($request->isPost()) {
             $id = $request->getParameter("id");
@@ -360,7 +360,7 @@ class AdminUsersController extends Controller
 
     public function verify_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
 
         $id = $request->getParameter("id");
 
@@ -395,7 +395,7 @@ class AdminUsersController extends Controller
 
     public function unverify_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         $id = $request->getParameter("id");
 
         $users = new Users();
@@ -429,7 +429,7 @@ class AdminUsersController extends Controller
 
     public function block_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         $id = $request->getParameter("id");
 
         $users = new Users();
@@ -460,7 +460,7 @@ class AdminUsersController extends Controller
 
     public function unblock_user(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager', 'human_resource']);
         $id = $request->getParameter("id");
 
         $users = new Users();
@@ -489,9 +489,9 @@ class AdminUsersController extends Controller
         redirect(URL_ROOT . "admin/manage-users");
     }
 
-    private function access()
+    private function access(array $data)
     {
-        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+        if (!hasAccess($data, 'all', [])) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }

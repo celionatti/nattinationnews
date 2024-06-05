@@ -32,7 +32,7 @@ class Settings extends DatabaseModel
         $this->order = 'asc';
     }
 
-    public static function tableName():string
+    public static function tableName(): string
     {
         return "settings";
     }
@@ -60,7 +60,14 @@ class Settings extends DatabaseModel
                     ['rule' => 'required', 'message' => 'Value is Required.']
                 ],
             ],
-            'status' => [
+            'edit' => [
+                'name' => [
+                    ['rule' => 'required', 'message' => 'Name is required.'],
+                    ['rule' => 'alphaWithSpaces', 'message' => 'Only Alphabet and _ - characters are allowed.'],
+                ],
+                'value' => [
+                    ['rule' => 'required', 'message' => 'Value is Required.']
+                ],
                 'status' => [
                     ['rule' => 'required', 'message' => 'Comment Status is Required.']
                 ]

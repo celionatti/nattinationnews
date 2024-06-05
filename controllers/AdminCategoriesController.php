@@ -85,7 +85,7 @@ class AdminCategoriesController extends Controller
 
     public function create(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             $categories = new Categories();
 
@@ -119,7 +119,7 @@ class AdminCategoriesController extends Controller
 
     public function edit_category(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         $id = $request->getParameter("id");
 
         $categories = new Categories();
@@ -166,7 +166,7 @@ class AdminCategoriesController extends Controller
 
     public function edit(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             $id = $request->getParameter("id");
 
@@ -209,7 +209,7 @@ class AdminCategoriesController extends Controller
 
     public function delete_category(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         $id = $request->getParameter("id");
 
         $categories = new Categories();
@@ -233,7 +233,7 @@ class AdminCategoriesController extends Controller
 
     public function delete(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -306,9 +306,9 @@ class AdminCategoriesController extends Controller
         }
     }
 
-    private function access()
+    private function access(array $data)
     {
-        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+        if (!hasAccess($data, 'all', [])) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }

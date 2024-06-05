@@ -47,7 +47,7 @@ class AdminRegionsController extends Controller
 
     public function create_region(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         $view = [
             'errors' => Bolt::$bolt->session->getFormMessage(),
             'region' => retrieveSessionData('region_data'),
@@ -70,7 +70,7 @@ class AdminRegionsController extends Controller
 
     public function create(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             $regions = new Regions();
 
@@ -102,7 +102,7 @@ class AdminRegionsController extends Controller
 
     public function edit_region(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         $id = $request->getParameter("id");
 
         $regions = new Regions();
@@ -134,7 +134,7 @@ class AdminRegionsController extends Controller
 
     public function edit(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             $id = $request->getParameter("id");
 
@@ -175,7 +175,7 @@ class AdminRegionsController extends Controller
 
     public function delete_region(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         $id = $request->getParameter("id");
 
         $regions = new Regions();
@@ -199,7 +199,7 @@ class AdminRegionsController extends Controller
 
     public function delete(Request $request)
     {
-        $this->access();
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -270,9 +270,9 @@ class AdminRegionsController extends Controller
         }
     }
 
-    private function access()
+    private function access(array $data)
     {
-        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+        if (!hasAccess($data, 'all', [])) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }

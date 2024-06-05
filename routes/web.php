@@ -136,3 +136,13 @@ $bolt->router->post("/admin/messages/open/{id}", [AdminMessagesController::class
 $bolt->router->get("/admin/messages/open/important/{id}", [AdminMessagesController::class, "important_message"]);
 $bolt->router->get("/admin/messages/delete/{id}", [AdminMessagesController::class, "delete_message"]);
 $bolt->router->get("/admin/messages/auto-delete", [AdminMessagesController::class, "auto_delete_messages"]);
+
+/** Settings */
+$bolt->router->get("/admin/manage-settings", [AdminSettingsController::class, "manage"]);
+$bolt->router->post("/admin/view-settings", [AdminSettingsController::class, "view_settings"]);
+$bolt->router->get("/admin/settings/create", [AdminSettingsController::class, "create_setting"]);
+$bolt->router->post("/admin/settings/create", [AdminSettingsController::class, "create"]);
+$bolt->router->get("/admin/settings/edit/{id}", [AdminSettingsController::class, "edit_setting"]);
+$bolt->router->post("/admin/settings/edit/{id}", [AdminSettingsController::class, "edit"]);
+$bolt->router->get("/admin/settings/delete/{id}", [AdminSettingsController::class, "delete_setting"]);
+$bolt->router->post("/admin/settings/delete/{id}", [AdminSettingsController::class, "delete"]);

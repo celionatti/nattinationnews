@@ -189,6 +189,7 @@ class AdminMessagesController extends Controller
 
     public function delete_message(Request $request)
     {
+        $this->access(['admin', 'manager', 'community_manager']);
         $id = $request->getParameter("id");
 
         $contacts = new Contacts();

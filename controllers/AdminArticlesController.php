@@ -863,9 +863,9 @@ class AdminArticlesController extends Controller
         }
     }
 
-    private function access()
+    private function access(array $data)
     {
-        if (!hasAccess(['admin', 'manager'], 'all', [])) {
+        if (!hasAccess($data, 'all', [])) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }
