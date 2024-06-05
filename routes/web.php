@@ -11,6 +11,7 @@ use PhpStrike\controllers\ProfileController;
 use PhpStrike\controllers\AdminAuthController;
 use PhpStrike\controllers\AdminUsersController;
 use PhpStrike\controllers\AdminOthersController;
+use PhpStrike\controllers\AdminAdvertsController;
 use PhpStrike\controllers\AdminRegionsController;
 use PhpStrike\controllers\AdminArticlesController;
 use PhpStrike\controllers\AdminCommentsController;
@@ -146,3 +147,13 @@ $bolt->router->get("/admin/settings/edit/{id}", [AdminSettingsController::class,
 $bolt->router->post("/admin/settings/edit/{id}", [AdminSettingsController::class, "edit"]);
 $bolt->router->get("/admin/settings/delete/{id}", [AdminSettingsController::class, "delete_setting"]);
 $bolt->router->post("/admin/settings/delete/{id}", [AdminSettingsController::class, "delete"]);
+
+/** Adverts */
+$bolt->router->get("/admin/manage-advertisements", [AdminAdvertsController::class, "manage"]);
+$bolt->router->post("/admin/view-advertisements", [AdminAdvertsController::class, "view_adverts"]);
+$bolt->router->get("/admin/advertisements/create", [AdminAdvertsController::class, "create_advert"]);
+$bolt->router->post("/admin/advertisements/create", [AdminAdvertsController::class, "create"]);
+$bolt->router->get("/admin/advertisements/edit/{id}", [AdminAdvertsController::class, "edit_advert"]);
+$bolt->router->post("/admin/advertisements/edit/{id}", [AdminAdvertsController::class, "edit"]);
+$bolt->router->get("/admin/advertisements/delete/{id}", [AdminAdvertsController::class, "delete_advert"]);
+$bolt->router->post("/admin/advertisements/delete/{id}", [AdminAdvertsController::class, "delete"]);

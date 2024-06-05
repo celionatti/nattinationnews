@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * ======================================
  * ===============        ===============
- * ===== Adverts Model
+ * ===== Advertisements Model
  * ===============        ===============
  * ======================================
  */
@@ -14,7 +14,7 @@ namespace PhpStrike\models;
 
 use celionatti\Bolt\Database\DatabaseModel;
 
-class Adverts extends DatabaseModel
+class Advertisements extends DatabaseModel
 {
     private $scenario = 'create'; // Default scenario is 'create'
 

@@ -39,7 +39,7 @@
                     Articles
                 </a>
 
-                <a class="nav-link" href="<?= URL_ROOT . "admin/manage-adverts" ?>">
+                <a class="nav-link" href="<?= URL_ROOT . "admin/manage-advertisements" ?>">
                     <div class="sb-nav-link-icon"><i class="bi bi-tv"></i></div>
                     Adverts
                 </a>
