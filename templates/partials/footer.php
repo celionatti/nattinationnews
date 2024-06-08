@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-12 bottom-logo">
-                <h1 class="logo"><a href="<?= URL_ROOT ?>"><span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION</a></h1>
+                <h1 class="logo"><a href="<?= URL_ROOT ?>"><?= htmlspecialchars_decode(setting("site_name", '<span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION')) ?></a></h1>
                 <div class="tagline social">
                     <ul>
                         <?php if (setting("facebook_link")) : ?>
@@ -38,7 +38,7 @@
             <div class="col-12 col-md-12 d-flex justify-content-evenly align-items-center text-center my-3">
                 <a href="<?= URL_ROOT . "privacy-policy" ?>">Privacy Policy</a>
                 <a href="<?= URL_ROOT . "contact" ?>">Contact Us</a>
-                <a href="<?= URL_ROOT . "term-conditions" ?>">T & C's</a>
+                <a href="<?= URL_ROOT . "terms-conditions" ?>">T & C's</a>
             </div>
             <div class="col-12 col-md-12 coppyright">
                 <p>© Copyright 2023, All rights reserved. Design by <a href="https://alithemes.com" title="AliTheme">Alithemes.com</a></p>

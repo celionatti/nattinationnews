@@ -489,4 +489,18 @@ class SiteController extends Controller
         http_response_code(400); // Bad Request
         echo json_encode(['error' => 'Something went wrong!']);
     }
+
+    public function privacy_policy(Request $request)
+    {
+        $view = [];
+
+        $this->view->render("articles/privacy_policy", $view);
+    }
+
+    public function terms_conditions(Request $request)
+    {
+        $view = [];
+
+        $this->view->render("articles/terms_conditions", $view);
+    }
 }

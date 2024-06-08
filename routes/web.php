@@ -42,6 +42,8 @@ $bolt->router->get("/article-tags/{tag}", [SiteController::class, "article_tags"
 $bolt->router->get("/author/{id}", [SiteController::class, "author"]);
 $bolt->router->get("/contact", [SiteController::class, "contact"]);
 $bolt->router->post("/contact", [SiteController::class, "send_message"]);
+$bolt->router->get("/privacy-policy", [SiteController::class, "privacy_policy"]);
+$bolt->router->get("/terms-conditions", [SiteController::class, "terms_conditions"]);
 
 
 
@@ -116,7 +118,7 @@ $bolt->router->get("/admin/articles/preview/{id}", [AdminArticlesController::cla
 
 $bolt->router->get("/admin/articles/editors/{id}", [AdminArticlesController::class, "editors"]);
 $bolt->router->get("/admin/articles/editors-pick", [AdminArticlesController::class, "editors_pick"]);
-$bolt->router->get("/admin/articles/remove-editor-pick/{id}", [AdminArticlesController::class, "remove_editor_pick"]);
+$bolt->router->get("/admin/articles/remove-editors-pick/{id}", [AdminArticlesController::class, "remove_editor_pick"]);
 $bolt->router->post("/admin/articles/view-editors-pick", [AdminArticlesController::class, "view_editors_pick"]);
 
 $bolt->router->get("/admin/articles/featured-articles", [AdminArticlesController::class, "featured_articles"]);

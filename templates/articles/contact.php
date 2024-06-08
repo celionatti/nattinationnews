@@ -48,12 +48,12 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h2>Contact information</h2>
-                                            <p><strong>Ouch oh alas crud unnecessary invaluable some goodness opposite hello since audacious far barring and absurdly much boa</strong></p>
+                                            <p><strong><?= setting("about_us") ?></strong></p>
                                             <p></p>
-                                            <p><i class="fa fa-map-o"></i> Address: No.1 Simple Street, Vivamus</p>
-                                            <p><i class="fa fa-envelope-o"></i> Email: contact@alithemes.com</p>
-                                            <p><i class="fa fa-mobile-phone"></i> Phone: (+0123) 456 789</p>
-                                            <p><i class="fa fa-clock-o"></i> Open hour: 8Am - 6Pm</p>
+                                            <p><i class="fa-solid fa-map-pin"></i> Address: <?= setting("address") ?></p>
+                                            <p><i class="fa-regular fa-envelope"></i> Email: <?= setting("email") ?></p>
+                                            <p><i class="fa-solid fa-mobile-screen-button"></i> Phone: <?= setting("phone") ?></p>
+                                            <p><i class="fa-regular fa-clock"></i> Open hour: 8Am - 10Pm</p>
                                         </div>
                                         <div class="col-md-6">
                                             <h2>Get in touch</h2>

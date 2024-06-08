@@ -53,13 +53,23 @@ class AdminAdvertsController extends Controller
     public function view_adverts(Request $request)
     {
         if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "view-adverts") {
-                $output = '';
+            if ($request->post('action') === "view-adverts") {
                 $advertisements = new Advertisements();
-
                 $data = $advertisements->findAll();
 
-                $output .= '<table class="table table-striped table-sm table-bordered">
+                if (empty($data)) {
+                    return '<h3 class="text-center text-secondary mt-5">:( No advertisement present in the database!</h3>';
+                }
+
+                $output = $this->generateAdvertsTable($data);
+                $this->json_response($output);
+            }
+        }
+    }
+
+    private function generateAdvertsTable($data)
+    {
+        $output = '<table class="table table-striped table-sm table-bordered">
                 <thead>
                     <tr class="text-center">
                         <th>#</th>
@@ -73,28 +83,41 @@ class AdminAdvertsController extends Controller
                 </thead>
                 <tbody>';
 
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-center text-scondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize">' . $row->name . '</td>
-                    <td class="text-dark">' . $row->link . '</td>
-                    <td><img src="' . get_image($row->advert_img) . '" class="d-block" style="height:50px;width:60px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td class="text-capitalize">' . statusVerification($row->priority) . '</td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>>
-                    <td>
-                    <a href="' . URL_ROOT . "admin/advertisements/edit/{$row->advert_id}?ut=file" . '" title="Edit Advertisement" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>
-
-                    <a href="' . URL_ROOT . "admin/advertisements/delete/{$row->advert_id}" . '" title="Delete Advertisement" class="btn btn-sm btn-outline-danger px-3 py-1 my-1"><i class="bi bi-trash"></i></a>
-                    </td></tr>
-                    ';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
-                return '<h3 class="text-center text-secondary mt-5">:( No advertisement present in the database!</h3>';
-            }
+        foreach ($data as $key => $row) {
+            $output .= $this->generateAdvertRow($key, $row);
         }
+
+        $output .= '</tbody></table>';
+        return $output;
     }
+
+    private function generateAdvertRow($key, $row)
+    {
+        $imageSrc = get_image($row->advert_img);
+        $priority = statusVerification($row->priority);
+        $status = statusVerification($row->status);
+        $editUrl = URL_ROOT . "admin/advertisements/edit/{$row->advert_id}?ut=file";
+        $deleteUrl = URL_ROOT . "admin/advertisements/delete/{$row->advert_id}";
+
+        return "
+        <tr class='text-center text-secondary'>
+            <td>" . ($key + 1) . "</td>
+            <td class='text-capitalize'>{$row->name}</td>
+            <td class='text-dark'>{$row->link}</td>
+            <td><img src='{$imageSrc}' class='d-block' style='height:50px;width:60px;object-fit:cover;border-radius: 10px;cursor: pointer;'></td>
+            <td class='text-capitalize'>{$priority}</td>
+            <td class='text-capitalize'>{$status}</td>
+            <td>
+                <a href='{$editUrl}' title='Edit Advertisement' class='btn btn-sm btn-outline-primary px-3 py-1 my-1'>
+                    <i class='bi bi-pencil-square'></i>
+                </a>
+                <a href='{$deleteUrl}' title='Delete Advertisement' class='btn btn-sm btn-outline-danger px-3 py-1 my-1'>
+                    <i class='bi bi-trash'></i>
+                </a>
+            </td>
+        </tr>";
+    }
+
 
     public function create_advert(Request $request)
     {

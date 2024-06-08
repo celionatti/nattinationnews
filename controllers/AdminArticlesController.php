@@ -547,201 +547,67 @@ class AdminArticlesController extends Controller
 
     public function view_articles(Request $request)
     {
-        if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "view-articles") {
-                $output = '';
-                $articles = new Articles();
+        if ($request->isPost() && $request->post('action') === "view-articles") {
+            $articles = new Articles();
+            $data = $articles->findAllBy(['status' => 'publish']);
 
-                $data = $articles->findAllBy(['status' => 'publish']);
-
-                $output .= '<table class="table table-striped table-sm table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>View</th>
-                        <th>Comments</th>
-                        <th>Thumbnail</th>
-                        <th>Image</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-center text-scondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize"><a href="' . URL_ROOT . "admin/articles/preview/{$row->article_id}" . '" class="text-dark">' . $row->title . '</a></td>
-                    <td class="text-capitalize fw-bold text-success">' . $row->views . '</td>
-                    <td class="text-capitalize"><a href="' . URL_ROOT . "admin/articles/comments/{$row->article_id}" . '" title="Article Comments" class="btn btn-sm btn-outline-secondary px-3 py-1"><i class="bi bi-chat-left-text"></i></a></td>
-                    <td><img src="' . get_image($row->thumbnail) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td><img src="' . get_image($row->image) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                    <a href="' . URL_ROOT . "admin/articles/edit/{$row->article_id}?ut=file" . '" title="Edit Article" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/editors/{$row->article_id}" . '" title="Editor Pick" class="btn btn-sm btn-outline-warning ' . ($row->is_editors_pick === "true" ? "disabled" : "") . ' px-3 py-1 my-1"><i class="bi bi-patch-check"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/featured/{$row->article_id}" . '" title="Featured Article" class="btn btn-sm btn-outline-secondary ' . ($row->featured_article === "true" ? "disabled" : "") . ' px-3 py-1 my-1"><i class="bi bi-stickies"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/delete/{$row->article_id}" . '" title="Delete Article" class="btn btn-sm btn-outline-danger px-3 py-1 my-1"><i class="bi bi-trash"></i></a>
-                    </td></tr>
-                    ';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
+            if (empty($data)) {
                 return '<h3 class="text-center text-secondary mt-5">:( No article present in the database!</h3>';
             }
+
+            $output = $this->generateArticlesTable($data);
+            $this->json_response($output);
         }
     }
+
+    /** Draft Article */
 
     public function view_draft_articles(Request $request)
     {
-        if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "view-draft-articles") {
-                $output = '';
-                $articles = new Articles();
+        if ($request->isPost() && $request->post('action') === "view-draft-articles") {
+            $articles = new Articles();
+            $data = $articles->findAllBy(['status' => 'draft']);
 
-                $data = $articles->findAllBy(['status' => 'draft']);
-
-                $output .= '<table class="table table-striped table-sm table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Link</th>
-                        <th>View</th>
-                        <th>Authors</th>
-                        <th>Thumbnail</th>
-                        <th>Image</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-center text-scondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize">' . $row->title . '</td>
-                    <td class="text-capitalize"><a href="' . URL_ROOT . "admin/articles/preview/{$row->article_id}" . '" title="View Article" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a></td>
-                    <td class="text-capitalize fw-bold text-success">' . $row->views . '</td>
-                    <td class="text-capitalize">' . $row->authors . '</td>
-                    <td><img src="' . get_image($row->thumbnail) . '" class="d-block" style="height:50px;width:60px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td><img src="' . get_image($row->image) . '" class="d-block" style="height:50px;width:60px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                    <a href="' . URL_ROOT . "admin/articles/edit/{$row->article_id}?ut=file" . '" title="Edit Article" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/editors/{$row->article_id}" . '" title="Editor Pick" class="btn btn-sm btn-outline-warning"><i class="bi bi-patch-check"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/delete/{$row->article_id}" . '" title="Delete Article" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
-                    </td></tr>
-                    ';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
+            if (empty($data)) {
                 return '<h3 class="text-center text-secondary mt-5">:( No article present in the database!</h3>';
             }
+
+            $output = $this->generateArticlesTable($data);
+            $this->json_response($output);
         }
     }
+
+    /** Editors Articles */
 
     public function view_editors_pick(Request $request)
     {
-        if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "editors-pick") {
-                $output = '';
-                $articles = new Articles();
+        if ($request->isPost() && $request->post('action') === "editors-pick") {
+            $articles = new Articles();
+            $data = $articles->findAllBy(['is_editors_pick' => 'true']);
 
-                $data = $articles->findAllBy(['is_editors_pick' => 'true']);
-
-                $output .= '<table class="table table-striped table-sm table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>View</th>
-                        <th>Comments</th>
-                        <th>Thumbnail</th>
-                        <th>Image</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-center text-scondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize"><a href="' . URL_ROOT . "admin/articles/preview/{$row->article_id}" . '" class="text-dark">' . $row->title . '</a></td>
-                    <td class="text-capitalize fw-bold text-success">' . $row->views . '</td>
-                    <td><a href="' . URL_ROOT . "admin/articles/comments/{$row->article_id}" . '" title="Article Comments" class="btn btn-sm btn-outline-secondary px-3 py-1"><i class="bi bi-chat-left-text"></i></a></td>
-                    <td><img src="' . get_image($row->thumbnail) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td><img src="' . get_image($row->image) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                    <a href="' . URL_ROOT . "admin/articles/edit/{$row->article_id}" . '" title="Edit Article" class="btn btn-sm btn-outline-primary px-3 py-2 my-1"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/remove-editor-pick/{$row->article_id}" . '" title="Editor Pick" class="btn btn-sm btn-outline-secondary px-3 py-2 my-1"><i class="bi bi-dash-circle-dotted"></i></a>&nbsp;&nbsp;
-                    </td></tr>
-                    ';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
-                return '<h3 class="text-center text-secondary mt-5">:( No editor present in the database!</h3>';
+            if (empty($data)) {
+                return '<h3 class="text-center text-secondary mt-5">:( No article present in the database!</h3>';
             }
+
+            $output = $this->generateArticlesTable($data);
+            $this->json_response($output);
         }
     }
 
+    /** Featured Articles */
+
     public function view_featured_articles(Request $request)
     {
-        if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "featured-articles") {
-                $output = '';
-                $articles = new Articles();
+        if ($request->isPost() && $request->post('action') === "featured-articles") {
+            $articles = new Articles();
+            $data = $articles->findAllBy(['featured_article' => 'true']);
 
-                $data = $articles->findAllBy(['featured_article' => 'true']);
-
-                $output .= '<table class="table table-striped table-sm table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>View</th>
-                        <th>Comments</th>
-                        <th>Thumbnail</th>
-                        <th>Image</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-center text-scondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize"><a href="' . URL_ROOT . "admin/articles/preview/{$row->article_id}" . '" class="text-dark">' . $row->title . '</a></td>
-                    <td class="text-capitalize fw-bold text-success">' . $row->views . '</td>
-                    <td><a href="' . URL_ROOT . "admin/articles/comments/{$row->article_id}" . '" title="Article Comments" class="btn btn-sm btn-outline-secondary px-3 py-1"><i class="bi bi-chat-left-text"></i></a></td>
-                    <td><img src="' . get_image($row->thumbnail) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td><img src="' . get_image($row->image) . '" class="d-block" style="height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;"></td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                    <a href="' . URL_ROOT . "admin/articles/edit/{$row->article_id}" . '" title="Edit Article" class="btn btn-sm btn-outline-primary px-3 py-2 my-1"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
-
-                    <a href="' . URL_ROOT . "admin/articles/remove-featured/{$row->article_id}" . '" title="Editor Pick" class="btn btn-sm btn-outline-secondary px-3 py-2 my-1"><i class="bi bi-dash-circle-dotted"></i></a>&nbsp;&nbsp;
-                    </td></tr>
-                    ';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
-                return '<h3 class="text-center text-secondary mt-5">:( No featured present in the database!</h3>';
+            if (empty($data)) {
+                return '<h3 class="text-center text-secondary mt-5">:( No article present in the database!</h3>';
             }
+
+            $output = $this->generateArticlesTable($data);
+            $this->json_response($output);
         }
     }
 
@@ -861,6 +727,75 @@ class AdminArticlesController extends Controller
                 echo 'Image not found or could not be deleted.';
             }
         }
+    }
+
+    private function generateArticlesTable($data)
+    {
+        $output = '<table class="table table-striped table-sm table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>View</th>
+                        <th>Comments</th>
+                        <th>Thumbnail</th>
+                        <th>Image</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+        foreach ($data as $key => $row) {
+            $output .= $this->generateArticleRow($key, $row);
+        }
+
+        $output .= '</tbody></table>';
+        return $output;
+    }
+
+    private function generateArticleRow($key, $row)
+    {
+        $thumbnailSrc = get_image($row->thumbnail);
+        $imageSrc = get_image($row->image);
+        $status = statusVerification($row->status);
+        $previewUrl = URL_ROOT . "admin/articles/preview/{$row->article_id}";
+        $commentsUrl = URL_ROOT . "admin/articles/comments/{$row->article_id}";
+        $editUrl = URL_ROOT . "admin/articles/edit/{$row->article_id}?ut=file";
+        // Check if the article is already an editor's pick or featured article and update the URL accordingly
+        if ($row->is_editors_pick === "true") {
+            $editorPickUrl = URL_ROOT . "admin/articles/remove-editors-pick/{$row->article_id}";
+        } else {
+            $editorPickUrl = URL_ROOT . "admin/articles/editors/{$row->article_id}";
+        }
+
+        if ($row->featured_article === "true") {
+            $featuredUrl = URL_ROOT . "admin/articles/remove-featured/{$row->article_id}";
+        } else {
+            $featuredUrl = URL_ROOT . "admin/articles/featured/{$row->article_id}";
+        }
+        $deleteUrl = URL_ROOT . "admin/articles/delete/{$row->article_id}";
+        $editorPickStatus = $row->is_editors_pick === "true" ? "warning" : "success";
+        $editorPickIcon = $row->is_editors_pick === "true" ? "<i class='fa-solid fa-minus'></i>" : "<i class='fa-solid fa-plus'></i>";
+        $featuredStatus = $row->featured_article === "true" ? "secondary" : "success";
+        $featuredStatusIcon = $row->featured_article === "true" ? "<i class='fa-solid fa-minus'></i>" : "<i class='fa-solid fa-plus'></i>";
+
+        return "
+        <tr class='text-center text-secondary'>
+            <td>" . ($key + 1) . "</td>
+            <td class='text-capitalize'><a href='{$previewUrl}' class='text-dark'>{$row->title}</a></td>
+            <td class='text-capitalize fw-bold text-success'>{$row->views}</td>
+            <td class='text-capitalize'><a href='{$commentsUrl}' title='Article Comments' class='btn btn-sm btn-outline-secondary px-3 py-1'><i class='bi bi-chat-left-text'></i></a></td>
+            <td><img src='{$thumbnailSrc}' class='d-block' style='height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;'></td>
+            <td><img src='{$imageSrc}' class='d-block' style='height:50px;width:50px;object-fit:cover;border-radius: 10px;cursor: pointer;'></td>
+            <td class='text-capitalize'>{$status}</td>
+            <td>
+                <a href='{$editUrl}' title='Edit Article' class='btn btn-sm btn-outline-primary px-3 py-1 my-1'><i class='bi bi-pencil-square'></i></a>
+                <a href='{$editorPickUrl}' title='Editor Pick' class='btn btn-sm btn-outline-{$editorPickStatus} px-3 py-1 my-1'>{$editorPickIcon} <i class='bi bi-patch-check'></i></a>
+                <a href='{$featuredUrl}' title='Featured Article' class='btn btn-sm btn-outline-{$featuredStatus} px-3 py-1 my-1'>{$featuredStatusIcon} <i class='bi bi-stickies'></i></a>
+                <a href='{$deleteUrl}' title='Delete Article' class='btn btn-sm btn-outline-danger px-3 py-1 my-1'><i class='bi bi-trash'></i></a>
+            </td>
+        </tr>";
     }
 
     private function access(array $data)

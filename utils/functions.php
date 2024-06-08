@@ -201,14 +201,15 @@ function extractUniqueWords($data)
     return array_unique($uniqueWords);
 }
 
-function setting(string $name)
+function setting(string $name, $default = "")
 {
     $settings = new Settings();
+
+    // Attempt to get the setting
     $setting = $settings->getSetting($name);
 
-    $value = $setting->value ?? "";
-
-    return $value;
+    // Ensure $setting is an object and has a 'value' property
+    return $setting && property_exists($setting, 'value') ? $setting->value : $default;
 }
 
 function getAd($priority = "low")

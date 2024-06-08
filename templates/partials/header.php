@@ -82,8 +82,8 @@ $currentUser = BoltAuthentication::currentUser();
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-12 header">
-                <h1 class="logo logo-script"><a href="<?= URL_ROOT ?>"><span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION</a></h1>
-                <p class="tagline">NEWSPAPER / MAGAZINE / PUBLISHER</p>
+                <h1 class="logo logo-script"><a href="<?= URL_ROOT ?>"><?= htmlspecialchars_decode(setting("site_name", '<span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION')) ?></a></h1>
+                <p class="tagline"><?= htmlspecialchars_decode(setting("tagline")) ?></p>
             </div>
         </div>
     </div>
