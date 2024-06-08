@@ -70,13 +70,7 @@ $token = generateToken();
             <div class="widget-title-cover">
                 <h4 class="widget-title"><span>Advertise</span></h4>
             </div>
-            <div class="banner-adv">
-                <div class="adv-thumb">
-                    <a href="#">
-                        <img class="aligncenter" alt="img1" src="<?= get_image("assets/img/ads-online.png") ?>">
-                    </a>
-                </div>
-            </div>
+            <?= getAds() ?>
         </div> <!--.sidebar-widget-->
     </div>
 </div> <!--#sidebar-wrapper-->

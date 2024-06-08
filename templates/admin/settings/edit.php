@@ -18,10 +18,6 @@ use celionatti\Bolt\Forms\BootstrapForm;
 
 <?php $this->setTitle($title ?? "Admin | Create Setting"); ?>
 
-<?php $this->start('header') ?>
-<!-- Include Quill stylesheet -->
-<link href="<?= get_package("summernote/summernote-lite.min.css") ?>" rel="stylesheet">
-<?php $this->end() ?>
 
 <!-- The Main content is Render here. -->
 <?php $this->start('content') ?>
@@ -48,22 +44,4 @@ use celionatti\Bolt\Forms\BootstrapForm;
     </div>
     <?= BootstrapForm::closeForm() ?>
 </div>
-<?php $this->end() ?>
-
-<?php $this->start("script") ?>
-<script src="<?= get_package("summernote/summernote-lite.min.js") ?>"></script>
-<script>
-    $('.summernote').summernote({
-        placeholder: 'Setting Value',
-        tabsize: 2,
-        height: 100,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear', 'fontname', 'fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph', 'height']],
-        ],
-        spellCheck: true,
-    });
-</script>
 <?php $this->end() ?>

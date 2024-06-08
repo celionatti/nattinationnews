@@ -14,9 +14,10 @@ namespace PhpStrike\controllers;
 
 
 use celionatti\Bolt\Bolt;
+use PhpStrike\models\Settings;
 use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
-use PhpStrike\models\Settings;
+use celionatti\Bolt\Helpers\Utils\StringUtils;
 
 class AdminSettingsController extends Controller
 {
@@ -71,7 +72,7 @@ class AdminSettingsController extends Controller
                     $output .= '<tr class="text-center text-scondary">
                     <td>' . ($key + 1) . '</td>
                     <td class="text-capitalize">' . $row->name . '</td>
-                    <td class="">' . htmlspecialchars_decode($row->value) . '</td>
+                    <td class="">' . StringUtils::excerpt(htmlspecialchars_decode(nl2br($row->value)), 250) . '</td>
                     <td class="text-capitalize">' . statusVerification($row->status) . '</td>
                     <td>
                     <a href="' . URL_ROOT . "admin/settings/edit/{$row->setting_id}" . '" title="Edit Setting" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>

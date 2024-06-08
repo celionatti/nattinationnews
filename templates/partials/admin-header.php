@@ -17,7 +17,7 @@
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3">NattiNation</a>
     <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" title="Menu"><i class="bi bi-menu-down"></i></button>
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" title="Menu"><i class="fa-solid fa-bars"></i></button>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 w-75">
         <div class="input-group">

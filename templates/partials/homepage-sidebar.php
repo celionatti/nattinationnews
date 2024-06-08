@@ -26,6 +26,14 @@ $token = generateToken();
 <aside class="col-md-4">
     <div class="sidebar_right">
         <div class="sidebar-widget animate-box">
+            <div class="banner-adv">
+                <div class="adv-thumb">
+                    <?= getAd("high") ?>
+                </div>
+            </div>
+        </div> <!--.sidebar-widget-->
+
+        <div class="sidebar-widget animate-box">
             <div class="widget-title-cover">
                 <h4 class="widget-title"><span>Popular Articles</span></h4>
             </div>
@@ -55,6 +63,14 @@ $token = generateToken();
                 </label>
                 <input type="submit" value="Search" class="search-submit">
             </form>
+        </div> <!--.sidebar-widget-->
+
+        <div class="sidebar-widget animate-box">
+            <div class="banner-adv">
+                <div class="adv-thumb">
+                    <?= getAd("medium") ?>
+                </div>
+            </div>
         </div> <!--.sidebar-widget-->
 
         <div class="sidebar-widget animate-box">
@@ -98,6 +114,14 @@ $token = generateToken();
                     <?php $slug = slugString($tag); ?>
                     <a href="<?= URL_ROOT . "article-tags/{$slug}" ?>" class="alith_tagg"><?= $tag ?></a>
                 <?php endforeach; ?>
+            </div>
+        </div> <!--.sidebar-widget-->
+
+        <div class="sidebar-widget animate-box">
+            <div class="banner-adv">
+                <div class="adv-thumb">
+                    <?= getAd("low") ?>
+                </div>
             </div>
         </div> <!--.sidebar-widget-->
     </div>

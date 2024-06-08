@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PhpStrike\models\Users;
-use PhpStrike\models\Adverts;
+use PhpStrike\models\Advertisements;
 use PhpStrike\models\Settings;
 use PhpStrike\models\Categories;
 use celionatti\Bolt\Helpers\Utils\StringUtils;
@@ -75,6 +75,9 @@ function statusVerification($status)
         'spam' => ['color' => 'lime', 'weight' => 700],
         'important' => ['color' => 'crimson', 'weight' => 700],
         'banner' => ['color' => 'crimson', 'weight' => 700],
+        'low' => ['color' => 'orange', 'weight' => 700],
+        'high' => ['color' => 'teal', 'weight' => 700],
+        'medium' => ['color' => 'grey', 'weight' => 700],
     ];
 
     if (array_key_exists($status, $statusStyles)) {
@@ -171,7 +174,6 @@ function stringTags($string)
     echo implode(', ', $array);
 }
 
-
 function displayArticleTags($string)
 {
     $array = explode(',', $string);
@@ -199,33 +201,44 @@ function extractUniqueWords($data)
     return array_unique($uniqueWords);
 }
 
-function setting(string $name, bool $removeHtmlTags = false)
+function setting(string $name)
 {
     $settings = new Settings();
     $setting = $settings->getSetting($name);
 
     $value = $setting->value ?? "";
 
-    if ($removeHtmlTags) {
-        // Decode HTML entities and then remove HTML tags
-        $value = strip_tags(htmlspecialchars_decode($value));
-    }
-
     return $value;
 }
 
-function getAds($priority = "low")
+function getAd($priority = "low")
 {
-    $adverts = new Adverts();
-    $ads = $adverts->getAdvertsByPriority($priority);
+    $adverts = new Advertisements();
+    $ad = $adverts->getAdvert($priority);
+
+    if ($ad) {
+?>
+        <a href="<?= $ad->link ?? "#" ?>">
+            <img src='<?= get_image($ad->advert_img) ?>' class='aligncenter img-fluid w-100 shadow'>
+        </a>
+        <?php
+    }
+}
+
+function getAds($limit = 5)
+{
+    $adverts = new Advertisements();
+    $ads = $adverts->getRandAds($limit);
 
     if ($ads) {
         foreach ($ads as $ad) {
-?>
-            <div class='promotion'>
-                <a href="<?= $ad->ads_link ?? "#" ?>">
-                    <img src='<?= get_image($ad->advert_img) ?>' class='img-fluid w-100 shadow'>
-                </a>
+        ?>
+            <div class='banner-adv mb-3'>
+                <div class='adv-thumb'>
+                    <a href="<?= $ad->link ?? "#" ?>">
+                        <img src='<?= get_image($ad->advert_img) ?>' class='aligncenter img-fluid w-100 shadow'>
+                    </a>
+                </div>
             </div>
         <?php
         }
@@ -234,15 +247,15 @@ function getAds($priority = "low")
 
 function getAdsBanner()
 {
-    $adverts = new Adverts();
-    $ads = $adverts->getAdvertsBanner();
+    $adverts = new Advertisements();
+    $ads = $adverts->getBanner();
 
     // Check if $ads is not empty and is an object
     if ($ads && is_object($ads)) {
         ?>
         <div class='container-fluid'>
             <div class='ads-box'>
-                <a href="<?= $ads->ads_link ?? "#" ?>">
+                <a href="<?= $ads->link ?? "#" ?>">
                     <img src='<?= get_image($ads->advert_img) ?>' class='img-fluid'>
                 </a>
             </div>

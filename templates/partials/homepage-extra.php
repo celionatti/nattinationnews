@@ -83,40 +83,13 @@ $token = currentTime();
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                     <div class="sidebar-widget">
                         <div class="widget-title-cover">
-                            <h4 class="widget-title"><span>Gallery</span></h4>
+                            <h4 class="widget-title"><span>Advertise</span></h4>
                         </div>
-                        <ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="<?= URL_ROOT ?>">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/natti-bg.jpg') ?>">
-                                </a>
-                            </li>
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="<?= URL_ROOT ?>">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/natti-logo.png') ?>">
-                                </a>
-                            </li>
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/natti.png') ?>">
-                                </a>
-                            </li>
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/news-3.jpg') ?>">
-                                </a>
-                            </li>
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/news-1.jpg') ?>">
-                                </a>
-                            </li>
-                            <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-                                <a class="" target="_blank" href="#">
-                                    <img class="" title="" alt="" src="<?= get_image('assets/img/news-2.jpg') ?>">
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="banner-adv">
+                            <div class="adv-thumb">
+                                <?= getAd("medium") ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div> <!--.row-->

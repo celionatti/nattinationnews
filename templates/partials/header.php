@@ -50,9 +50,15 @@ $currentUser = BoltAuthentication::currentUser();
                 </div>
                 <div class="col-md-6 col-sm-12 social">
                     <ul>
-                        <li><a href="<?= FACEBOOK_LINK ?>"><i class="fa-brands fa-facebook"></i></a></li>
-                        <li><a href="<?= X_LINK ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
-                        <li><a href="<?= YOUTUBE_LINK ?>"><i class="fa-brands fa-youtube"></i></a></li>
+                        <?php if (setting("facebook_link")) : ?>
+                            <li><a href="<?= setting("facebook_link") ?>"><i class="fa-brands fa-facebook"></i></a></li>
+                        <?php endif; ?>
+                        <?php if (setting("x_link")) : ?>
+                            <li><a href="<?= setting("x_link") ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
+                        <?php endif; ?>
+                        <?php if (setting("youtube_link")) : ?>
+                            <li><a href="<?= setting("youtube_link") ?>"><i class="fa-brands fa-youtube"></i></a></li>
+                        <?php endif; ?>
                     </ul>
                     <div class="top-search">
                         <i class="fa fa-search"></i><span>SEARCH</span>

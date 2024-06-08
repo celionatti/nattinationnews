@@ -191,6 +191,28 @@ class Articles extends DatabaseModel
             ->execute();
     }
 
+    public function prevArticle($created_at)
+    {
+        $query = "SELECT * FROM articles
+                  WHERE created_at < :created_at
+                  ORDER BY created_at DESC LIMIT :limit";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['limit' => 1, 'created_at' => $created_at])
+            ->get()[0] ?? null;
+    }
+
+    public function nextArticle($created_at)
+    {
+        $query = "SELECT * FROM articles
+                  WHERE created_at > :created_at
+                  ORDER BY created_at DESC LIMIT :limit";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['limit' => 1, 'created_at' => $created_at])
+            ->get()[0] ?? null;
+    }
+
     public function getPopularArticles($limit)
     {
         $query = "SELECT a.* FROM articles a 

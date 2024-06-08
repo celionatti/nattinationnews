@@ -25,12 +25,12 @@
                 <div class="sb-sidenav-menu-heading">Pages</div>
 
                 <a class="nav-link" href="<?= URL_ROOT . "admin/manage-categories" ?>">
-                    <div class="sb-nav-link-icon"><i class="bi bi-archive"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-layer-group"></i></div>
                     Categories
                 </a>
 
                 <a class="nav-link" href="<?= URL_ROOT . "admin/manage-regions" ?>">
-                    <div class="sb-nav-link-icon"><i class="bi bi-globe"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-book-atlas"></i></div>
                     Regions
                 </a>
 
@@ -57,9 +57,9 @@
                 </a>
             </div>
         </div>
-        <div class="sb-sidenav-footer">
+        <div class="sb-sidenav-footer mb-3">
             <div class="small">Logged in as:</div>
-            <span class="text-capitalize"><?= getCombinedData(isLoggedIn(), "surname", "name") ?></span>
+            <span class="text-capitalize"><i class="fa-regular fa-circle-dot text-success"></i> <?= getCombinedData(isLoggedIn(), "surname", "name") ?></span>
         </div>
     </nav>
 </div>

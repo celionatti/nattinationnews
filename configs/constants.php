@@ -28,22 +28,6 @@ if (!defined('OPEN_API_KEY')) {
     define('OPEN_API_KEY', $_ENV["OPEN_API_KEY"] ?? "");
 }
 
-if (!defined('FACEBOOK_LINK')) {
-    define('FACEBOOK_LINK', $_ENV["FACEBOOK_LINK"] ?? "");
-}
-
-if (!defined('X_LINK')) {
-    define('X_LINK', $_ENV["X_LINK"] ?? "");
-}
-
-if (!defined('YOUTUBE_LINK')) {
-    define('YOUTUBE_LINK', $_ENV["YOUTUBE_LINK"] ?? "");
-}
-
-if (!defined('INSTAGRAM_LINK')) {
-    define('INSTAGRAM_LINK', $_ENV["INSTAGRAM_LINK"] ?? "");
-}
-
 const ALLOWED_IMAGE_FILE_UPLOAD = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'image/x-icon'];
 
 const ALLOWED_DOC_FILE_UPLOAD = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'text/plain'];

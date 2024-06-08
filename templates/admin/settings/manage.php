@@ -21,7 +21,7 @@
 <div class="row g-5">
     <div class="col-md-12">
 
-        <div class="bg-danger-subtle py-2 px-4 shadow d-flex justify-content-between align-items-center">
+        <div class="bg-body-subtle py-2 px-4 shadow d-flex justify-content-between align-items-center">
             <a href="<?= URL_ROOT . "admin/settings/create" ?>" class="btn btn-primary btn-sm px-3">Create</a>
         </div>
 

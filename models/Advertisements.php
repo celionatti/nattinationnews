@@ -83,17 +83,32 @@ class Advertisements extends DatabaseModel
         return $rules[$scenario] ?? [];
     }
 
-    public function getAdvert($name)
+    public function getAdvert($priority)
     {
-        return $this->findOne(['name' => $name, 'status' => 'open']);
+        return $this->findOne(['priority' => $priority, 'status' => 'open']);
     }
 
-    public function getAdverts()
+    public function getRandAds($limit)
     {
-        return $this->findAll();
+        // Ensure the limit is an integer to prevent SQL injection
+        $limit = (int) $limit;
+
+        // Construct the SQL query
+        $query = "
+        SELECT *
+        FROM adverts
+        WHERE status = 'open'
+        AND priority != 'banner'
+        ORDER BY RAND()
+        LIMIT :limit";
+
+        // Execute the query with the provided limit
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['limit' => $limit])
+            ->get();
     }
 
-    public function getAdvertsByPriority($priority)
+    public function getByPriority($priority)
     {
         $query = "SELECT a.*
               FROM adverts a
@@ -106,7 +121,21 @@ class Advertisements extends DatabaseModel
             ->get();
     }
 
-    public function getAdvertsBanner()
+    public function getByPriorityLimit($priority, $limit)
+    {
+        $query = "SELECT a.*
+              FROM adverts a
+              WHERE a.status = 'open'
+              AND a.priority = :priority
+              ORDER BY RAND()
+              LIMIT :limit";
+
+        return $this->getQueryBuilder()
+            ->rawQuery($query, ['priority' => $priority, 'limit' => $limit])
+            ->get();
+    }
+
+    public function getBanner()
     {
         $query = "SELECT a.*
               FROM adverts a

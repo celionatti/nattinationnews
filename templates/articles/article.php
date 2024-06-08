@@ -8,10 +8,16 @@
  *
  */
 
+use PhpStrike\models\Articles;
 use celionatti\Bolt\Forms\BootstrapForm;
 use celionatti\Bolt\Helpers\Utils\StringUtils;
 
 $token = generateToken();
+
+$articles = new Articles();
+
+$prevArticle = $articles->prevArticle($article->created_at);
+$nextArticle = $articles->nextArticle($article->created_at);
 
 ?>
 
@@ -68,10 +74,8 @@ $token = generateToken();
 
                                 <div class="post-share">
                                     <ul>
-                                        <li class="facebook"><a href="<?= FACEBOOK_LINK ?>"><i class="fa-brands fa-facebook"></i></a></li>
-                                        <li class="twitter"><a href="<?= X_LINK ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
-                                        <li class="google-plus"><a href="<?= YOUTUBE_LINK ?>"><i class="fa-brands fa-youtube"></i></a></li>
-                                        <li class="instagram"><a href="<?= YOUTUBE_LINK ?>"><i class="fa-brands fa-instagram"></i></a></li>
+                                        <li class="facebook"><a onclick="shareOnFacebook('<?= $article->title; ?>')" style="cursor:pointer;" class="text-white"><i class="fa-brands fa-facebook"></i></a></li>
+                                        <li class="twitter"><a onclick="shareOnX('<?= $article->title; ?>')" style="cursor:pointer;" class="text-white"><i class="fa-brands fa-x-twitter"></i></a></li>
                                     </ul>
                                 </div>
 
@@ -80,7 +84,7 @@ $token = generateToken();
                                     <div class="post-author-info mb-3">
                                         <h3 class="text-capitalize"><a href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></h3>
                                         <div>
-                                        <?= htmlspecialchars_decode(nl2br(getCombinedData(getArticleUser($article->user_id), "bio"))) ?>
+                                            <?= htmlspecialchars_decode(nl2br(getCombinedData(getArticleUser($article->user_id), "bio"))) ?>
                                         </div>
                                         <ul>
                                             <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "facebook") ?>"><i class="fa-brands fa-facebook"></i></a></li>
@@ -102,7 +106,7 @@ $token = generateToken();
                                                             <div class="latest_style_3_item">
                                                                 <span class="item-count vertical-align"><?= ($key + 1) ?>.</span>
                                                                 <div class="alith_post_title_small">
-                                                                    <a href="<?= URL_ROOT . "article/{$article->article_id}/{$token}" ?>"><strong><?= htmlspecialchars_decode(nl2br($recent->title)) ?></strong></a>
+                                                                    <a href="<?= URL_ROOT . "article/{$recent->article_id}/{$token}" ?>"><strong><?= htmlspecialchars_decode(nl2br($recent->title)) ?></strong></a>
                                                                 </div>
                                                             </div>
                                                         <?php endforeach; ?>
@@ -114,16 +118,20 @@ $token = generateToken();
                                             <div class="post-navigation">
                                                 <div class="latest_style_2">
                                                     <h5><span>Preview Post</span></h5>
-                                                    <div class="latest_style_2_item">
-                                                        <figure class="alith_news_img"><a href='/single'><img class="hover_grey" src="<?= get_image() ?>" alt=""></a></figure>
-                                                        <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam</a></h3>
-                                                    </div>
+                                                    <?php if ($prevArticle) : ?>
+                                                        <div class="latest_style_2_item">
+                                                            <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$prevArticle->article_id}/{$token}" ?>"><img class="hover_grey img-fluid medium-img-size" src="<?= get_image($prevArticle->thumbnail) ?>" alt=""></a></figure>
+                                                            <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$prevArticle->article_id}/{$token}" ?>"><?= StringUtils::excerpt(htmlspecialchars_decode(nl2br($prevArticle->title)), 350) ?></a></h3>
+                                                        </div>
+                                                    <?php endif; ?>
 
                                                     <h5><span>Next Post</span></h5>
-                                                    <div class="latest_style_2_item">
-                                                        <figure class="alith_news_img"><a href='/single'><img class="hover_grey" src="<?= get_image() ?>" alt=""></a></figure>
-                                                        <h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim veniam</a></h3>
-                                                    </div>
+                                                    <?php if ($nextArticle) : ?>
+                                                        <div class="latest_style_2_item">
+                                                            <figure class="alith_news_img"><a href="<?= URL_ROOT . "article/{$nextArticle->article_id}/{$token}" ?>"><img class="hover_grey img-fluid medium-img-size" src="<?= get_image($nextArticle->thumbnail) ?>" alt=""></a></figure>
+                                                            <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$nextArticle->article_id}/{$token}" ?>"><?= StringUtils::excerpt(htmlspecialchars_decode(nl2br($nextArticle->title)), 350) ?></a></h3>
+                                                        </div>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -186,6 +194,24 @@ $token = generateToken();
 
 <?php $this->start("script") ?>
 <script>
+    function shareOnFacebook(title) {
+        const articleUrl = getURL();
+        const encodedUrl = encodeURIComponent(articleUrl.url);
+        const encodedTitle = encodeURIComponent(title);
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&t=${encodedTitle}`;
+        window.open(facebookShareUrl, 'facebook-share-dialog', 'width=800,height=600');
+        return false;
+    }
+
+    function shareOnX(title) {
+        const articleUrl = getURL();
+        const encodedUrl = encodeURIComponent(articleUrl.url);
+        const encodedTitle = encodeURIComponent(title);
+        const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+        window.open(twitterShareUrl, 'twitter-share-dialog', 'width=800,height=600');
+        return false;
+    }
+
     function getURL(urlPattern = /\/article\/([^/]+)\/([^/]+)/) {
         // Get the current URL
         const currentURL = window.location.href;

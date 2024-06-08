@@ -23,7 +23,7 @@ use celionatti\Bolt\Forms\BootstrapForm;
 <div class="row g-5">
     <div class="col-md-12">
 
-        <div class="bg-danger-subtle p-2 shadow d-flex justify-content-between align-items-center gap-2">
+        <div class="bg-body-subtle p-2 shadow d-flex justify-content-between align-items-center gap-2">
             <a href="<?= URL_ROOT . "admin/articles/create?ut=file" ?>" class="btn btn-primary btn-sm">Create Article</a>
             <a href="<?= URL_ROOT . "admin/articles/drafts" ?>" class="btn btn-info btn-sm">Draft Articles</a>
             <a href="<?= URL_ROOT . "admin/articles/editors-pick" ?>" class="btn btn-warning btn-sm">Editor's Pick</a>
