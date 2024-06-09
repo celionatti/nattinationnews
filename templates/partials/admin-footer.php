@@ -17,7 +17,7 @@
 <footer class="py-4 bg-light mt-auto">
     <div class="container-fluid px-4">
         <div class="d-flex align-items-center justify-content-between small">
-            <div class="text-muted">Copyright &copy; NN.G <?= date("Y") ?></div>
+            <div class="text-muted">All Right's Reserved &copy; <?= htmlspecialchars_decode(setting("site_name", '<span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION')) ?> <?= date("Y") ?></div>
             <div>
                 <a href="<?= URL_ROOT . 'privacy-policy' ?>">Privacy Policy</a>
                 &middot;

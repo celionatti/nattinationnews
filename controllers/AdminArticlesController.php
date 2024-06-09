@@ -18,6 +18,7 @@ use celionatti\Bolt\Bolt;
 use PhpStrike\models\Editor;
 use PhpStrike\models\Regions;
 use PhpStrike\models\Articles;
+use PhpStrike\models\Comments;
 use celionatti\Bolt\Controller;
 use PhpStrike\models\Categories;
 use celionatti\Bolt\Http\Request;
@@ -613,81 +614,43 @@ class AdminArticlesController extends Controller
 
     public function comments(Request $request)
     {
+        $id = $request->getParameter("id");
+
+        $comments = new Comments();
+
+        $articleComments = $comments->findAllBy(['article_id' => $id]);
+
         $view = [
             'errors' => [],
             'title' => 'Article Comments',
             'navigations' => [
                 ['label' => 'Dashboard', 'url' => 'admin'],
+                ['label' => 'Manage Articles', 'url' => 'admin/manage-articles'],
                 ['label' => 'Article Comments', 'url' => ''],
             ],
+            'comments' => $articleComments,
         ];
 
         $this->view->render("admin/articles/comments", $view);
     }
 
-    public function view_comments(Request $request)
+    public function delete_comment(Request $request)
     {
-        if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "ai-article") {
-                $topic = $request->post("topic");
-                if (empty($topic)) {
-                    http_response_code(400); // Bad Request
-                    echo json_encode(['error' => 'Topic cannot be empty']);
-                    exit;
-                }
-                $prompt = $this->generateAIArticle($topic);
+        $id = $request->getParameter("id");
 
-                // dump($prompt);
-                $this->json_response($prompt);
-            }
+        $comments = new Comments();
+
+        $comment = $comments->findOne(['comment_id' => $id]);
+
+        if (!$comment) {
+            toast("info", "Comment Not Found!");
+            redirect(URL_ROOT . "admin/manage-articles");
         }
-    }
 
-    public function ai_article(Request $request)
-    {
-        $view = [
-            'errors' => [],
-            'title' => 'Generate AI Article',
-            'navigations' => [
-                ['label' => 'Dashboard', 'url' => 'admin'],
-                ['label' => 'AI Article', 'url' => ''],
-            ],
-        ];
-
-        $this->view->render("admin/articles/ai", $view);
-    }
-
-    public function view_ai_article(Request $request)
-    {
-        if ($request->isPost()) {
-            if ($request->post('action') && $request->post('action') === "ai-article") {
-                $topic = $request->post("topic");
-                if (empty($topic)) {
-                    http_response_code(400); // Bad Request
-                    echo json_encode(['error' => 'Topic cannot be empty']);
-                    exit;
-                }
-                $prompt = $this->generateAIArticle($topic);
-
-                // dump($prompt);
-                $this->json_response($prompt);
-            }
+        if ($comments->deleteBy(['comment_id' => $id])) {
+            toast("success", "Comment Deleted Successfully!");
+            redirect(URL_ROOT . "admin/articles/comments/{$comment->article_id}");
         }
-    }
-
-    private function generateAIArticle($topic)
-    {
-        $yourApiKey = OPEN_API_KEY;
-        $client = OpenAI::client($yourApiKey);
-
-        $result = $client->chat()->create([
-            'model' => 'gpt-3.5-turbo',
-            'messages' => [
-                ['role' => 'user', 'content' => 'Hello!'],
-            ],
-        ]);
-
-        echo $result->choices[0]->message->content;
     }
 
     public function upload_image(Request $request)

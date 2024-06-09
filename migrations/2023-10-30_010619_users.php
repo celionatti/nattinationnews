@@ -44,6 +44,7 @@ class BM_2023_10_30_010619_users extends BoltMigration
             ->varchar("token", 300)->nullable()
             ->tinyint("is_verified")->defaultValue(0)
             ->tinyint("is_blocked")->defaultValue(0)
+            ->tinyint("is_deleted")->defaultValue(0)
             ->timestamps()
             ->build();
     }

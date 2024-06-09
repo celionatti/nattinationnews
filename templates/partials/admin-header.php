@@ -15,7 +15,7 @@
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3">NattiNation</a>
+    <a class="navbar-brand ps-3"><?= htmlspecialchars_decode(setting("site_name", '<span class="text-success">N</span>ATTI <span class="text-success">N</span>ATION')) ?></a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" title="Menu"><i class="fa-solid fa-bars"></i></button>
     <!-- Navbar Search-->
@@ -31,7 +31,7 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="<?= URL_ROOT . 'admin/profile' ?>"><i class="bi bi-person-bounding-box"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="<?= URL_ROOT . 'admin/settings' ?>"><i class="bi bi-sliders"></i> Settings</a></li>
+                <li><a class="dropdown-item" href="<?= URL_ROOT . 'admin/manage-settings' ?>"><i class="bi bi-sliders"></i> Settings</a></li>
                 <li>
                     <hr class="dropdown-divider" />
                 </li>

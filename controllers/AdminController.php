@@ -18,6 +18,7 @@ use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
 use celionatti\Bolt\Helpers\Image;
 use celionatti\Bolt\Helpers\Upload;
+use celionatti\Bolt\Authentication\BoltAuthentication;
 use celionatti\Bolt\Helpers\FlashMessages\FlashMessage;
 
 class AdminController extends Controller
@@ -210,5 +211,70 @@ class AdminController extends Controller
         toast("error", "Change of Password Falied!");
         Bolt::$bolt->session->setFormMessage($users->getErrors());
         redirect(URL_ROOT . "admin/change-password");
+    }
+
+    public function delete_profile(Request $request)
+    {
+        $view = [
+            'errors' => [],
+            'title' => 'Delete Profile',
+            'navigations' => [
+                ['label' => 'Dashboard', 'url' => 'admin'],
+                ['label' => 'Profile', 'url' => 'admin/profile'],
+                ['label' => 'Delete Profile', 'url' => ''],
+            ],
+        ];
+
+        $this->view->render("admin/delete-profile", $view);
+    }
+
+    public function delete(Request $request)
+    {
+        // Check if the request is a POST request
+        if ($request->isPost()) {
+            // If there is no current user, redirect with a message
+            if (!$this->currentUser) {
+                toast("info", "Access Authorized!");
+                redirect(URL_ROOT);
+                return; // Ensure the function exits after redirect
+            }
+
+            $users = new Users();
+            $user = $this->currentUser;
+
+            // Find the current user's record in the database
+            $u = $users->findOne(['user_id' => $user->user_id]);
+
+            // Specify which fields can be updated
+            $users->updatable(['is_blocked', 'is_deleted']);
+
+            // Get the request data and validate CSRF token
+            $data = $request->getBody();
+            validate_csrf_token($data);
+
+            // Set insertion scenario flag
+            $users->setIsInsertionScenario('delete-profile');
+
+            // Verify the provided password
+            if (!password_verify($data['password'], $u->password)) {
+                toast("error", "Check the Password - Not Valid!");
+                Bolt::$bolt->session->setFormMessage($users->getErrors());
+                redirect(URL_ROOT . "admin/delete-profile");
+                return; // Ensure the function exits after redirect
+            }
+
+            // Validate the data
+            if ($users->validate($data)) {
+                $data['is_blocked'] = 1;
+                $data['is_deleted'] = 1;
+
+                // Update the user's record in the database
+                if ($users->updateBy($data, ['user_id' => $u->user_id])) {
+                    // Assuming some additional logic should be here, currently does nothing
+                    // Consider logging out the user or other necessary actions
+                    $this->currentUser = null; // Example of logging out the user
+                }
+            }
+        }
     }
 }

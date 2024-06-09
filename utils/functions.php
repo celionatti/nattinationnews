@@ -60,6 +60,7 @@ function statusVerification($status)
         0 => ['color' => 'tomato', 'weight' => 700, 'label' => 'Not Verified'],
         'false' => ['color' => 'tomato', 'weight' => 700, 'label' => 'False'],
         'active' => ['color' => 'green', 'weight' => 700],
+        'pending' => ['color' => 'tomato', 'weight' => 700],
         'disabled' => ['color' => 'tomato', 'weight' => 700],
         'disable' => ['color' => 'tomato', 'weight' => 700],
         'inactive' => ['color' => 'tomato', 'weight' => 700],

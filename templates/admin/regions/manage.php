@@ -26,8 +26,6 @@ use celionatti\Bolt\Forms\BootstrapForm;
         <a href="<?= URL_ROOT . "admin/regions/create" ?>" class="btn btn-primary btn-sm px-3">Create</a>
     </div>
 
-    <hr>
-
     <div class="table-responsive" id="showregions">
         <h3 class="text-center text-muted" style="margin-top: 110px;">Loading...</h3>
     </div>

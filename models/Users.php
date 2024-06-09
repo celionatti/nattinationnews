@@ -123,6 +123,11 @@ class Users extends DatabaseModel
                     ['rule' => 'required', 'message' => 'Confirm Password is Required.'],
                 ],
             ],
+            'delete-profile' => [
+                'password' => [
+                    ['rule' => 'required', 'message' => 'Password is Required.'],
+                ],
+            ],
             'user-edit' => [
                 'surname' => [
                     ['rule' => 'required', 'message' => 'Surname is required.'],

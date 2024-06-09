@@ -225,8 +225,8 @@ class SiteController extends Controller
                 }
 
                 if (!empty($comment_text)) {
-                    if (empty($name)) {
-                        $name = "@anonymous natti";
+                    if (empty($name) || is_null($name) || $name == "") {
+                        $name = "@anonymous";
                     }
                     if (empty($reply_id)) {
                         $reply_id = null;
@@ -246,6 +246,7 @@ class SiteController extends Controller
 
                     $data['comment_id'] = generateUuidV4();
                     $data['article_id'] = $article_id;
+                    $data['name'] = $name;
                     $data['reply_id'] = $reply_id;
                     if ($filterText) {
                         $data['status'] = "pending";

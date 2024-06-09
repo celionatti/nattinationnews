@@ -129,7 +129,7 @@ $bolt->router->get("/admin/articles/ai-article", [AdminArticlesController::class
 $bolt->router->post("/admin/articles/view-ai-article", [AdminArticlesController::class, "view_ai_article"]);
 
 $bolt->router->get("/admin/articles/comments/{id}", [AdminArticlesController::class, "comments"]);
-$bolt->router->post("/admin/articles/comments/{id}", [AdminArticlesController::class, "view_comments"]);
+$bolt->router->get("/admin/articles/comments/delete-comment/{id}", [AdminArticlesController::class, "delete_comment"]);
 
 /** Messages */
 $bolt->router->get("/admin/manage-messages", [AdminMessagesController::class, "manage"]);

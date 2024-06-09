@@ -26,6 +26,8 @@ class AdminCategoriesController extends Controller
     {
         $this->view->setLayout("admin");
 
+        $this->currentUser = user();
+
         if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
         }
@@ -271,7 +273,19 @@ class AdminCategoriesController extends Controller
 
                 $data = $categories->getCategories();
 
-                $output .= '<table class="table table-striped table-sm table-bordered">
+                if (empty($data)) {
+                    return '<h3 class="text-center text-secondary mt-5">:( No region present in the database!</h3>';
+                }
+
+                $output = $this->generateCategoriesTable($data);
+                $this->json_response($output);
+            }
+        }
+    }
+
+    private function generateCategoriesTable($data)
+    {
+        $output = '<table class="table table-striped table-sm table-bordered">
                 <thead>
                     <tr class="text-center">
                         <th>#</th>
@@ -284,26 +298,33 @@ class AdminCategoriesController extends Controller
                 </thead>
                 <tbody>';
 
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-start text-secondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize ' . ($row->child !== "none" ? "text-danger" : "") . ' ">' . $row->category . '</td>
-                    <td class="text-capitalize">' . $row->category_info . '</td>
-                    <td class="text-start text-capitalize">' . $row->section . '</td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                        <a href="' . URL_ROOT . "admin/categories/edit/{$row->category_id}" . '" title="Edit Category" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
-
-                        <a href="' . URL_ROOT . "admin/categories/delete/{$row->category_id}" . '" title="Delete Category" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
-                    </td>
-                </tr>';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
-                return '<h3 class="text-center text-secondary mt-5">:( No setting present in the database!</h3>';
-            }
+        foreach ($data as $key => $row) {
+            $output .= $this->generateCategoryRow($key, $row);
         }
+
+        $output .= '</tbody></table>';
+        return $output;
+    }
+
+    private function generateCategoryRow($key, $row)
+    {
+        $status = statusVerification($row->status);
+        $editUrl = URL_ROOT . "admin/categories/edit/{$row->category_id}";
+        $deleteUrl = URL_ROOT . "admin/categories/delete/{$row->category_id}";
+        $isChild = $row->child !== "none" ? "text-danger" : "";
+
+        return "
+        <tr class='text-start text-secondary'>
+            <td>" . ($key + 1) . "</td>
+            <td class='text-capitalize {$isChild}'>{$row->category}</td>
+            <td class='text-capitalize'>{$row->category_info}</td>
+            <td class='text-capitalize'>{$row->section}</td>
+            <td class='text-capitalize'>{$status}</td>
+            <td>
+                <a href='{$editUrl}' title='Edit Category' class='btn btn-sm btn-outline-warning px-3 py-1 my-1'><i class='bi bi-pencil-square'></i></a>
+                <a href='{$deleteUrl}' title='Delete Category' class='btn btn-sm btn-outline-danger px-3 py-1 my-1'><i class='bi bi-trash'></i></a>
+            </td>
+        </tr>";
     }
 
     private function access(array $data)

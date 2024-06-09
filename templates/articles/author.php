@@ -38,8 +38,8 @@ $token = generateToken();
                     </div>
                     <p><?= htmlspecialchars_decode(nl2br($user->bio)) ?></p>
                     <ul>
-                        <li><a href="<?= $user->facebook ?>"><i class="fa-brands fa-facebook"></i></a></li>
-                        <li><a href="<?= $user->twitter ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
+                        <li><a href="<?= $user->facebook ?? "#" ?>"><i class="fa-brands fa-facebook"></i></a></li>
+                        <li><a href="<?= $user->twitter ?? "#" ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
                     </ul>
 
                 </div>
@@ -62,7 +62,7 @@ $token = generateToken();
                                         <figure class="alith_news_img shadow"><a href="<?= URL_ROOT . "article/{$article->article_id}/{$token}" ?>"><img src="<?= get_image($article->thumbnail) ?>" alt="<?= $article->thumbnail_caption ?>" class="img-fluid img-size" /></a></figure>
                                     </div>
                                     <div class="col-md-8 animate-box">
-                                        <h3 class="alith_post_title"><a href='/single'><?= $article->title ?></a></h3>
+                                        <h3 class="alith_post_title"><a href="<?= URL_ROOT . "article/{$article->article_id}/{$token}" ?>"><?= $article->title ?></a></h3>
                                         <div class="post_meta">
                                             <span class="meta_categories"><?= displayTags($article->tags) ?></span>
                                             <span class="meta_date"><?= date("d M, Y", strtotime($article->created_at)) ?></span>

@@ -80,15 +80,15 @@ $nextArticle = $articles->nextArticle($article->created_at);
                                 </div>
 
                                 <div class="post-author section_margin_40">
-                                    <figure class="mx-2 my-4"><a href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><img src="<?= get_image("", "avatar") ?>" style="width:95px; height:95px;" class="rounded-circle p-1"></a></figure>
+                                    <figure class="mx-2 my-4"><a href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><img src="<?= get_image(getCombinedData(getArticleUser($article->user_id), "avatar"), "avatar") ?>" style="width:95px; height:95px;" class="rounded-circle p-1"></a></figure>
                                     <div class="post-author-info mb-3">
                                         <h3 class="text-capitalize"><a href="<?= URL_ROOT . "author/{$article->user_id}" ?>"><?= getCombinedData(getArticleUser($article->user_id), "surname", "name") ?></a></h3>
                                         <div>
                                             <?= htmlspecialchars_decode(nl2br(getCombinedData(getArticleUser($article->user_id), "bio"))) ?>
                                         </div>
-                                        <ul>
-                                            <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "facebook") ?>"><i class="fa-brands fa-facebook"></i></a></li>
-                                            <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "twitter") ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
+                                        <ul class="text-center">
+                                            <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "facebook") ?? "#" ?>"><i class="fa-brands fa-facebook"></i></a></li>
+                                            <li><a href="<?= getCombinedData(getArticleUser($article->user_id), "twitter") ?? "#" ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>

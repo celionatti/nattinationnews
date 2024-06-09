@@ -17,7 +17,7 @@ use celionatti\Bolt\Forms\BootstrapForm;
 
 ?>
 
-<?php $this->setTitle($title ?? "Admin | Change Password - Profile"); ?>
+<?php $this->setTitle($title ?? "Admin | Delete Account - Profile"); ?>
 
 <?php $this->start('header') ?>
 <style>
@@ -118,28 +118,23 @@ use celionatti\Bolt\Forms\BootstrapForm;
             <!-- Main content -->
             <div class="col-lg-8 col-xl-9 ps-lg-4 ps-xl-6">
                 <!-- Update password -->
-                <?= BootstrapForm::openForm("", 'POST', 'multipart/form-data') ?>
+                <?= BootstrapForm::openForm("", 'POST') ?>
                 <?= BootstrapForm::csrfField() ?>
                 <div class="card bg-transparent p-0 px-3 py-1">
                     <!-- Card header -->
-                    <div class="card-header bg-transparent border-bottom px-0">
-                        <h6 class="mb-0">Update password</h6>
+                    <div class="card-header bg-transparent border-bottom px-0 text-center">
+                        <h6 class="mb-0">Delete Profile</h6>
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quo, iure odit at modi dolorem ullam quod voluptatibus fuga qui eligendi.</p>
                     </div>
 
                     <!-- Card body -->
                     <div class="card-body px-0">
-                        <!-- Current password -->
-                        <?= BootstrapForm::inputField("Current Password", "old_password", old_value("old_password", ''), ['class' => 'form-control', 'type' => 'password'], ['class' => 'col-md-12 mb-3'], $errors) ?>
-
-                        <!-- New password -->
-                        <?= BootstrapForm::inputField("Enter New Password", "password", old_value("password", ''), ['class' => 'form-control', 'type' => 'password'], ['class' => 'col-md-12 mb-3'], $errors) ?>
-
                         <!-- Confirm password -->
-                        <?= BootstrapForm::inputField("Confirm Password", "confirm_password", old_value("confirm_password", ''), ['class' => 'form-control', 'type' => 'password'], ['class' => 'col-md-12 mb-3'], $errors) ?>
+                        <?= BootstrapForm::inputField("Password", "password", old_value("password", ''), ['class' => 'form-control', 'type' => 'password'], ['class' => 'col-md-12 mb-3'], $errors) ?>
 
                         <!-- Button -->
                         <div class="d-flex justify-content-end mt-4">
-                            <button type="submit" class="btn btn-primary mb-0">Change password</button>
+                            <button type="submit" class="btn btn-danger mb-0">Delete Account</button>
                         </div>
                     </div>
                 </div>

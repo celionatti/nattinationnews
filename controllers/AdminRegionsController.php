@@ -16,7 +16,6 @@ use celionatti\Bolt\Bolt;
 
 use celionatti\Bolt\Controller;
 use celionatti\Bolt\Http\Request;
-use PhpStrike\models\Categories;
 use PhpStrike\models\Regions;
 
 class AdminRegionsController extends Controller
@@ -26,6 +25,8 @@ class AdminRegionsController extends Controller
     public function onConstruct(): void
     {
         $this->view->setLayout("admin");
+
+        $this->currentUser = user();
 
         if (is_null($this->currentUser)) {
             redirect(URL_ROOT . "dashboard/login", 401);
@@ -237,7 +238,19 @@ class AdminRegionsController extends Controller
 
                 $data = $regions->getRegions();
 
-                $output .= '<table class="table table-striped table-sm table-bordered">
+                if (empty($data)) {
+                    return '<h3 class="text-center text-secondary mt-5">:( No region present in the database!</h3>';
+                }
+
+                $output = $this->generateRegionsTable($data);
+                $this->json_response($output);
+            }
+        }
+    }
+
+    private function generateRegionsTable($data)
+    {
+        $output = '<table class="table table-striped table-sm table-bordered">
                 <thead>
                     <tr class="text-center">
                         <th>#</th>
@@ -249,25 +262,31 @@ class AdminRegionsController extends Controller
                 </thead>
                 <tbody>';
 
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-start text-secondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize">' . $row->region . '</td>
-                    <td class="text-capitalize">' . $row->region_info . '</td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                        <a href="' . URL_ROOT . "admin/regions/edit/{$row->region_id}" . '" title="Edit Region" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-square"></i></a>&nbsp;&nbsp;
-
-                        <a href="' . URL_ROOT . "admin/regions/delete/{$row->region_id}" . '" title="Delete Region" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
-                    </td>
-                </tr>';
-                }
-                $output .= '</tbody></table>';
-                $this->json_response($output);
-            } else {
-                return '<h3 class="text-center text-secondary mt-5">:( No region present in the database!</h3>';
-            }
+        foreach ($data as $key => $row) {
+            $output .= $this->generateRegionRow($key, $row);
         }
+
+        $output .= '</tbody></table>';
+        return $output;
+    }
+
+    private function generateRegionRow($key, $row)
+    {
+        $status = statusVerification($row->status);
+        $editUrl = URL_ROOT . "admin/regions/edit/{$row->region_id}";
+        $deleteUrl = URL_ROOT . "admin/regions/delete/{$row->region_id}";
+
+        return "
+        <tr class='text-start text-secondary'>
+            <td>" . ($key + 1) . "</td>
+            <td class='text-capitalize'>{$row->region}</td>
+            <td class='text-capitalize'>{$row->region_info}</td>
+            <td class='text-capitalize'>{$status}</td>
+            <td>
+                <a href='{$editUrl}' title='Edit Region' class='btn btn-sm btn-outline-warning px-3 py-1 my-1'><i class='bi bi-pencil-square'></i></a>
+                <a href='{$deleteUrl}' title='Delete Region' class='btn btn-sm btn-outline-danger px-3 py-1 my-1'><i class='bi bi-trash'></i></a>
+            </td>
+        </tr>";
     }
 
     private function access(array $data)

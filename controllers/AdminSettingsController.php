@@ -56,35 +56,12 @@ class AdminSettingsController extends Controller
 
                 $data = $settings->findAll();
 
-                $output .= '<table class="table table-striped table-sm table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Value</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                foreach ($data as $key => $row) {
-                    $output .= '<tr class="text-center text-scondary">
-                    <td>' . ($key + 1) . '</td>
-                    <td class="text-capitalize">' . $row->name . '</td>
-                    <td class="">' . StringUtils::excerpt(htmlspecialchars_decode(nl2br($row->value)), 250) . '</td>
-                    <td class="text-capitalize">' . statusVerification($row->status) . '</td>
-                    <td>
-                    <a href="' . URL_ROOT . "admin/settings/edit/{$row->setting_id}" . '" title="Edit Setting" class="btn btn-sm btn-outline-primary px-3 py-1 my-1"><i class="bi bi-pencil-square"></i></a>
-
-                    <a href="' . URL_ROOT . "admin/settings/delete/{$row->setting_id}" . '" title="Delete Setting" class="btn btn-sm btn-outline-danger px-3 py-1 my-1"><i class="bi bi-trash"></i></a>
-                    </td></tr>
-                    ';
+                if (empty($data)) {
+                    return '<h3 class="text-center text-secondary mt-5">:( No setting present in the database!</h3>';
                 }
-                $output .= '</tbody></table>';
+
+                $output = $this->generateSettingsTable($data);
                 $this->json_response($output);
-            } else {
-                return '<h3 class="text-center text-secondary mt-5">:( No setting present in the database!</h3>';
             }
         }
     }
@@ -262,6 +239,48 @@ class AdminSettingsController extends Controller
             toast("error", "Failure on Deleting process!");
             redirect(URL_ROOT . "admin/manage-settings");
         }
+    }
+
+    private function generateSettingsTable($data)
+    {
+        $output = '<table class="table table-striped table-sm table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+        foreach ($data as $key => $row) {
+            $output .= $this->generateSettingRow($key, $row);
+        }
+
+        $output .= '</tbody></table>';
+        return $output;
+    }
+
+    private function generateSettingRow($key, $row)
+    {
+        $status = statusVerification($row->status);
+        $editUrl = URL_ROOT . "admin/settings/edit/{$row->setting_id}";
+        $deleteUrl = URL_ROOT . "admin/settings/delete/{$row->setting_id}";
+        $value = StringUtils::excerpt(htmlspecialchars_decode(nl2br($row->value)), 250);
+
+        return "
+        <tr class='text-center text-secondary'>
+            <td>" . ($key + 1) . "</td>
+            <td class='text-dark'>{$row->name}</td>
+            <td class='text-dark'>{$value}</td>
+            <td class='text-capitalize'>{$status}</td>
+            <td>
+                <a href='{$editUrl}' title='Edit Setting' class='btn btn-sm btn-outline-warning px-2 py-1 my-1'><i class='bi bi-pencil-square'></i></a>
+                <a href='{$deleteUrl}' title='Delete Setting' class='btn btn-sm btn-outline-danger px-2 py-1 my-1'><i class='bi bi-trash'></i></a>
+            </td>
+        </tr>";
     }
 
     private function access(array $data)
