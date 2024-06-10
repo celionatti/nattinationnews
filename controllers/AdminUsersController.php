@@ -38,6 +38,7 @@ class AdminUsersController extends Controller
 
     public function manage()
     {
+        $this->access(['admin', 'manager', 'human_resource']);
         $view = [
             'title' => 'Manage Users',
             'navigations' => [
@@ -51,6 +52,7 @@ class AdminUsersController extends Controller
 
     public function view(Request $request)
     {
+        $this->access(['admin', 'manager', 'human_resource']);
         if ($request->isPost()) {
             if ($request->post('action') && $request->post('action') === "view-users") {
                 $output = '';
@@ -491,7 +493,7 @@ class AdminUsersController extends Controller
 
     private function access(array $data)
     {
-        if (!hasAccess($data, 'all', [])) {
+        if (!hasAccess($data)) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }

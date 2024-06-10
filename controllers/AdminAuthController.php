@@ -21,13 +21,13 @@ use celionatti\Bolt\Helpers\FlashMessages\FlashMessage;
 
 class AdminAuthController extends Controller
 {
+    public $currentUser = null;
+
     public function onConstruct(): void
     {
         $this->view->setLayout("auth");
 
-        if (hasAccess(['admin', 'manager', 'editor', 'journalist'], 'all', [])) {
-            redirect(URL_ROOT . "admin", 401);
-        }
+        $this->currentUser = user();
     }
 
     public function login_view()

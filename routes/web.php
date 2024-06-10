@@ -59,6 +59,9 @@ $bolt->router->get("/admin/change-password", [AdminController::class, "password"
 $bolt->router->post("/admin/change-password", [AdminController::class, "change_password"]);
 $bolt->router->get("/admin/delete-profile", [AdminController::class, "delete_profile"]);
 $bolt->router->post("/admin/delete-profile", [AdminController::class, "delete"]);
+$bolt->router->get("/admin/delete-profile/cancel", [AdminController::class, "cancel"]);
+$bolt->router->get("/admin/profile/articles", [AdminController::class, "profile_articles"]);
+$bolt->router->post("/admin/profile/view-articles", [AdminController::class, "view_profile_articles"]);
 
 $bolt->router->get("/dashboard/login", [AdminAuthController::class, "login_view"]);
 $bolt->router->post("/dashboard/login", [AdminAuthController::class, "login"]);

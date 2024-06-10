@@ -39,6 +39,7 @@ class AdminMessagesController extends Controller
 
     public function manage()
     {
+        $this->access(['admin', 'manager', 'community_manager']);
         $view = [
             'title' => 'Manage Messages',
             'navigations' => [
@@ -52,6 +53,7 @@ class AdminMessagesController extends Controller
 
     public function view_messages(Request $request)
     {
+        $this->access(['admin', 'manager', 'community_manager']);
         if ($request->isPost()) {
             if ($request->post('action') && $request->post('action') === "view-messages") {
                 $output = '';
@@ -96,6 +98,7 @@ class AdminMessagesController extends Controller
 
     public function open_message(Request $request)
     {
+        $this->access(['admin', 'manager', 'community_manager']);
         if ($request->isGet()) {
             $view = [
                 'title' => 'Message Details',
@@ -167,6 +170,7 @@ class AdminMessagesController extends Controller
 
     public function important_message(Request $request)
     {
+        $this->access(['admin', 'manager', 'community_manager']);
         $id = $request->getParameter("id");
 
         $contacts = new Contacts();
@@ -230,7 +234,7 @@ class AdminMessagesController extends Controller
 
     private function access(array $data)
     {
-        if (!hasAccess($data, 'all', [])) {
+        if (!hasAccess($data)) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }

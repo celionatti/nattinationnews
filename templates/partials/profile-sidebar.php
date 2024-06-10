@@ -27,6 +27,7 @@ $user = BoltAuthentication::currentUser();
                 <img class="avatar-img rounded-circle border border-2 border-white" src="<?= get_image($user->avatar, "avatar") ?>" alt="">
             </div>
             <h6 class="mb-0 text-capitalize"><?= $user->surname . ' ' . $user->name ?></h6>
+            <h6 class="text-danger text-uppercase my-1"><?= $user->role ?></h6>
             <a class="text-reset text-primary-hover small"><?= $user->email ?></a>
         </div>
 
@@ -35,7 +36,7 @@ $user = BoltAuthentication::currentUser();
             <!-- Sidebar menu item START -->
             <ul class="nav nav-pills-primary-border-start flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="account-projects.html"><i class="bi bi-briefcase fa-fw me-2"></i>My projects</a>
+                    <a class="nav-link" href="<?= URL_ROOT . "admin/profile/articles" ?>"><i class="bi bi-briefcase fa-fw me-2"></i>My Articles</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= URL_ROOT . "admin/change-password" ?>"><i class="bi bi-shield-lock fa-fw me-2"></i>Change Password</a>

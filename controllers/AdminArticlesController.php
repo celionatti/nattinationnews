@@ -333,6 +333,7 @@ class AdminArticlesController extends Controller
 
     public function delete_article(Request $request)
     {
+        $this->access(['admin', 'manager', 'editor', 'journalist']);
         $id = $request->getParameter("id");
 
         $article = new Articles();
@@ -356,6 +357,7 @@ class AdminArticlesController extends Controller
 
     public function delete(Request $request)
     {
+        $this->access(['admin', 'manager', 'editor', 'journalist']);
         if ($request->isPost()) {
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -385,13 +387,14 @@ class AdminArticlesController extends Controller
                 toast("info", "Failure on Deleting process!");
                 redirect(URL_ROOT . "admin/manage-articles");
             }
-            toast("info", "You dont have access to Update!");
+            toast("info", "You dont have access to Delete!");
             redirect(URL_ROOT . "admin/manage-articles");
         }
     }
 
     public function editors(Request $request)
     {
+        $this->access(['admin', 'manager', 'editor']);
         $id = $request->getParameter("id");
 
         $article = new Articles();
@@ -431,6 +434,7 @@ class AdminArticlesController extends Controller
 
     public function remove_editor_pick(Request $request)
     {
+        $this->access(['admin', 'manager', 'editor']);
         $id = $request->getParameter("id");
 
         $article = new Articles();
@@ -470,6 +474,7 @@ class AdminArticlesController extends Controller
 
     public function featured(Request $request)
     {
+        $this->access(['admin', 'manager', 'editor']);
         $id = $request->getParameter("id");
 
         $article = new Articles();
@@ -495,6 +500,7 @@ class AdminArticlesController extends Controller
 
     public function remove_featured(Request $request)
     {
+        $this->access(['admin', 'manager', 'editor']);
         $id = $request->getParameter("id");
 
         $article = new Articles();
@@ -763,9 +769,9 @@ class AdminArticlesController extends Controller
 
     private function access(array $data)
     {
-        if (!hasAccess($data, 'all', [])) {
+        if (!hasAccess($data)) {
             toast("info", "PERMISSION NOT GRANTED!");
-            redirect(URL_ROOT . "admin", 401);
+            redirect(URL_ROOT . "admin/manage-articles", 401);
         }
     }
 }

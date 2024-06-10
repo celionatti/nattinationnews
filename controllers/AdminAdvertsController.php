@@ -39,6 +39,7 @@ class AdminAdvertsController extends Controller
 
     public function manage()
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         $view = [
             'title' => 'Manage Advertisement',
             'navigations' => [
@@ -52,6 +53,7 @@ class AdminAdvertsController extends Controller
 
     public function view_adverts(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         if ($request->isPost()) {
             if ($request->post('action') === "view-adverts") {
                 $advertisements = new Advertisements();
@@ -118,9 +120,9 @@ class AdminAdvertsController extends Controller
         </tr>";
     }
 
-
     public function create_advert(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         $view = [
             'errors' => Bolt::$bolt->session->getFormMessage(),
             'advert' => retrieveSessionData('advert_data'),
@@ -154,6 +156,7 @@ class AdminAdvertsController extends Controller
 
     public function create(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         $adverts = new Advertisements();
 
         $uploadType = $request->get("ut");
@@ -207,6 +210,7 @@ class AdminAdvertsController extends Controller
 
     public function edit_advert(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         $id = $request->getParameter("id");
 
         $adverts = new Advertisements();
@@ -248,6 +252,7 @@ class AdminAdvertsController extends Controller
 
     public function edit(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         $id = $request->getParameter("id");
 
         $uploadType = $request->get("ut");
@@ -316,6 +321,7 @@ class AdminAdvertsController extends Controller
 
     public function delete_advert(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         $id = $request->getParameter("id");
 
         $adverts = new Advertisements();
@@ -344,6 +350,7 @@ class AdminAdvertsController extends Controller
 
     public function delete(Request $request)
     {
+        $this->access(['admin', 'manager', 'graphic_designer', 'community_manager']);
         if ($request->isPost()) {
             $data = $request->getBody();
             validate_csrf_token($data);
@@ -376,7 +383,7 @@ class AdminAdvertsController extends Controller
 
     private function access(array $data)
     {
-        if (!hasAccess($data, 'all', [])) {
+        if (!hasAccess($data)) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }

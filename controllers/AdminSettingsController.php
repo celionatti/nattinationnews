@@ -36,6 +36,7 @@ class AdminSettingsController extends Controller
 
     public function manage()
     {
+        $this->access(['admin', 'manager']);
         $view = [
             'title' => 'Manage Settings',
             'navigations' => [
@@ -49,6 +50,7 @@ class AdminSettingsController extends Controller
 
     public function view_settings(Request $request)
     {
+        $this->access(['admin', 'manager']);
         if ($request->isPost()) {
             if ($request->post('action') && $request->post('action') === "view-settings") {
                 $output = '';

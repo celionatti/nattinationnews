@@ -12,6 +12,8 @@ declare(strict_types=1);
  */
 
 
+date_default_timezone_set("Africa/Lagos");
+
 const MAILER_EMAIL = "";
 const MAILER_PASSWORD = "";
 const MAILER_HOST = "smtp.gmail.com";
@@ -36,18 +38,6 @@ const ALLOWED_ARCHIVE_FILE_UPLOAD = ['application/zip', 'application/x-tar', 'ap
 const ALLOWED_FONT_FILE_UPLOAD = ['font/woff', 'font/woff2', 'application/x-font-ttf', 'application/x-font-opentype'];
 const ALLOWED_VIDEO_FILE_UPLOAD = ['video/mp4', 'video/webm', 'video/ogg'];
 const ALLOWED_AUDIO_FILE_UPLOAD = ['audio/mpeg', 'audio/ogg', 'audio/wav'];
-
-
-const ACCESSRULES = [
-    'all'    => ['admin', 'user', 'author', 'editor', 'manager', 'guest'],
-    'create' => ['admin', 'author', 'editor', 'manager'],
-    'view'   => ['admin', 'author', 'editor', 'manager'],
-    'edit'   => ['admin', 'author', 'editor', 'manager'],
-    'delete' => ['admin', 'author', 'editor', 'manager'],
-    'opt_one' => ['admin'],
-    'opt_two' => ['admin', 'manager'],
-    // Add more actions and roles as needed
-];
 
 const FILTER_TEXT = ['fuck'];
 
