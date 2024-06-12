@@ -8,8 +8,6 @@
  *
  */
 
-use celionatti\Bolt\Forms\BootstrapForm;
-use celionatti\Bolt\Helpers\Utils\StringUtils;
 
 
 ?>
@@ -32,7 +30,11 @@ use celionatti\Bolt\Helpers\Utils\StringUtils;
         <div class="primary margin-15">
             <div class="row">
                 <div class="col-md-12">
-                    
+                    <h2 class="fw-bold mb-3">Terms and Conditions</h2>
+
+                    <div class="container shadow px-4 py-4 border">
+                        <?= htmlspecialchars_decode(nl2br(setting("terms"))) ?>
+                    </div>
                 </div>
             </div>
         </div> <!--.primary-->

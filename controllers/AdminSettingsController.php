@@ -287,7 +287,7 @@ class AdminSettingsController extends Controller
 
     private function access(array $data)
     {
-        if (!hasAccess($data, 'all', [])) {
+        if (!hasAccess($data)) {
             toast("info", "PERMISSION NOT GRANTED!");
             redirect(URL_ROOT . "admin", 401);
         }
